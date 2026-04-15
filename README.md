@@ -1,5 +1,7 @@
 # Tiago Martins Pinto Portfolio
 
+Portfolio, project microsites, teaching, and research website.
+
 Static portfolio for `tiagomartinspinto.github.io`, migrated away from Cargo Collective.
 
 ## Local preview
