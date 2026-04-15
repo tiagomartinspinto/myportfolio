@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiago Martins Pinto / Art Educator / Researcher</title>
+    <meta name="description" content="Portfolio of Tiago Martins Pinto, art-tech educator and researcher exploring art, technology, media, and education.">
+    <meta property="og:title" content="Tiago Martins Pinto / Art Educator / Researcher">
+    <meta property="og:description" content="Portfolio of Tiago Martins Pinto, art-tech educator and researcher exploring art, technology, media, and education.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tiagomartinspinto.github.io">
+    <meta property="og:image" content="https://freight.cargo.site/w/1200/i/D2304104272575982793486682709253/66648292_2430254997302289_3071132277858631680_o-edited-1.jpg_3.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tiago Martins Pinto / Art Educator / Researcher">
+    <meta name="twitter:description" content="Portfolio of Tiago Martins Pinto, art-tech educator and researcher exploring art, technology, media, and education.">
+    <meta name="twitter:image" content="https://freight.cargo.site/w/1200/i/D2304104272575982793486682709253/66648292_2430254997302289_3071132277858631680_o-edited-1.jpg_3.jpeg">
+    <link rel="canonical" href="https://tiagomartinspinto.github.io">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header" aria-label="Site header">
+      <a class="home-link" href="#top" aria-label="Go to top">Tiago Martins Pinto</a>
+      <span class="site-mark" aria-hidden="true">:)</span>
+      <a class="contact-link" href="mailto:hello@tiagomartinspinto.com">Contact</a>
+    </header>
+
+    <main id="top">
+      <section class="intro" aria-labelledby="intro-title">
+        <p class="eyebrow">Art-tech educator / researcher</p>
+        <h1 id="intro-title">I make, teach, and research with art, technology, and media.</h1>
+        <p class="intro-copy">Based in Helsinki, Finland. Working across art education, youth work, audiovisual production, exhibition design, web development, and community-based research.</p>
+      </section>
+
+      <section class="project-index" aria-labelledby="projects-title">
+        <div class="section-head">
+          <h2 id="projects-title">Selected work</h2>
+          <div class="filters" aria-label="Filter projects">
+            <button class="filter active" type="button" data-filter="all">All</button>
+            <button class="filter" type="button" data-filter="art education">Art education</button>
+            <button class="filter" type="button" data-filter="research">Research</button>
+            <button class="filter" type="button" data-filter="visual design">Visual design</button>
+            <button class="filter" type="button" data-filter="youth work">Youth work</button>
+          </div>
+        </div>
+        <div class="projects-grid" id="projects"></div>
+      </section>
+
+      <section class="about" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">About me</p>
+          <h2 id="about-title">I am a tech maker and researcher in art education.</h2>
+        </div>
+        <div class="about-copy">
+          <p>My work brings together artistic practice, learning, technical production, and participatory research. I build tools, document performances, shape exhibitions, and create spaces where young people and communities can experiment with images, sound, code, and shared experience.</p>
+          <nav class="about-links" aria-label="Profile links">
+            <a href="https://research.aalto.fi/en/persons/tiago-martins-pinto" target="_blank" rel="noreferrer">Researcher @ Aalto</a>
+            <a href="https://openprocessing.org/user/219410#curations" target="_blank" rel="noreferrer">Lecturer @ Aalto</a>
+            <a href="https://www.aalto.fi/en/management-of-school-of-arts-design-and-architecture/arts-ict-group" target="_blank" rel="noreferrer">Workshop Master @ Aalto</a>
+            <a href="https://codeberg.org/ptiagomp" target="_blank" rel="noreferrer">Codeberg</a>
+            <a href="https://www.linkedin.com/in/ptiagomp/" target="_blank" rel="noreferrer">LinkedIn</a>
+          </nav>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="project-dialog" id="project-dialog" aria-labelledby="dialog-title">
+      <button class="dialog-close" type="button" aria-label="Close project">Close</button>
+      <article class="dialog-layout">
+        <div class="dialog-media" id="dialog-media"></div>
+        <div class="dialog-copy">
+          <p class="eyebrow" id="dialog-year"></p>
+          <h2 id="dialog-title"></h2>
+          <p class="tag-list" id="dialog-tags"></p>
+          <div id="dialog-description"></div>
+          <p class="project-links" id="dialog-links"></p>
+        </div>
+      </article>
+    </dialog>
+
+    <footer class="site-footer">
+      <span>Helsinki, Finland</span>
+      <a href="mailto:hello@tiagomartinspinto.com">hello@tiagomartinspinto.com</a>
+    </footer>
+  </body>
+</html>
