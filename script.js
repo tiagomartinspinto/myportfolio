@@ -159,10 +159,11 @@ const dialogDescription = document.querySelector("#dialog-description");
 const dialogLinks = document.querySelector("#dialog-links");
 
 const renderProjects = () => {
-  grid.innerHTML = projects
+  const visibleProjects = projects.slice(0, 9);
+
+  grid.innerHTML = visibleProjects
     .map((project, index) => `
       <button class="project-card" type="button" data-index="${index}" data-tags="${project.tags.join("|")}">
-        <img class="project-thumb" src="${project.thumb}" alt="" loading="lazy">
         <span class="project-card-body">
           <span class="project-number">${String(index + 1).padStart(2, "0")}</span>
           <span class="project-title-row">
@@ -178,13 +179,15 @@ const renderProjects = () => {
     `)
     .join("");
 
-  workList.innerHTML = projects
-    .map((project, index) => `
-      <button class="work-list-item" type="button" data-index="${index}">
-        ${project.title}
-      </button>
-    `)
-    .join("");
+  if (workList) {
+    workList.innerHTML = visibleProjects
+      .map((project, index) => `
+        <button class="work-list-item" type="button" data-index="${index}">
+          ${project.title}
+        </button>
+      `)
+      .join("");
+  }
 };
 
 const openProject = (project) => {
@@ -209,11 +212,13 @@ grid.addEventListener("click", (event) => {
   openProject(projects[Number(card.dataset.index)]);
 });
 
-workList.addEventListener("click", (event) => {
-  const item = event.target.closest(".work-list-item");
-  if (!item) return;
-  openProject(projects[Number(item.dataset.index)]);
-});
+if (workList) {
+  workList.addEventListener("click", (event) => {
+    const item = event.target.closest(".work-list-item");
+    if (!item) return;
+    openProject(projects[Number(item.dataset.index)]);
+  });
+}
 
 document.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
 
@@ -231,3 +236,75 @@ document.querySelectorAll(".filter").forEach((button) => {
     });
   });
 });
+
+const menuButton = document.querySelector(".menu-dot");
+const siteNav = document.querySelector("#site-nav");
+
+menuButton.addEventListener("click", () => {
+  const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+  menuButton.setAttribute("aria-expanded", String(!isOpen));
+  siteNav.classList.toggle("open", !isOpen);
+});
+
+siteNav.addEventListener("click", () => {
+  menuButton.setAttribute("aria-expanded", "false");
+  siteNav.classList.remove("open");
+});
+
+const startParticles = () => {
+  const holder = document.querySelector("#particle-field");
+  if (!holder || !window.p5) return;
+
+  new p5((sketch) => {
+    const particles = [];
+    const count = 62;
+
+    sketch.setup = () => {
+      const canvas = sketch.createCanvas(holder.clientWidth, holder.clientHeight);
+      canvas.parent(holder);
+      for (let i = 0; i < count; i += 1) {
+        particles.push({
+          x: sketch.random(sketch.width),
+          y: sketch.random(sketch.height),
+          vx: sketch.random(-0.18, 0.18),
+          vy: sketch.random(-0.18, 0.18),
+          size: sketch.random(1.2, 2.7)
+        });
+      }
+    };
+
+    sketch.windowResized = () => {
+      sketch.resizeCanvas(holder.clientWidth, holder.clientHeight);
+    };
+
+    sketch.draw = () => {
+      sketch.clear();
+      sketch.noStroke();
+      sketch.fill(216, 234, 223, 95);
+
+      for (const particle of particles) {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        if (particle.x < 0 || particle.x > sketch.width) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > sketch.height) particle.vy *= -1;
+
+        sketch.circle(particle.x, particle.y, particle.size);
+      }
+
+      sketch.stroke(241, 199, 213, 28);
+      for (let i = 0; i < particles.length; i += 1) {
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const a = particles[i];
+          const b = particles[j];
+          const distance = sketch.dist(a.x, a.y, b.x, b.y);
+          if (distance < 96) {
+            sketch.line(a.x, a.y, b.x, b.y);
+          }
+        }
+      }
+    };
+  }, holder);
+};
+
+window.addEventListener("load", startParticles);
