@@ -1359,3 +1359,73 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+/* Soft pastel-black palette. */
+:root {
+  --background: #111414;
+  --foreground: #d8eadf;
+  --muted: #a9beb4;
+  --faint: #72857d;
+  --line: #25302d;
+  --line-strong: #d8eadf;
+  --accent: #f1c7d5;
+}
+
+body,
+.site-header,
+.project-dialog {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+a,
+a:hover,
+.home-link,
+.project-title-row h3,
+.dialog-copy h2,
+.about-links a,
+.project-links a {
+  color: var(--foreground);
+}
+
+.site-nav a,
+.work-list-item,
+.about h2,
+.about-copy,
+.dialog-copy,
+.dialog-close,
+.site-footer,
+.site-footer a {
+  color: var(--muted);
+}
+
+.site-nav a:hover,
+.work-list-item:hover,
+.dialog-close:hover,
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+.project-card,
+.project-dialog {
+  border-color: var(--line);
+}
+
+.project-dialog::backdrop {
+  background: rgba(17, 20, 20, 0.74);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline-color: var(--accent);
+}
+
+.project-thumb {
+  opacity: 0.82;
+  filter: saturate(0.62) contrast(0.94) brightness(0.86);
+}
+
+.project-card:hover .project-thumb {
+  opacity: 0.96;
+  filter: saturate(0.78) contrast(0.98) brightness(0.92);
+}
