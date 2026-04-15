@@ -149,6 +149,7 @@ const projects = [
 ];
 
 const grid = document.querySelector("#projects");
+const workList = document.querySelector("#work-list");
 const dialog = document.querySelector("#project-dialog");
 const dialogMedia = document.querySelector("#dialog-media");
 const dialogTitle = document.querySelector("#dialog-title");
@@ -176,6 +177,14 @@ const renderProjects = () => {
       </button>
     `)
     .join("");
+
+  workList.innerHTML = projects
+    .map((project, index) => `
+      <button class="work-list-item" type="button" data-index="${index}">
+        ${project.title}
+      </button>
+    `)
+    .join("");
 };
 
 const openProject = (project) => {
@@ -198,6 +207,12 @@ grid.addEventListener("click", (event) => {
   const card = event.target.closest(".project-card");
   if (!card) return;
   openProject(projects[Number(card.dataset.index)]);
+});
+
+workList.addEventListener("click", (event) => {
+  const item = event.target.closest(".work-list-item");
+  if (!item) return;
+  openProject(projects[Number(item.dataset.index)]);
 });
 
 document.querySelector(".dialog-close").addEventListener("click", () => dialog.close());

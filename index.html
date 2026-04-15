@@ -38,19 +38,24 @@
       </section>
 
       <section class="project-index" aria-labelledby="projects-title">
-        <div class="section-head">
-          <div>
-            <h2 id="projects-title">Work</h2>
+        <div class="work-layout">
+          <div class="work-sidebar">
+            <div class="section-head">
+              <div>
+                <h2 id="projects-title">Work</h2>
+              </div>
+              <div class="filters" aria-label="Filter projects">
+                <button class="filter active" type="button" data-filter="all">All</button>
+                <button class="filter" type="button" data-filter="art education">Art education</button>
+                <button class="filter" type="button" data-filter="research">Research</button>
+                <button class="filter" type="button" data-filter="visual design">Visual design</button>
+                <button class="filter" type="button" data-filter="youth work">Youth work</button>
+              </div>
+            </div>
+            <nav class="work-list" id="work-list" aria-label="Project list"></nav>
           </div>
-          <div class="filters" aria-label="Filter projects">
-            <button class="filter active" type="button" data-filter="all">All</button>
-            <button class="filter" type="button" data-filter="art education">Art education</button>
-            <button class="filter" type="button" data-filter="research">Research</button>
-            <button class="filter" type="button" data-filter="visual design">Visual design</button>
-            <button class="filter" type="button" data-filter="youth work">Youth work</button>
+          <div class="projects-grid" id="projects"></div>
           </div>
-        </div>
-        <div class="projects-grid" id="projects"></div>
       </section>
 
       <section class="about" aria-labelledby="about-title">
