@@ -16,6 +16,7 @@
     <meta name="twitter:image" content="https://freight.cargo.site/w/1200/i/D2304104272575982793486682709253/66648292_2430254997302289_3071132277858631680_o-edited-1.jpg_3.jpeg">
     <link rel="canonical" href="https://tiagomartinspinto.github.io">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="sleek.css">
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -27,14 +28,24 @@
 
     <main id="top">
       <section class="intro" aria-labelledby="intro-title">
-        <p class="eyebrow">Art-tech educator / researcher</p>
-        <h1 id="intro-title">I make, teach, and research with art, technology, and media.</h1>
-        <p class="intro-copy">Based in Helsinki, Finland. Working across art education, youth work, audiovisual production, exhibition design, web development, and community-based research.</p>
+        <div class="intro-inner">
+          <p class="eyebrow">Art-tech educator / researcher</p>
+          <h1 id="intro-title">Art, technology, media, and learning.</h1>
+          <p class="intro-copy">Based in Helsinki, working across art education, youth work, audiovisual production, exhibition design, web development, and community-based research.</p>
+        </div>
+        <div class="intro-meta" aria-label="Practice areas">
+          <span>Helsinki</span>
+          <span>Aalto University</span>
+          <span>Research / teaching / making</span>
+        </div>
       </section>
 
       <section class="project-index" aria-labelledby="projects-title">
         <div class="section-head">
-          <h2 id="projects-title">Selected work</h2>
+          <div>
+            <p class="eyebrow">Selected work</p>
+            <h2 id="projects-title">Projects</h2>
+          </div>
           <div class="filters" aria-label="Filter projects">
             <button class="filter active" type="button" data-filter="all">All</button>
             <button class="filter" type="button" data-filter="art education">Art education</button>

@@ -163,7 +163,8 @@ const renderProjects = () => {
       <button class="project-card" type="button" data-index="${index}" data-tags="${project.tags.join("|")}">
         <img class="project-thumb" src="${project.thumb}" alt="" loading="lazy">
         <span class="project-card-body">
-          <span>
+          <span class="project-number">${String(index + 1).padStart(2, "0")}</span>
+          <span class="project-title-row">
             <h3>${project.title}</h3>
             <span class="tag-list">${project.tags.join(" / ")}</span>
           </span>
