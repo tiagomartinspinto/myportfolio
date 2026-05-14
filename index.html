@@ -3,78 +3,236 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tiago Martins Pinto / Art Educator / Researcher</title>
-    <meta name="description" content="Portfolio of Tiago Martins Pinto, art-tech educator and researcher exploring art, technology, media, and education.">
-    <meta property="og:title" content="Tiago Martins Pinto / Art Educator / Researcher">
-    <meta property="og:description" content="Portfolio of Tiago Martins Pinto, art-tech educator and researcher exploring art, technology, media, and education.">
+    <title>Tiago Martins Pinto | Art-tech Educator in Helsinki</title>
+    <meta
+      name="description"
+      content="Portfolio of Tiago Martins Pinto, an art-tech educator, researcher, and maker based in Helsinki, Finland, working across art education, youth work, research, AV production, and web-based tools."
+    >
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="Tiago Martins Pinto | Art-tech Educator in Helsinki">
+    <meta
+      property="og:description"
+      content="Selected work, teaching, research, youth work, and web-based projects by Tiago Martins Pinto."
+    >
+    <meta property="og:site_name" content="Tiago Martins Pinto">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tiagomartinspinto.github.io">
-    <meta property="og:image" content="https://freight.cargo.site/w/1200/i/D2304104272575982793486682709253/66648292_2430254997302289_3071132277858631680_o-edited-1.jpg_3.jpeg">
+    <meta property="og:url" content="https://tiagomartinspinto.github.io/myportfolio/">
+    <meta property="og:image" content="https://tiagomartinspinto.github.io/myportfolio/assets/projects/eating-together/eating-together-01.jpeg">
+    <meta property="og:image:alt" content="Eating Together workshop table with participants gathered around collective activity">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tiago Martins Pinto / Art Educator / Researcher">
-    <meta name="twitter:description" content="Portfolio of Tiago Martins Pinto, art-tech educator and researcher exploring art, technology, media, and education.">
-    <meta name="twitter:image" content="https://freight.cargo.site/w/1200/i/D2304104272575982793486682709253/66648292_2430254997302289_3071132277858631680_o-edited-1.jpg_3.jpeg">
-    <link rel="canonical" href="https://tiagomartinspinto.github.io">
+    <meta name="twitter:title" content="Tiago Martins Pinto | Art-tech Educator in Helsinki">
+    <meta
+      name="twitter:description"
+      content="Selected work, teaching, research, youth work, and web-based projects by Tiago Martins Pinto."
+    >
+    <meta name="twitter:image" content="https://tiagomartinspinto.github.io/myportfolio/assets/projects/eating-together/eating-together-01.jpeg">
+    <meta name="twitter:image:alt" content="Eating Together workshop table with participants gathered around collective activity">
+    <link rel="canonical" href="https://tiagomartinspinto.github.io/myportfolio/">
+    <link rel="icon" href="assets/favicon.ico" sizes="any">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js" defer></script>
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js"></script>
   </head>
   <body>
-    <div class="particle-field" id="particle-field" aria-hidden="true"></div>
+    <canvas class="particle-canvas" id="particle-canvas" aria-hidden="true"></canvas>
 
-    <main class="portfolio-layout">
-      <aside class="sidebar" aria-label="Site sidebar">
-        <div class="brand-block">
-          <a class="brand-link" href="#home">Tiago Martins Pinto</a>
-          <p class="brand-note">Art Tech Educator</p>
+    <header class="site-header">
+      <a class="site-brand" href="#top">TIAGO MARTINS PINTO</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#selected-work">Work</a>
+        <a href="#teaching">Teaching</a>
+        <a href="#research">Research</a>
+        <a href="#youth-work">Youth work</a>
+        <a href="#web-tools">Web / tools</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="hero__copy">
+          <p class="eyebrow">Art-tech Educator</p>
+          <p class="hero__roleline">Art educator / researcher / maker</p>
+          <h1>Art educator, researcher, and maker based in Helsinki, Finland.</h1>
+          <p class="hero__lede">
+            I build learning situations, digital tools, media works, and collaborative projects that move between art education, youth work, research, and audiovisual production.
+          </p>
+          <div class="hero__actions">
+            <a class="button-link" href="#selected-work">Selected work</a>
+            <a class="button-link button-link--subtle" href="mailto:hello@tiagomartinspinto.com">Contact</a>
+          </div>
         </div>
 
-        <nav class="sidebar-nav" aria-label="Primary navigation">
-          <div class="nav-group">
-            <a class="nav-link" href="#home" data-route-link="home">Home</a>
+        <aside class="hero__aside" aria-label="Profile links">
+          <p class="eyebrow">Current profile</p>
+          <ul class="link-list">
+            <li><a href="https://research.aalto.fi/en/persons/tiago-martins-pinto" target="_blank" rel="noreferrer">Researcher @ Aalto</a></li>
+            <li><a href="https://openprocessing.org/user/219410#curations" target="_blank" rel="noreferrer">Lecturer @ Aalto</a></li>
+            <li><a href="https://www.aalto.fi/en/management-of-school-of-arts-design-and-architecture/arts-ict-group" target="_blank" rel="noreferrer">Workshop Master @ Aalto</a></li>
+            <li><a href="https://codeberg.org/ptiagomp" target="_blank" rel="noreferrer">Codeberg</a></li>
+            <li><a href="https://www.linkedin.com/in/ptiagomp/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+            <li><a href="mailto:hello@tiagomartinspinto.com">Mail</a></li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="section section--work" id="selected-work">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Selected work</p>
+            <h2>Projects across education, research, youth work, exhibitions, media, and the web.</h2>
+          </div>
+          <p class="section-copy">
+            A fully local archive. Filter the work, then open a project for images, roles, descriptions, and links.
+          </p>
+        </div>
+
+        <div class="filters" id="project-filters" aria-label="Project filters"></div>
+        <div class="project-grid" id="project-grid"></div>
+      </section>
+
+      <section class="section section--practice-grid" aria-label="Practice areas">
+        <article class="practice-card" id="teaching">
+          <p class="eyebrow">Teaching</p>
+          <h3>Creative technologies as shared learning environments.</h3>
+          <p>
+            Workshops and lectures move between p5.js, moving image, sound, game logic, and collective making. The emphasis stays on access, experimentation, and reflection inside the process.
+          </p>
+          <button class="text-link" type="button" data-filter-jump="teaching">Show teaching-related projects</button>
+        </article>
+
+        <article class="practice-card" id="research">
+          <p class="eyebrow">Research</p>
+          <h3>Artistic inquiry connected to social justice and educational equity.</h3>
+          <p>
+            The research practice connects art education, informal pedagogies, participatory methods, and community-based experimentation, with Aalto University as a key context.
+          </p>
+          <button class="text-link" type="button" data-filter-jump="research">Show research-related projects</button>
+        </article>
+
+        <article class="practice-card" id="youth-work">
+          <p class="eyebrow">Youth work</p>
+          <h3>Media and art projects shaped with young people, not just for them.</h3>
+          <p>
+            Youth-centered work has included podcasting, photography, cultural exchange, and collaborative learning formats that treat participation as authorship.
+          </p>
+          <button class="text-link" type="button" data-filter-jump="youth work">Show youth work projects</button>
+        </article>
+
+        <article class="practice-card" id="web-tools">
+          <p class="eyebrow">Web / tools / creative coding</p>
+          <h3>Interfaces, prototypes, and playful systems for collective use.</h3>
+          <p>
+            Web development sits inside the broader practice as a way of making educational tools, hybrid play systems, and live visual environments with minimal technical overhead.
+          </p>
+          <button class="text-link" type="button" data-filter-jump="web development">Show web-based projects</button>
+        </article>
+      </section>
+
+      <section class="section section--about" id="about">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">About</p>
+            <h2>A practice moving between art, pedagogy, technical production, and collaborative media.</h2>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-copy">
+            <p>
+              Tiago Martins Pinto is an art-tech educator, researcher, and maker working across art education, youth work, audiovisual production, exhibition contexts, and web-based tools.
+            </p>
+            <p>
+              Based in Helsinki, Finland, the work often links technical fluency with social sensitivity: building situations where code, images, sound, and collective process can support learning, reflection, and shared authorship.
+            </p>
+            <p>
+              The current research context at Aalto University focuses on STEAM education and informal pedagogies as tools for social justice and educational equity in youth centers.
+            </p>
           </div>
 
-          <details class="nav-disclosure" id="nav-work-group">
-            <summary class="nav-summary">Work</summary>
-            <div class="nav-group nav-group-nested">
-              <a class="nav-link" href="#all" data-route-link="all">All</a>
-              <a class="nav-link" href="#category/education" data-route-link="category/education">Education</a>
-              <a class="nav-link" href="#category/media" data-route-link="category/media">Media</a>
-              <a class="nav-link" href="#category/exhibition" data-route-link="category/exhibition">Exhibition</a>
-              <a class="nav-link" href="#category/digital" data-route-link="category/digital">Digital</a>
-            </div>
-          </details>
+          <div class="about-facts">
+            <article class="fact-card">
+              <p class="eyebrow">Location</p>
+              <p>Based in Helsinki, Finland.</p>
+            </article>
+            <article class="fact-card">
+              <p class="eyebrow">Focus areas</p>
+              <p>Art education, youth work, participatory research, AV production, exhibition contexts, and web-based tools.</p>
+            </article>
+            <article class="fact-card">
+              <p class="eyebrow">Working mode</p>
+              <p>Hands-on, collaborative, research-led, and attentive to accessible forms of making.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
-          <details class="nav-disclosure" id="nav-info-group">
-            <summary class="nav-summary">Info</summary>
-            <div class="nav-group nav-group-nested">
-              <a class="nav-link" href="#page/teaching" data-route-link="page/teaching">Teaching</a>
-              <a class="nav-link" href="#page/about" data-route-link="page/about">About</a>
-              <a class="nav-link" href="#page/contact" data-route-link="page/contact">Contact</a>
-            </div>
-          </details>
-        </nav>
+      <section class="section section--contact" id="contact">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2>Open for workshops, commissions, documentation, collaborative research, and web-based projects.</h2>
+          </div>
+        </div>
 
-        <details class="nav-disclosure nav-links-group" id="nav-links-group">
-          <summary class="nav-summary">Links</summary>
-          <nav class="social-links" aria-label="Social links">
-            <a href="https://www.linkedin.com/in/ptiagomp/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="https://research.aalto.fi/en/persons/tiago-martins-pinto" target="_blank" rel="noreferrer">Aalto</a>
-            <a href="https://codeberg.org/ptiagomp" target="_blank" rel="noreferrer">Codeberg</a>
-            <a href="mailto:hello@tiagomartinspinto.com">Email</a>
-          </nav>
-        </details>
-      </aside>
-
-      <section class="content-shell" aria-live="polite">
-        <header class="content-header">
-          <p class="content-kicker" id="view-kicker">Selected work</p>
-          <h1 class="content-title" id="view-title">Projects, workshops, exhibitions, and research.</h1>
-          <p class="content-intro" id="view-intro">A content-first archive that moves between pedagogy, moving image, installations, and web-based work.</p>
-        </header>
-
-        <div class="content-body" id="content-body"></div>
+        <div class="contact-grid">
+          <a class="contact-card" href="mailto:hello@tiagomartinspinto.com">
+            <span class="eyebrow">Mail</span>
+            <strong>hello@tiagomartinspinto.com</strong>
+          </a>
+          <a class="contact-card" href="https://research.aalto.fi/en/persons/tiago-martins-pinto" target="_blank" rel="noreferrer">
+            <span class="eyebrow">Aalto</span>
+            <strong>Researcher profile</strong>
+          </a>
+          <a class="contact-card" href="https://www.linkedin.com/in/ptiagomp/" target="_blank" rel="noreferrer">
+            <span class="eyebrow">LinkedIn</span>
+            <strong>Professional profile</strong>
+          </a>
+          <a class="contact-card" href="https://codeberg.org/ptiagomp" target="_blank" rel="noreferrer">
+            <span class="eyebrow">Codeberg</span>
+            <strong>Code and experiments</strong>
+          </a>
+        </div>
       </section>
     </main>
+
+    <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title" aria-describedby="project-description" aria-modal="true">
+      <div class="project-dialog__inner">
+        <button class="project-dialog__close" id="project-dialog-close" type="button" aria-label="Close project details">
+          Close
+        </button>
+
+        <div class="project-dialog__content" id="project-dialog-content">
+          <div class="project-dialog__media">
+            <figure class="project-dialog__feature">
+              <img id="project-feature-image" alt="">
+            </figure>
+            <div class="project-dialog__gallery" id="project-gallery" aria-label="Project image gallery"></div>
+          </div>
+
+          <div class="project-dialog__copy">
+            <p class="eyebrow" id="project-dialog-kicker"></p>
+            <h2 id="project-dialog-title"></h2>
+            <dl class="project-meta">
+              <div>
+                <dt>Year</dt>
+                <dd id="project-year"></dd>
+              </div>
+              <div>
+                <dt>Role</dt>
+                <dd id="project-role"></dd>
+              </div>
+              <div>
+                <dt>Type</dt>
+                <dd id="project-type"></dd>
+              </div>
+            </dl>
+            <ul class="tag-list" id="project-tags"></ul>
+            <div class="project-description" id="project-description"></div>
+            <div class="project-links" id="project-links"></div>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
