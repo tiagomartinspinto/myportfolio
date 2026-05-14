@@ -91,7 +91,7 @@ Then open:
 http://localhost:8080
 ```
 
-The site is also designed to open from a local `file://` URL for quick review. A local server is still the safer choice when checking module loading and GitHub Pages behavior.
+A local server is still the safer choice when checking module loading and GitHub Pages behavior. A `file://` check can still be useful for a quick visual review in browsers that allow local module loading.
 
 ## Offline behavior
 
