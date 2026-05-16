@@ -1,6 +1,6 @@
 # Tiago Martins Pinto Portfolio
 
-Static GitHub Pages portfolio for `https://tiagomartinspinto.github.io/myportfolio/`.
+Compact GitHub Pages portfolio for `https://tiagomartinspinto.github.io/myportfolio/`.
 
 This site has been fully migrated away from Cargo Collective. Project content now lives in local data files and all project media is stored inside the repository.
 

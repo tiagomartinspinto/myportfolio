@@ -21,8 +21,7 @@ const elements = {
   dialogType: document.querySelector("#project-type"),
   dialogTags: document.querySelector("#project-tags"),
   dialogDescription: document.querySelector("#project-description"),
-  dialogLinks: document.querySelector("#project-links"),
-  particleCanvas: document.querySelector("#particle-canvas")
+  dialogLinks: document.querySelector("#project-links")
 };
 
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -91,9 +90,11 @@ const renderProjects = () => {
     const body = document.createElement("div");
     body.className = "project-card__body";
     body.innerHTML = `
-      <p class="project-card__year">${project.year}</p>
-      <h3>${project.title}</h3>
-      <p>${project.shortDescription}</p>
+      <div class="project-card__header">
+        <h3>${project.title}</h3>
+        <p class="project-card__year">${project.year}</p>
+      </div>
+      <p class="project-card__line">${project.shortDescription}</p>
     `;
 
     button.append(imageWrap, body);
@@ -270,159 +271,7 @@ const handleFilterJump = (event) => {
   }
 
   setFilter(filter);
-  document.querySelector("#selected-work")?.scrollIntoView({ behavior: reducedMotionQuery.matches ? "auto" : "smooth", block: "start" });
-};
-
-const startParticles = () => {
-  if (!elements.particleCanvas || reducedMotionQuery.matches) {
-    return;
-  }
-
-  const canvas = elements.particleCanvas;
-  const context = canvas.getContext("2d");
-  if (!context) {
-    return;
-  }
-
-  const pointer = {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
-    targetX: window.innerWidth / 2,
-    targetY: window.innerHeight / 2,
-    active: false,
-    lastMoveAt: 0
-  };
-
-  let animationFrame = 0;
-  let particles = [];
-
-  const colorFamilies = [
-    { fill: "rgba(255, 118, 118, 0.45)", line: "255, 118, 118" },
-    { fill: "rgba(130, 206, 255, 0.45)", line: "130, 206, 255" },
-    { fill: "rgba(126, 255, 188, 0.45)", line: "126, 255, 188" }
-  ];
-
-  const particleCount = () =>
-    Math.max(42, Math.min(88, Math.round((window.innerWidth * window.innerHeight) / 28000)));
-
-  const createParticle = () => {
-    const family = Math.floor(Math.random() * colorFamilies.length);
-    return {
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.18,
-      vy: (Math.random() - 0.5) * 0.18,
-      driftX: (Math.random() - 0.5) * 0.16,
-      driftY: (Math.random() - 0.5) * 0.16,
-      size: 1 + (Math.random() * 1.8),
-      family
-    };
-  };
-
-  const resize = () => {
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.round(window.innerWidth * dpr);
-    canvas.height = Math.round(window.innerHeight * dpr);
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    const target = particleCount();
-    while (particles.length < target) {
-      particles.push(createParticle());
-    }
-    particles = particles.slice(0, target);
-  };
-
-  const movePointer = (event) => {
-    pointer.targetX = event.clientX;
-    pointer.targetY = event.clientY;
-    pointer.active = true;
-    pointer.lastMoveAt = performance.now();
-  };
-
-  const draw = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const maxDistance = 150;
-    const influenceRadius = 220;
-    const now = performance.now();
-
-    context.clearRect(0, 0, width, height);
-    pointer.x += (pointer.targetX - pointer.x) * 0.06;
-    pointer.y += (pointer.targetY - pointer.y) * 0.06;
-
-    if (pointer.active && now - pointer.lastMoveAt > 1400) {
-      pointer.active = false;
-    }
-
-    for (const particle of particles) {
-      particle.vx += (particle.driftX - particle.vx) * 0.008;
-      particle.vy += (particle.driftY - particle.vy) * 0.008;
-
-      if (pointer.active) {
-        const dx = particle.x - pointer.x;
-        const dy = particle.y - pointer.y;
-        const distance = Math.hypot(dx, dy);
-        if (distance > 0 && distance < influenceRadius) {
-          const pull = (1 - (distance / influenceRadius)) * 0.02;
-          particle.vx += (dx / distance) * pull;
-          particle.vy += (dy / distance) * pull;
-        }
-      }
-
-      particle.x += particle.vx;
-      particle.y += particle.vy;
-
-      if (particle.x <= 0 || particle.x >= width) {
-        particle.vx *= -1;
-      }
-      if (particle.y <= 0 || particle.y >= height) {
-        particle.vy *= -1;
-      }
-
-      context.beginPath();
-      context.fillStyle = colorFamilies[particle.family].fill;
-      context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-      context.fill();
-    }
-
-    for (let index = 0; index < particles.length; index += 1) {
-      const a = particles[index];
-      for (let compareIndex = index + 1; compareIndex < particles.length; compareIndex += 1) {
-        const b = particles[compareIndex];
-        const distance = Math.hypot(a.x - b.x, a.y - b.y);
-        if (distance > maxDistance) {
-          continue;
-        }
-
-        const alpha = (1 - distance / maxDistance) * (a.family === b.family ? 0.28 : 0.18);
-        const lineColor = a.family === b.family
-          ? colorFamilies[a.family].line
-          : "255, 255, 255";
-
-        context.beginPath();
-        context.strokeStyle = `rgba(${lineColor}, ${alpha})`;
-        context.moveTo(a.x, a.y);
-        context.lineTo(b.x, b.y);
-        context.stroke();
-      }
-    }
-
-    animationFrame = window.requestAnimationFrame(draw);
-  };
-
-  resize();
-  draw();
-
-  window.addEventListener("resize", resize);
-  window.addEventListener("pointermove", movePointer, { passive: true });
-  reducedMotionQuery.addEventListener("change", () => {
-    if (reducedMotionQuery.matches) {
-      window.cancelAnimationFrame(animationFrame);
-      context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    }
-  }, { once: true });
+  document.querySelector("#work")?.scrollIntoView({ behavior: reducedMotionQuery.matches ? "auto" : "smooth", block: "start" });
 };
 
 elements.jumpButtons.forEach((button) => {
@@ -454,4 +303,3 @@ elements.dialog.addEventListener("close", () => {
 
 renderFilters();
 setFilter("all");
-startParticles();
