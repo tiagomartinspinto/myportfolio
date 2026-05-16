@@ -21,7 +21,7 @@ export const PROJECTS = [
     categories: ["art education", "youth work", "teaching"],
     tags: ["podcast", "participatory media", "inclusion", "education"],
     shortDescription:
-      "A podcast series shaped with immigrant and immigrant-background teenagers around education, belonging, and more inclusive futures in Finland.",
+      "Podcast with immigrant-background teenagers on education and belonging.",
     fullDescription: [
       "Kuperkeikka is a podcast series that amplifies the voices of immigrant and immigrant-background teenagers, asking how schools and communities can better support them.",
       "The project combines public pedagogy, media production, and youth work. Through open conversation and lived experience, it creates space for young people to speak back to the structures that shape their education."
@@ -50,7 +50,7 @@ export const PROJECTS = [
     categories: ["exhibition design", "project management", "visual design", "research"],
     tags: ["bioeconomy", "Helsinki Design Week", "materials research", "installation"],
     shortDescription:
-      "An exhibition context for bio-based materials presented at Helsinki Design Week as part of Designs for a Cooler Planet.",
+      "Exhibition design for bio-based materials at Helsinki Design Week.",
     fullDescription: [
       "Aalto University and VTT presented Bioeconomy 2.0 during Helsinki Design Week 2024 as part of the Makers of the Impossible exhibitions at Designs for a Cooler Planet.",
       "The work moved between spatial coordination, exhibition design, and visual communication, translating research on bio-based materials into a public-facing installation format."
@@ -97,7 +97,7 @@ export const PROJECTS = [
     categories: ["web development", "visual design", "project management", "teaching"],
     tags: ["game interface", "creative tools", "digital pedagogy", "collaboration"],
     shortDescription:
-      "A hybrid card game developed with Aalto University and the Academy of Fine Arts, combining a physical deck with a web-based play environment.",
+      "Hybrid card game and web tool for collaborative play.",
     fullDescription: [
       "Sattuma is a hybrid card game developed as part of the Taiteet ja Digi project, a collaboration between Aalto University and the Academy of Fine Arts in Helsinki.",
       "The role combined full-stack web development, visual design, and the implementation of game mechanics. The project moved between artistic process, interface design, and accessible online play."
@@ -144,7 +144,7 @@ export const PROJECTS = [
     categories: ["visual design", "AV production"],
     tags: ["performance", "memory", "movement", "poetry", "documentation"],
     shortDescription:
-      "A performance project around memory, movement, and materiality documented through teasers and visual identity work.",
+      "Visual identity and documentation for a performance work.",
     fullDescription: [
       "Carried by Invisible Bodies explores memory, movement, and materiality through dance, sculpture, poetry, and live harp music.",
       "As visual designer and editor, the work focused on documentation and teasers that stayed close to the performance's shifting relationship between body, material, and sound."
@@ -191,7 +191,7 @@ export const PROJECTS = [
     categories: ["AV production", "project management"],
     tags: ["livestream", "OBS", "distributed performance", "multicam"],
     shortDescription:
-      "A live-streamed performance series combining multicam broadcasting, remote stages, and pre-recorded material.",
+      "Live video production for a distributed performance series.",
     fullDescription: [
       "From the Dead Air Orgy brought together live-streamed episodes, multicam feeds, pre-recorded material, and remote performance spaces.",
       "The production work included building a recording system with cellphone cameras and WiFi across a full building, coordinating multiple stages, and shaping the final live broadcast experience."
@@ -238,7 +238,7 @@ export const PROJECTS = [
     categories: ["research", "art education", "teaching"],
     tags: ["community", "cooking", "participatory practice", "conference"],
     shortDescription:
-      "A community-based research project using cooking and performance to think about togetherness, group dynamics, and shared artistic practice.",
+      "Community research through cooking, performance, and shared process.",
     fullDescription: [
       "Eating Together explored communal experience through cooking as both artistic practice and research method.",
       "At the MAKING | INSEA 2019 conference at the University of British Columbia, the work included collaborative research and the performance Eating Together: A Reflection on Togetherness Through Cooking a Soup."
@@ -262,7 +262,7 @@ export const PROJECTS = [
     categories: ["AV production", "visual design"],
     tags: ["exhibition", "studio process", "collaboration", "documentation"],
     shortDescription:
-      "A video and documentation project following collaborative artistic processes across exhibition and studio contexts.",
+      "Video documentation across exhibition and studio contexts.",
     fullDescription: [
       "Produced and edited a video for the Työhuonella exhibition at Seinäjoen Taidehalli, documenting the collaborative process of four artists working across performance, poetry, costume, and visual art.",
       "The project also connected with documentation from the SWAP exhibition at Gallery Oksasenkatu 11 in Helsinki, making process and exhibition space visible as part of the same conversation."
@@ -291,7 +291,7 @@ export const PROJECTS = [
     categories: ["youth work", "art education", "research", "AV production", "teaching"],
     tags: ["Goethe-Institut", "multiculturalism", "borders", "young people"],
     shortDescription:
-      "A youth-centered media project exploring borders, cultural exchange, and multiculturalism through conceptual video work.",
+      "Youth media project on borders, exchange, and authorship.",
     fullDescription: [
       "Produced conceptual videos for the START - Create Cultural Change program under the artistic direction of Vassia Valkanioti and with support from the Robert Bosch Stiftung.",
       "The project explored interactions between German and Polish teenagers and used moving image to think through borders, cultural exchange, and shared authorship."
@@ -320,7 +320,7 @@ export const PROJECTS = [
     categories: ["art education", "youth work", "teaching"],
     tags: ["Lisbon", "photography", "community", "participatory practice"],
     shortDescription:
-      "A long-form photography process developed with young people in Bairro Quinta Grande, ending in a public exhibition of their selected images.",
+      "Participatory photography project with young people in Lisbon.",
     fullDescription: [
       "BQG a Preto e Branco brought together four months of photography sessions with young people from Bairro Quinta Grande in Lisbon.",
       "Participants reflected on their neighborhood, explored its boundaries, and photographed places that mattered to them. The resulting work was later exhibited at Casa dos Mundos."
@@ -349,7 +349,7 @@ export const PROJECTS = [
     categories: ["youth work", "research", "visual design"],
     tags: ["portraiture", "home", "community", "belonging"],
     shortDescription:
-      "A portrait project rooted in home, trust, and the gradual process of being welcomed into personal spaces.",
+      "Portrait project about home, trust, and invitation.",
     fullDescription: [
       "Sagrada Família is rooted in the idea of home: what it means to feel at home, and who gets invited into personal space.",
       "The project began from distance and suspicion, then slowly moved toward trust. Over time, residents invited the artist into their homes for family portraits, which were framed and returned to the families."
