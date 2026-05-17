@@ -9,6 +9,7 @@ This site has been fully migrated away from Cargo Collective. Project content no
 - HTML
 - CSS
 - vanilla JavaScript
+- tiny local Node server for the editor
 - no backend
 - no build step
 - no analytics or tracking
@@ -22,10 +23,13 @@ script.js
 data/projects.js
 assets/favicon.ico
 assets/projects/[project-slug]/
+package.json
+_config.yml
 PROJECT_STATUS.md
+tools/admin/
 ```
 
-## Adding or editing projects
+## Project data
 
 Project content lives in:
 
@@ -56,23 +60,65 @@ The current allowed `categories` values are:
 - `web`
 - `moving image`
 
-To edit a project:
+## Local admin editor
 
-1. Open `data/projects.js`
-2. Find the project by `slug`
-3. Update the text, categories, links, image metadata, or optional thumbnail position
+There is a local-only editor in:
 
-To add a new project:
+```text
+tools/admin/
+```
 
-1. Create a new folder in `assets/projects/` using the project slug
-2. Place the project's local images in that folder
-3. Add a new object to `PROJECTS` in `data/projects.js`
-4. Fill in the text fields, categories, and external links
-5. Add one or more `images` entries with:
-   - `src`
-   - `alt`
-   - `width`
-   - `height`
+Important:
+
+- it is local only
+- it binds only to `127.0.0.1`
+- it is not deployed as a public CMS
+- it does not use GitHub tokens, passwords, or external APIs
+- it writes only `data/projects.js`
+- it publishes only through local git
+
+Run the editor:
+
+```bash
+npm run admin
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8787/
+```
+
+The editor can:
+
+- load existing projects from `data/projects.js`
+- edit existing projects in a form
+- create new projects
+- reorder projects
+- save changes locally
+- publish changes with local git
+
+### Save locally
+
+`Save locally` rewrites:
+
+```text
+data/projects.js
+```
+
+It does not write HTML, CSS, JS, images, or any other repo file.
+
+### Publish
+
+`Publish` runs the local git workflow:
+
+```bash
+git add data/projects.js PROJECT_STATUS.md
+git commit -m "Update portfolio projects"
+git push
+```
+
+The admin shows the git output or error directly in the UI.
 
 ## Where images live
 
@@ -89,19 +135,21 @@ Each `images` entry in `data/projects.js` points to one of these local files. Th
 
 ## Local preview
 
-You can open `index.html` directly, but using a small local server is recommended:
+Run:
 
 ```bash
-python3 -m http.server 8080
+npm run preview
 ```
 
 Then open:
 
 ```text
-http://localhost:8080
+http://127.0.0.1:8080/
 ```
 
-A local server is still the safer choice when checking module loading and GitHub Pages behavior. A `file://` check can still be useful for a quick visual review in browsers that allow local module loading.
+The preview server blocks `tools/admin/`, so it stays closer to the public GitHub Pages output.
+
+You can still open `index.html` directly for a quick check, but the local preview server is the safer choice for normal testing.
 
 ## Offline behavior
 
@@ -109,6 +157,7 @@ The site is designed to work offline once the files are present locally:
 
 - layout, styles, JavaScript, and project images are all local
 - there is no runtime fetch from Cargo
+- the local admin does not need the network for save operations
 - the only network-dependent destinations are intentional external links such as project URLs, Aalto pages, LinkedIn, GitHub, and mail links
 - Open Graph and canonical URLs point to the public GitHub Pages address, but they do not block offline browsing
 
@@ -127,6 +176,8 @@ https://tiagomartinspinto.github.io/myportfolio/
 ```
 
 No build pipeline is required. Pushing committed static files to `main` is enough.
+
+The local admin editor under `tools/admin/` is excluded from GitHub Pages publishing via `_config.yml`, so it stays a local maintenance tool instead of part of the public site.
 
 If you later attach a custom domain, update the canonical and Open Graph URLs in `index.html` to match it.
 

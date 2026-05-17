@@ -1,0 +1,395 @@
+:root {
+  color-scheme: dark;
+  --background: #0b0b0b;
+  --surface: #111111;
+  --surface-soft: #171717;
+  --border: #2f2f2f;
+  --border-strong: #4a4a4a;
+  --text: #dddddd;
+  --muted: #9a9a9a;
+  --faint: #747474;
+  --danger: #d07b7b;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.45;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+p,
+pre {
+  margin: 0;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+.admin-shell {
+  width: min(calc(100% - 32px), 1480px);
+  margin: 0 auto;
+}
+
+.admin-header {
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0 16px;
+}
+
+.admin-kicker,
+.field-label,
+.toolbar-label,
+.panel-meta,
+.project-item__meta,
+.status-message,
+.preview-box,
+.text-input,
+.text-area,
+.checkbox-grid label,
+button,
+.button-link {
+  font-family: var(--font-mono);
+}
+
+.admin-kicker,
+.field-label,
+.toolbar-label,
+.panel-meta,
+.project-item__meta {
+  color: var(--faint);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-header h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.admin-subtitle,
+.toolbar-copy {
+  margin-top: 10px;
+  max-width: 68ch;
+  color: var(--muted);
+}
+
+.admin-page {
+  padding: 24px 0 40px;
+}
+
+.panel,
+.warning-box {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.panel {
+  padding: 14px;
+}
+
+.warning-box {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.warning-box p + p {
+  margin-top: 8px;
+}
+
+.warning-box p {
+  color: var(--muted);
+}
+
+.admin-toolbar,
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+}
+
+.admin-toolbar {
+  margin-bottom: 16px;
+}
+
+.status-row {
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.status-row p:first-child {
+  color: var(--text);
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.admin-sidebar,
+.admin-main {
+  min-width: 0;
+}
+
+.admin-sidebar {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.admin-main,
+.editor-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.panel-heading,
+.repeatable-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.panel h2 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field-span-2 {
+  grid-column: span 2;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.text-input,
+.text-area {
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.text-area {
+  resize: vertical;
+}
+
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+.checkbox-grid label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.repeatable-section,
+.repeatable-list {
+  display: grid;
+  gap: 10px;
+}
+
+.repeatable-item {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+.repeatable-item--grid {
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr) auto;
+  align-items: end;
+}
+
+.repeatable-item--image-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) repeat(2, minmax(110px, 0.4fr)) auto;
+  align-items: end;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.button-row--stack {
+  margin-top: 14px;
+}
+
+button,
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover,
+button:focus-visible,
+.button-link:hover,
+.button-link:focus-visible {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.danger-button {
+  color: var(--danger);
+}
+
+.project-list {
+  display: grid;
+  gap: 8px;
+  max-height: 64vh;
+  overflow: auto;
+}
+
+.project-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+.project-item.is-active {
+  border-color: var(--border-strong);
+}
+
+.project-item__select {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-height: auto;
+}
+
+.project-item__title {
+  font-size: 0.98rem;
+}
+
+.project-item__meta {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+.project-item__controls {
+  display: flex;
+  gap: 6px;
+  align-items: start;
+}
+
+.project-item__controls button {
+  min-width: 34px;
+  min-height: 34px;
+  padding: 6px 0;
+}
+
+.preview-box {
+  min-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--muted);
+}
+
+.preview-box--git {
+  min-height: 160px;
+}
+
+.align-end {
+  align-self: end;
+}
+
+@media (max-width: 1180px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .project-list {
+    max-height: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-shell {
+    width: min(calc(100% - 20px), 1480px);
+  }
+
+  .admin-header {
+    padding: 16px 0 14px;
+  }
+
+  .admin-page {
+    padding: 18px 0 28px;
+  }
+
+  .admin-toolbar,
+  .status-row,
+  .panel-heading,
+  .repeatable-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .field-grid,
+  .repeatable-item--grid,
+  .repeatable-item--image-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-span-2 {
+    grid-column: auto;
+  }
+}

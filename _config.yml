@@ -1,0 +1,4 @@
+exclude:
+  - tools/
+  - node_modules/
+  - package-lock.json
