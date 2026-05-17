@@ -36,12 +36,8 @@
     <header class="site-header">
       <div class="site-header__inner section">
         <a class="site-brand" href="#top">Tiago Martins Pinto</a>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="#work">Work</a>
-          <a href="#teaching">Teaching</a>
-          <a href="#research">Research</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <p class="site-mark" aria-hidden="true">☺</p>
+        <a class="site-contact" href="#contact">Contact</a>
       </div>
     </header>
 
@@ -55,30 +51,38 @@
         <div class="project-grid" id="project-grid"></div>
       </section>
 
-      <section class="section section--notes">
-        <article class="note" id="teaching">
-          <h2>Teaching</h2>
-          <p>Workshops and lectures around p5.js, moving image, sound, and collective making.</p>
-          <button class="text-link" type="button" data-filter-jump="teaching">Teaching-related work</button>
-        </article>
-
-        <article class="note" id="research">
-          <h2>Research</h2>
-          <p>Research at Aalto around STEAM education, informal pedagogies, and equity in youth centres.</p>
-          <button class="text-link" type="button" data-filter-jump="research">Research-related work</button>
-        </article>
-
-        <article class="note" id="contact">
-          <h2>Contact</h2>
-          <ul class="contact-list">
-            <li><a href="mailto:hello@tiagomartinspinto.com">hello@tiagomartinspinto.com</a></li>
-            <li><a href="https://www.linkedin.com/in/ptiagomp/" target="_blank" rel="noreferrer">LinkedIn</a></li>
-            <li><a href="https://codeberg.org/ptiagomp" target="_blank" rel="noreferrer">Codeberg</a></li>
-            <li><a href="https://research.aalto.fi/en/persons/tiago-martins-pinto" target="_blank" rel="noreferrer">Aalto profile</a></li>
-          </ul>
-        </article>
-      </section>
     </main>
+
+    <footer class="site-footer section" id="contact">
+      <div class="site-footer__grid">
+        <section class="footer-column footer-column--links">
+          <p class="footer-kicker">Art-tech Educator</p>
+          <ul class="footer-links">
+            <li><a href="mailto:hello@tiagomartinspinto.com">Message me!</a></li>
+            <li><a href="https://codeberg.org/ptiagomp" target="_blank" rel="noreferrer">Codeberg</a></li>
+            <li><a href="https://www.linkedin.com/in/ptiagomp/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+          </ul>
+        </section>
+
+        <section class="footer-column" id="research">
+          <h2>About Me</h2>
+          <p>
+            I'm a tech maker and researcher
+            <br>
+            in art education!
+          </p>
+        </section>
+
+        <section class="footer-column" id="teaching">
+          <p>Based in Helsinki, Finland.</p>
+          <ul class="footer-links">
+            <li><a href="https://research.aalto.fi/en/persons/tiago-martins-pinto" target="_blank" rel="noreferrer">Researcher @ AALTO</a></li>
+            <li><a href="https://openprocessing.org/user/219410#curations" target="_blank" rel="noreferrer">Lecturer @ AALTO</a></li>
+            <li><a href="https://www.aalto.fi/en/management-of-school-of-arts-design-and-architecture/arts-ict-group" target="_blank" rel="noreferrer">Workshop Master @ AALTO</a></li>
+          </ul>
+        </section>
+      </div>
+    </footer>
 
     <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title" aria-describedby="project-description" aria-modal="true">
       <div class="project-dialog__inner">
