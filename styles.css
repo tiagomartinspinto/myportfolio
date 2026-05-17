@@ -9,7 +9,7 @@
   --muted: #8d8d8d;
   --faint: #707070;
   --max-width: 1080px;
-  --shell-text-size: 13px;
+  --shell-text-size: 14px;
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
@@ -448,6 +448,10 @@ ul {
 }
 
 @media (max-width: 760px) {
+  :root {
+    --shell-text-size: 13px;
+  }
+
   .section {
     width: min(calc(100% - 20px), var(--max-width));
   }
