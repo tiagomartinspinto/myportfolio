@@ -116,59 +116,25 @@ ul {
 
 .site-nav a,
 .text-link,
-.link-list a,
 .contact-list a {
   color: var(--muted);
 }
 
 .site-nav a:hover,
 .text-link:hover,
-.link-list a:hover,
 .contact-list a:hover,
 .project-links a:hover {
   color: var(--text);
 }
 
 .site-main {
-  padding: 20px 0 40px;
+  padding: 14px 0 40px;
 }
 
-.intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
-  gap: 24px;
-  align-items: start;
-  padding-bottom: 26px;
+.section--work {
+  padding-top: 2px;
 }
 
-.intro h1 {
-  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
-  line-height: 0.96;
-  font-weight: 500;
-}
-
-.intro__copy {
-  display: grid;
-  gap: 10px;
-}
-
-.intro__line {
-  max-width: 36rem;
-  color: var(--muted);
-  font-size: 1rem;
-}
-
-.intro__aside {
-  display: grid;
-  gap: 10px;
-}
-
-.link-list {
-  display: grid;
-  gap: 8px;
-}
-
-.section--work,
 .section--notes {
   border-top: 1px solid var(--border);
   padding-top: 18px;
@@ -449,7 +415,6 @@ ul {
   }
 
   .project-dialog__content,
-  .intro,
   .section--notes {
     grid-template-columns: 1fr;
   }
@@ -468,11 +433,6 @@ ul {
 
   .site-main {
     padding: 16px 0 28px;
-  }
-
-  .intro {
-    gap: 18px;
-    padding-bottom: 22px;
   }
 
   .project-grid {
@@ -510,10 +470,6 @@ ul {
 @media (max-width: 520px) {
   .project-grid {
     grid-template-columns: 1fr;
-  }
-
-  .intro h1 {
-    font-size: 2rem;
   }
 }
 
