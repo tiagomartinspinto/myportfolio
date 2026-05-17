@@ -1,4 +1,4 @@
-import { PROJECTS, PROJECT_FILTERS } from "./data/projects.js";
+import { PROJECTS, PROJECT_DISPLAY_FILTERS, PROJECT_FILTER_CATEGORY_MAP } from "./data/projects.js";
 
 const state = {
   activeFilter: "all",
@@ -26,15 +26,22 @@ const elements = {
 
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+const FILTER_LABELS = {
+  all: "All",
+  teaching: "Teaching",
+  research: "Research",
+  "youth work": "Youth work",
+  exhibitions: "Exhibitions",
+  "web / tools": "Web / tools",
+  AV: "AV"
+};
+
 const labelForFilter = (filter) =>
-  filter === "all"
-    ? "All"
-    : filter === "AV production"
-      ? "AV production"
-      : filter.replace(/\b\w/g, (letter) => letter.toUpperCase());
+  FILTER_LABELS[filter] || filter;
 
 const matchesFilter = (project, filter) =>
-  filter === "all" || project.categories.includes(filter);
+  filter === "all"
+  || (PROJECT_FILTER_CATEGORY_MAP[filter] || []).some((category) => project.categories.includes(category));
 
 const getVisibleProjects = () =>
   PROJECTS.filter((project) => matchesFilter(project, state.activeFilter));
@@ -55,7 +62,7 @@ const createFilterButton = (filter) => {
 };
 
 const renderFilters = () => {
-  elements.filterBar.replaceChildren(...PROJECT_FILTERS.map(createFilterButton));
+  elements.filterBar.replaceChildren(...PROJECT_DISPLAY_FILTERS.map(createFilterButton));
 };
 
 const renderProjects = () => {

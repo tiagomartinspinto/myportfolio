@@ -1,15 +1,21 @@
-export const PROJECT_FILTERS = [
+export const PROJECT_DISPLAY_FILTERS = [
   "all",
-  "art education",
+  "teaching",
   "youth work",
   "research",
-  "exhibition design",
-  "project management",
-  "visual design",
-  "AV production",
-  "web development",
-  "teaching"
+  "exhibitions",
+  "web / tools",
+  "AV"
 ];
+
+export const PROJECT_FILTER_CATEGORY_MAP = {
+  teaching: ["art education", "teaching"],
+  "youth work": ["youth work"],
+  research: ["research"],
+  exhibitions: ["exhibition design"],
+  "web / tools": ["web development"],
+  AV: ["AV production"]
+};
 
 export const PROJECTS = [
   {
