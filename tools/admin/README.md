@@ -40,6 +40,10 @@ The preview server blocks `tools/admin/` so it behaves more like the public GitH
 - lets you edit existing projects
 - lets you create new projects
 - lets you reorder projects
+- previews each image entry with the same square crop logic used by the public thumbnails
+- browses local images inside `assets/projects/`
+- detects width and height from local image files
+- runs image diagnostics for missing files, unused files, invalid paths, missing alt text, and missing metadata
 - saves changes locally back into `data/projects.js`
 - can publish `data/projects.js` and `PROJECT_STATUS.md` using local git
 
@@ -51,7 +55,20 @@ The preview server blocks `tools/admin/` so it behaves more like the public GitH
 data/projects.js
 ```
 
+Before writing, it overwrites:
+
+```text
+data/projects.backup.js
+```
+
 No other content file is modified by the editor.
+
+## Undo and restore
+
+- `Undo last save` restores `data/projects.backup.js` over `data/projects.js`
+- `Restore backup` performs the same recovery step on purpose when you want to return to the latest backup again
+
+The backup file is local-only and ignored by git.
 
 ## Publish
 
@@ -65,6 +82,13 @@ git push
 
 The editor shows the git output directly in the UI.
 
+Before publishing, the editor shows an added / modified / deleted summary and asks for a final confirmation.
+
+If the portfolio would become empty:
+
+- saving requires typing `DELETE ALL PROJECTS`
+- publishing requires typing `PUBLISH EMPTY PORTFOLIO`
+
 ## Images
 
 Image files are still manual.
@@ -75,7 +99,14 @@ Add them yourself under:
 assets/projects/[slug]/
 ```
 
-Then reference them in the editor form.
+Then:
+
+1. use the image browser in the editor
+2. select the image path
+3. run `Detect dimensions`
+4. add alt text
+5. review the square preview
+6. save locally
 
 ## Security note
 
