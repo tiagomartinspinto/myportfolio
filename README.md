@@ -45,12 +45,22 @@ Each project record includes:
 - `fullDescription`
 - `images`
 - `links`
+- optional `thumbnailPosition`
+
+The current allowed `categories` values are:
+
+- `teaching`
+- `research`
+- `youth work`
+- `exhibitions`
+- `web / tools`
+- `AV`
 
 To edit a project:
 
 1. Open `data/projects.js`
 2. Find the project by `slug`
-3. Update the text, categories, links, or image metadata
+3. Update the text, categories, links, image metadata, or optional thumbnail position
 
 To add a new project:
 
@@ -99,7 +109,7 @@ The site is designed to work offline once the files are present locally:
 
 - layout, styles, JavaScript, and project images are all local
 - there is no runtime fetch from Cargo
-- the only network-dependent destinations are intentional external links such as project URLs, Aalto pages, LinkedIn, Codeberg, and mail links
+- the only network-dependent destinations are intentional external links such as project URLs, Aalto pages, LinkedIn, GitHub, and mail links
 - Open Graph and canonical URLs point to the public GitHub Pages address, but they do not block offline browsing
 
 ## GitHub Pages deployment

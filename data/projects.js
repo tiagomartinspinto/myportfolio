@@ -8,15 +8,6 @@ export const PROJECT_DISPLAY_FILTERS = [
   "AV"
 ];
 
-export const PROJECT_FILTER_CATEGORY_MAP = {
-  teaching: ["art education", "teaching"],
-  "youth work": ["youth work"],
-  research: ["research"],
-  exhibitions: ["exhibition design"],
-  "web / tools": ["web development"],
-  AV: ["AV production"]
-};
-
 export const PROJECTS = [
   {
     slug: "kuperkeikka",
@@ -24,7 +15,7 @@ export const PROJECTS = [
     year: "2024-2025",
     projectType: "Podcast series",
     role: "Podcast concept, facilitation, editing, and youth-centered development",
-    categories: ["art education", "youth work", "teaching"],
+    categories: ["teaching", "youth work"],
     tags: ["podcast", "participatory media", "inclusion", "education"],
     shortDescription:
       "Podcast with immigrant-background teenagers on education and belonging.",
@@ -53,7 +44,8 @@ export const PROJECTS = [
     year: "2024",
     projectType: "Exhibition installation",
     role: "Exhibition design, project coordination, and visual communication",
-    categories: ["exhibition design", "project management", "visual design", "research"],
+    categories: ["exhibitions", "research"],
+    thumbnailPosition: "58% center",
     tags: ["bioeconomy", "Helsinki Design Week", "materials research", "installation"],
     shortDescription:
       "Exhibition design for bio-based materials at Helsinki Design Week.",
@@ -100,7 +92,7 @@ export const PROJECTS = [
     year: "2023-2024",
     projectType: "Hybrid card game and web tool",
     role: "Full-stack web development, visual design, and interaction design",
-    categories: ["web development", "visual design", "project management", "teaching"],
+    categories: ["web / tools", "teaching"],
     tags: ["game interface", "creative tools", "digital pedagogy", "collaboration"],
     shortDescription:
       "Hybrid card game and web tool for collaborative play.",
@@ -147,7 +139,7 @@ export const PROJECTS = [
     year: "2022",
     projectType: "Performance documentation",
     role: "Visual design, editing, teasers, and video documentation",
-    categories: ["visual design", "AV production"],
+    categories: ["AV"],
     tags: ["performance", "memory", "movement", "poetry", "documentation"],
     shortDescription:
       "Visual identity and documentation for a performance work.",
@@ -194,7 +186,7 @@ export const PROJECTS = [
     year: "2020-2021",
     projectType: "Distributed live performance broadcast",
     role: "Live video production, technical design, coordination, and editing",
-    categories: ["AV production", "project management"],
+    categories: ["AV"],
     tags: ["livestream", "OBS", "distributed performance", "multicam"],
     shortDescription:
       "Live video production for a distributed performance series.",
@@ -241,7 +233,7 @@ export const PROJECTS = [
     year: "2018-2019",
     projectType: "Research performance",
     role: "Community-based art research, facilitation, and performance",
-    categories: ["research", "art education", "teaching"],
+    categories: ["research", "teaching"],
     tags: ["community", "cooking", "participatory practice", "conference"],
     shortDescription:
       "Community research through cooking, performance, and shared process.",
@@ -265,7 +257,7 @@ export const PROJECTS = [
     year: "2022",
     projectType: "Exhibition documentation",
     role: "Video production, editing, and visual documentation",
-    categories: ["AV production", "visual design"],
+    categories: ["AV", "exhibitions"],
     tags: ["exhibition", "studio process", "collaboration", "documentation"],
     shortDescription:
       "Video documentation across exhibition and studio contexts.",
@@ -294,7 +286,8 @@ export const PROJECTS = [
     year: "2017",
     projectType: "Cross-border youth media project",
     role: "Video concept and production",
-    categories: ["youth work", "art education", "research", "AV production", "teaching"],
+    categories: ["teaching", "research", "youth work", "AV"],
+    thumbnailPosition: "56% center",
     tags: ["Goethe-Institut", "multiculturalism", "borders", "young people"],
     shortDescription:
       "Youth media project on borders, exchange, and authorship.",
@@ -323,7 +316,7 @@ export const PROJECTS = [
     year: "2013-2015",
     projectType: "Participatory photography project",
     role: "Photography facilitation, community collaboration, and exhibition development",
-    categories: ["art education", "youth work", "teaching"],
+    categories: ["teaching", "youth work"],
     tags: ["Lisbon", "photography", "community", "participatory practice"],
     shortDescription:
       "Participatory photography project with young people in Lisbon.",
@@ -352,7 +345,7 @@ export const PROJECTS = [
     year: "2013-2015",
     projectType: "Community portrait project",
     role: "Community-based art research, portrait photography, and exhibition development",
-    categories: ["youth work", "research", "visual design"],
+    categories: ["youth work", "research"],
     tags: ["portraiture", "home", "community", "belonging"],
     shortDescription:
       "Portrait project about home, trust, and invitation.",

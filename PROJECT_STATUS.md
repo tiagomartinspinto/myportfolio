@@ -4,19 +4,16 @@
 
 Date: 2026-05-17
 
-- Tightened the footer/about block so it reads closer to the Cargo reference: smaller monospace text, less padding, lower line-height, and quieter spacing
-- Changed the About copy ending to "in art education."
-- Reordered the simplified project filters to: All, Teaching, Research, Youth work, Exhibitions, Web / tools, AV
-- Balanced the header and footer shell typography onto the same text size for a more even overall rhythm
-- Raised the shared shell typography to `14px` on desktop and kept it at `13px` on mobile
-- Simplified the project filters to a smaller display set: All, Teaching, Research, Youth work, Exhibitions, Web / tools, and AV
-- Removed the visible "Work" heading so the project grid starts more quietly
-- Kept the full project metadata intact and added a simple display-filter mapping layer instead of deleting category detail
-- Reworked the header to match the old Cargo site reference more closely
-- Replaced the generic lower notes section with a three-column Cargo-style footer/about block
-- Kept the project grid, filters, and modal behavior unchanged
-- Tightened the global content width so the shell feels more centered and deliberate
-- Kept the implementation flat and simple in `index.html` and `styles.css`
+- Replaced the header face with a monospace `:-]` that matches the current shell scale
+- Normalized every `project.categories` entry to the live UI filters only:
+  `teaching`, `research`, `youth work`, `exhibitions`, `web / tools`, and `AV`
+- Removed the old category mapping layer because the project data now matches the visible filters directly
+- Removed years from project cards while keeping years in the project modal
+- Centered thumbnail cropping with `object-fit: cover` and `object-position: center center`
+- Added optional per-project thumbnail positions for projects that needed a better crop
+- Updated footer links to the Aalto email address, GitHub, and the new lecturer page
+- Kept the header and footer on the same shared shell text size: `14px` desktop and `13px` mobile
+- Cleaned stale references in docs where they no longer matched the current site
 
 ## Files changed in the latest update
 
@@ -24,14 +21,15 @@ Date: 2026-05-17
 - `styles.css`
 - `data/projects.js`
 - `script.js`
+- `README.md`
 - `PROJECT_STATUS.md`
 
 ## Current structure
 
 - `index.html`: compact portfolio structure, Cargo-style header/footer shell, and modal markup
-- `styles.css`: minimal portfolio styling and header/footer layout
-- `script.js`: simple display-filter mapping, project rendering, modal behavior
-- `data/projects.js`: project data, local image paths, and compact UI filter definitions
+- `styles.css`: minimal portfolio styling, shell typography, and thumbnail cropping rules
+- `script.js`: project rendering, direct filter matching, and modal behavior
+- `data/projects.js`: project data, local image paths, filter-aligned categories, and optional thumbnail positioning
 - `assets/projects/`: local project images
 
 ## Current state
@@ -42,26 +40,31 @@ Date: 2026-05-17
 - The live GitHub Pages metadata points at the correct absolute image URL
 - The site shell now follows the old Cargo reference more closely at the top and bottom
 - The project grid and modal behavior remain unchanged
-- The visible filters are now simplified without deleting underlying category metadata
+- The visible filters are simplified and the underlying project categories now use the same vocabulary
 - The footer block is now more compact and less visually heavy
+- Footer links now point to the current Aalto email, GitHub profile, and lecturer page
+- Project card years are removed and thumbnail positioning can now be tuned per project
 
 ## Remaining tasks
 
 - Check the deployed GitHub Pages site after it updates
 - Click through intentional external links in a normal browser session
-- Fine-tune spacing only if the live page still feels too open or too tight
+- Fine-tune thumbnail positions only if any important subject is still cropped awkwardly
 
 ## Known issues
 
 - Some external sites may block automated checks, so manual click-through is still worth doing
 - If a custom domain is added later, canonical and social metadata URLs should be updated again
+- README and project status intentionally still mention the Cargo migration as historical context
+- During local preview, a browser session may cache older module output; hard refresh if filters or card content look stale
 
 ## Manual tests to run next
 
 1. Open the live GitHub Pages deployment at `/myportfolio/`
-2. Check the header and footer alignment on desktop and mobile
-3. Click through external links
-4. Open several project modals and confirm images, text, and close behavior feel right
+2. Check the header face, header/footer type scale, and footer density on desktop and mobile
+3. Check the first-row thumbnail crops, especially `Cooler Planet 2024` and `Flying Duets`
+4. Click through external links
+5. Open several project modals and confirm images, text, and close behavior feel right
 
 ## Notes for future chats
 

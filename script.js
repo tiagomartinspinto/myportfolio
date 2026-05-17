@@ -1,4 +1,4 @@
-import { PROJECTS, PROJECT_DISPLAY_FILTERS, PROJECT_FILTER_CATEGORY_MAP } from "./data/projects.js";
+import { PROJECTS, PROJECT_DISPLAY_FILTERS } from "./data/projects.js";
 
 const state = {
   activeFilter: "all",
@@ -40,8 +40,7 @@ const labelForFilter = (filter) =>
   FILTER_LABELS[filter] || filter;
 
 const matchesFilter = (project, filter) =>
-  filter === "all"
-  || (PROJECT_FILTER_CATEGORY_MAP[filter] || []).some((category) => project.categories.includes(category));
+  filter === "all" || project.categories.includes(filter);
 
 const getVisibleProjects = () =>
   PROJECTS.filter((project) => matchesFilter(project, state.activeFilter));
@@ -82,6 +81,7 @@ const renderProjects = () => {
     const image = project.images[0];
     const imageWrap = document.createElement("div");
     imageWrap.className = "project-card__image";
+    imageWrap.style.setProperty("--thumb-position", project.thumbnailPosition || "center center");
     imageWrap.innerHTML = `
       <img
         src="${image.src}"
@@ -97,10 +97,7 @@ const renderProjects = () => {
     const body = document.createElement("div");
     body.className = "project-card__body";
     body.innerHTML = `
-      <div class="project-card__header">
-        <h3>${project.title}</h3>
-        <p class="project-card__year">${project.year}</p>
-      </div>
+      <h3>${project.title}</h3>
       <p class="project-card__line">${project.shortDescription}</p>
     `;
 
@@ -177,7 +174,7 @@ const renderProjectDetail = (project) => {
   elements.dialogTags.replaceChildren(
     ...project.categories.map((tag) => {
       const item = document.createElement("li");
-      item.textContent = tag;
+      item.textContent = labelForFilter(tag);
       return item;
     })
   );
