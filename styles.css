@@ -99,7 +99,6 @@ ul {
 .project-dialog__kicker,
 .project-meta dt,
 .tag-list,
-.footer-kicker,
 .footer-column h2,
 .footer-links a {
   font-family: var(--font-mono);
@@ -279,13 +278,6 @@ ul {
   color: var(--text);
   font-size: var(--shell-text-size);
   letter-spacing: 0.05em;
-}
-
-.footer-kicker {
-  color: var(--text);
-  font-size: var(--shell-text-size);
-  letter-spacing: 0.02em;
-  text-transform: none;
 }
 
 .footer-links {

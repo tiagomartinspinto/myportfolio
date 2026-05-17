@@ -4,6 +4,10 @@
 
 Date: 2026-05-17
 
+- Moved `Art-tech Educator` into the browser/page title alongside the name
+- Changed the header right-side action from `Contact` to the `Message me!` mail link
+- Removed the duplicated `Art-tech Educator` label and `Message me!` link from the footer
+- Removed the unused footer kicker styling after the footer text cleanup
 - Reworked the portfolio categories around actual project content instead of older technical labels
 - The visible filters are now:
   `All`, `Learning`, `Community`, `Research`, `Exhibitions`, `Web`, and `Moving image`
@@ -14,6 +18,8 @@ Date: 2026-05-17
 
 ## Files changed in the latest update
 
+- `index.html`
+- `styles.css`
 - `data/projects.js`
 - `script.js`
 - `README.md`
@@ -38,6 +44,7 @@ Date: 2026-05-17
 - The visible filters and the underlying project categories now use the same content-based vocabulary
 - The footer block is now more compact and less visually heavy
 - Footer links now point to the current Aalto email, GitHub profile, and lecturer page
+- The mail action now lives in the header instead of being duplicated in the footer
 - Project card years are removed and thumbnail positioning can now be tuned per project
 - `Carried by Invisible Bodies` and `From the Dead Air Orgy` now point to the current intended external destinations
 
