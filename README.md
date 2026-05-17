@@ -49,12 +49,12 @@ Each project record includes:
 
 The current allowed `categories` values are:
 
-- `teaching`
+- `learning`
+- `community`
 - `research`
-- `youth work`
 - `exhibitions`
-- `web / tools`
-- `AV`
+- `web`
+- `moving image`
 
 To edit a project:
 
