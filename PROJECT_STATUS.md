@@ -4,35 +4,27 @@
 
 Date: 2026-05-17
 
-- Updated the `Carried by Invisible Bodies` modal link to the current project page on BUDA
-- Updated the `From the Dead Air Orgy` modal link to the broadcasts page
-- Verified both updated links appear with the correct labels in the project modals
-- Replaced the header face with a monospace `:-]` that matches the current shell scale
-- Normalized every `project.categories` entry to the live UI filters only:
-  `teaching`, `research`, `youth work`, `exhibitions`, `web / tools`, and `AV`
-- Removed the old category mapping layer because the project data now matches the visible filters directly
-- Removed years from project cards while keeping years in the project modal
-- Centered thumbnail cropping with `object-fit: cover` and `object-position: center center`
-- Added optional per-project thumbnail positions for projects that needed a better crop
-- Updated footer links to the Aalto email address, GitHub, and the new lecturer page
-- Kept the header and footer on the same shared shell text size: `14px` desktop and `13px` mobile
-- Cleaned stale references in docs where they no longer matched the current site
+- Reworked the portfolio categories around actual project content instead of older technical labels
+- The visible filters are now:
+  `All`, `Learning`, `Community`, `Research`, `Exhibitions`, `Web`, and `Moving image`
+- Updated every `project.categories` entry in `data/projects.js` to match that filter vocabulary directly
+- Kept `tags`, `projectType`, `role`, thumbnail positions, and modal behavior unchanged
+- Updated `script.js` filter labels to match the new content-based categories
+- Updated README category documentation to match the new vocabulary
 
 ## Files changed in the latest update
 
-- `index.html`
-- `styles.css`
 - `data/projects.js`
-- `PROJECT_STATUS.md`
 - `script.js`
 - `README.md`
+- `PROJECT_STATUS.md`
 
 ## Current structure
 
 - `index.html`: compact portfolio structure, Cargo-style header/footer shell, and modal markup
 - `styles.css`: minimal portfolio styling, shell typography, and thumbnail cropping rules
 - `script.js`: project rendering, direct filter matching, and modal behavior
-- `data/projects.js`: project data, local image paths, filter-aligned categories, and optional thumbnail positioning
+- `data/projects.js`: project data, local image paths, content-based categories, and optional thumbnail positioning
 - `assets/projects/`: local project images
 
 ## Current state
@@ -43,7 +35,7 @@ Date: 2026-05-17
 - The live GitHub Pages metadata points at the correct absolute image URL
 - The site shell now follows the old Cargo reference more closely at the top and bottom
 - The project grid and modal behavior remain unchanged
-- The visible filters are simplified and the underlying project categories now use the same vocabulary
+- The visible filters and the underlying project categories now use the same content-based vocabulary
 - The footer block is now more compact and less visually heavy
 - Footer links now point to the current Aalto email, GitHub profile, and lecturer page
 - Project card years are removed and thumbnail positioning can now be tuned per project
@@ -55,6 +47,7 @@ Date: 2026-05-17
 - Click through intentional external links in a normal browser session
 - Fine-tune thumbnail positions only if any important subject is still cropped awkwardly
 - Do one normal-browser click-through on the two updated external project links
+- Sanity-check the new category groupings on the live site and see if any project feels misfiled
 
 ## Known issues
 
@@ -66,10 +59,11 @@ Date: 2026-05-17
 ## Manual tests to run next
 
 1. Open the live GitHub Pages deployment at `/myportfolio/`
-2. Check the header face, header/footer type scale, and footer density on desktop and mobile
-3. Check the first-row thumbnail crops, especially `Cooler Planet 2024` and `Flying Duets`
-4. Click through external links
-5. Open several project modals and confirm images, text, and close behavior feel right
+2. Click through each filter and confirm the new groupings feel right editorially
+3. Check the header face, header/footer type scale, and footer density on desktop and mobile
+4. Check the first-row thumbnail crops, especially `Cooler Planet 2024` and `Flying Duets`
+5. Click through external links
+6. Open several project modals and confirm images, text, and close behavior feel right
 
 ## Notes for future chats
 

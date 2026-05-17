@@ -1,11 +1,11 @@
 export const PROJECT_DISPLAY_FILTERS = [
   "all",
-  "teaching",
+  "learning",
+  "community",
   "research",
-  "youth work",
   "exhibitions",
-  "web / tools",
-  "AV"
+  "web",
+  "moving image"
 ];
 
 export const PROJECTS = [
@@ -15,7 +15,7 @@ export const PROJECTS = [
     year: "2024-2025",
     projectType: "Podcast series",
     role: "Podcast concept, facilitation, editing, and youth-centered development",
-    categories: ["teaching", "youth work"],
+    categories: ["learning", "community"],
     tags: ["podcast", "participatory media", "inclusion", "education"],
     shortDescription:
       "Podcast with immigrant-background teenagers on education and belonging.",
@@ -92,7 +92,7 @@ export const PROJECTS = [
     year: "2023-2024",
     projectType: "Hybrid card game and web tool",
     role: "Full-stack web development, visual design, and interaction design",
-    categories: ["web / tools", "teaching"],
+    categories: ["web", "learning"],
     tags: ["game interface", "creative tools", "digital pedagogy", "collaboration"],
     shortDescription:
       "Hybrid card game and web tool for collaborative play.",
@@ -139,7 +139,7 @@ export const PROJECTS = [
     year: "2022",
     projectType: "Performance documentation",
     role: "Visual design, editing, teasers, and video documentation",
-    categories: ["AV"],
+    categories: ["moving image"],
     tags: ["performance", "memory", "movement", "poetry", "documentation"],
     shortDescription:
       "Visual identity and documentation for a performance work.",
@@ -186,7 +186,7 @@ export const PROJECTS = [
     year: "2020-2021",
     projectType: "Distributed live performance broadcast",
     role: "Live video production, technical design, coordination, and editing",
-    categories: ["AV"],
+    categories: ["moving image"],
     tags: ["livestream", "OBS", "distributed performance", "multicam"],
     shortDescription:
       "Live video production for a distributed performance series.",
@@ -233,7 +233,7 @@ export const PROJECTS = [
     year: "2018-2019",
     projectType: "Research performance",
     role: "Community-based art research, facilitation, and performance",
-    categories: ["research", "teaching"],
+    categories: ["research", "community", "learning"],
     tags: ["community", "cooking", "participatory practice", "conference"],
     shortDescription:
       "Community research through cooking, performance, and shared process.",
@@ -257,7 +257,7 @@ export const PROJECTS = [
     year: "2022",
     projectType: "Exhibition documentation",
     role: "Video production, editing, and visual documentation",
-    categories: ["AV", "exhibitions"],
+    categories: ["moving image", "exhibitions"],
     tags: ["exhibition", "studio process", "collaboration", "documentation"],
     shortDescription:
       "Video documentation across exhibition and studio contexts.",
@@ -286,7 +286,7 @@ export const PROJECTS = [
     year: "2017",
     projectType: "Cross-border youth media project",
     role: "Video concept and production",
-    categories: ["teaching", "research", "youth work", "AV"],
+    categories: ["community", "learning", "moving image"],
     thumbnailPosition: "56% center",
     tags: ["Goethe-Institut", "multiculturalism", "borders", "young people"],
     shortDescription:
@@ -316,7 +316,7 @@ export const PROJECTS = [
     year: "2013-2015",
     projectType: "Participatory photography project",
     role: "Photography facilitation, community collaboration, and exhibition development",
-    categories: ["teaching", "youth work"],
+    categories: ["community", "learning"],
     tags: ["Lisbon", "photography", "community", "participatory practice"],
     shortDescription:
       "Participatory photography project with young people in Lisbon.",
@@ -345,7 +345,7 @@ export const PROJECTS = [
     year: "2013-2015",
     projectType: "Community portrait project",
     role: "Community-based art research, portrait photography, and exhibition development",
-    categories: ["youth work", "research"],
+    categories: ["community", "research"],
     tags: ["portraiture", "home", "community", "belonging"],
     shortDescription:
       "Portrait project about home, trust, and invitation.",

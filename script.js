@@ -28,12 +28,12 @@ const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 
 const FILTER_LABELS = {
   all: "All",
-  teaching: "Teaching",
+  learning: "Learning",
+  community: "Community",
   research: "Research",
-  "youth work": "Youth work",
   exhibitions: "Exhibitions",
-  "web / tools": "Web / tools",
-  AV: "AV"
+  web: "Web",
+  "moving image": "Moving image"
 };
 
 const labelForFilter = (filter) =>
