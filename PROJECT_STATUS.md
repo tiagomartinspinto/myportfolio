@@ -4,6 +4,9 @@
 
 Date: 2026-05-17
 
+- Updated the `Carried by Invisible Bodies` modal link to the current project page on BUDA
+- Updated the `From the Dead Air Orgy` modal link to the broadcasts page
+- Verified both updated links appear with the correct labels in the project modals
 - Replaced the header face with a monospace `:-]` that matches the current shell scale
 - Normalized every `project.categories` entry to the live UI filters only:
   `teaching`, `research`, `youth work`, `exhibitions`, `web / tools`, and `AV`
@@ -20,9 +23,9 @@ Date: 2026-05-17
 - `index.html`
 - `styles.css`
 - `data/projects.js`
+- `PROJECT_STATUS.md`
 - `script.js`
 - `README.md`
-- `PROJECT_STATUS.md`
 
 ## Current structure
 
@@ -44,12 +47,14 @@ Date: 2026-05-17
 - The footer block is now more compact and less visually heavy
 - Footer links now point to the current Aalto email, GitHub profile, and lecturer page
 - Project card years are removed and thumbnail positioning can now be tuned per project
+- `Carried by Invisible Bodies` and `From the Dead Air Orgy` now point to the current intended external destinations
 
 ## Remaining tasks
 
 - Check the deployed GitHub Pages site after it updates
 - Click through intentional external links in a normal browser session
 - Fine-tune thumbnail positions only if any important subject is still cropped awkwardly
+- Do one normal-browser click-through on the two updated external project links
 
 ## Known issues
 
