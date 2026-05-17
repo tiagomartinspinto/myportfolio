@@ -4,6 +4,9 @@
 
 Date: 2026-05-17
 
+- Simplified the project filters to a smaller display set: All, Teaching, Research, Youth work, Exhibitions, Web / tools, and AV
+- Removed the visible "Work" heading so the project grid starts more quietly
+- Kept the full project metadata intact and added a simple display-filter mapping layer instead of deleting category detail
 - Reworked the header to match the old Cargo site reference more closely
 - Replaced the generic lower notes section with a three-column Cargo-style footer/about block
 - Kept the project grid, filters, and modal behavior unchanged
@@ -14,14 +17,16 @@ Date: 2026-05-17
 
 - `index.html`
 - `styles.css`
+- `data/projects.js`
+- `script.js`
 - `PROJECT_STATUS.md`
 
 ## Current structure
 
 - `index.html`: compact portfolio structure, Cargo-style header/footer shell, and modal markup
 - `styles.css`: minimal portfolio styling and header/footer layout
-- `script.js`: filters, project rendering, modal behavior
-- `data/projects.js`: project data and local image paths
+- `script.js`: simple display-filter mapping, project rendering, modal behavior
+- `data/projects.js`: project data, local image paths, and compact UI filter definitions
 - `assets/projects/`: local project images
 
 ## Current state
@@ -32,6 +37,7 @@ Date: 2026-05-17
 - The live GitHub Pages metadata points at the correct absolute image URL
 - The site shell now follows the old Cargo reference more closely at the top and bottom
 - The project grid and modal behavior remain unchanged
+- The visible filters are now simplified without deleting underlying category metadata
 
 ## Remaining tasks
 
