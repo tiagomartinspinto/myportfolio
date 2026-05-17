@@ -1,0 +1,8 @@
+{
+  "name": "myportfolio",
+  "private": true,
+  "scripts": {
+    "admin": "node tools/admin/server.js admin",
+    "preview": "node tools/admin/server.js preview"
+  }
+}

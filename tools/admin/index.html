@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Portfolio editor</title>
+    <link rel="stylesheet" href="admin.css">
+    <script type="module" src="admin.js"></script>
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="admin-shell">
+        <p class="admin-kicker">Local only</p>
+        <h1>Portfolio project editor</h1>
+        <p class="admin-subtitle">
+          This tool runs only on your computer. It edits <code>data/projects.js</code>, saves locally, and can publish through local git.
+        </p>
+      </div>
+    </header>
+
+    <main class="admin-shell admin-page">
+      <section class="warning-box">
+        <p>This editor is local only and binds only to <code>127.0.0.1</code>.</p>
+        <p>It does not use GitHub tokens, passwords, external APIs, analytics, or remote uploads.</p>
+        <p>Image files still need to be added manually to <code>assets/projects/[slug]/</code>.</p>
+      </section>
+
+      <div class="admin-toolbar panel">
+        <div>
+          <p class="toolbar-label">Workflow</p>
+          <p class="toolbar-copy">Edit, apply, save locally, then publish when you are ready.</p>
+        </div>
+        <div class="button-row">
+          <a class="button-link" href="http://127.0.0.1:8080/" target="_blank" rel="noreferrer">Preview site</a>
+          <button id="reload-button" type="button">Reload from file</button>
+          <button id="save-button" type="button">Save locally</button>
+          <button id="publish-button" type="button">Publish</button>
+        </div>
+      </div>
+
+      <div class="status-row">
+        <p id="editor-mode">Loading projects...</p>
+        <p id="editor-status" class="status-message" aria-live="polite"></p>
+      </div>
+
+      <div class="admin-layout">
+        <aside class="admin-sidebar">
+          <div class="panel">
+            <label class="field">
+              <span class="field-label">Search projects</span>
+              <input id="project-search" class="text-input" type="search" placeholder="Search by title">
+            </label>
+            <div class="button-row button-row--stack">
+              <button id="new-project-button" type="button">New project</button>
+              <button id="apply-project-button" type="button">Apply changes</button>
+              <button id="delete-project-button" type="button">Delete project</button>
+              <button id="reset-form-button" type="button">Reset form</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <h2>Projects</h2>
+              <p id="project-count" class="panel-meta"></p>
+            </div>
+            <div id="project-list" class="project-list" aria-label="Projects"></div>
+          </div>
+        </aside>
+
+        <section class="admin-main">
+          <form id="project-form" class="editor-grid">
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>General</h2>
+              </div>
+              <div class="field-grid">
+                <label class="field">
+                  <span class="field-label">Slug</span>
+                  <input id="slug" class="text-input" type="text">
+                </label>
+                <label class="field">
+                  <span class="field-label">Title</span>
+                  <input id="title" class="text-input" type="text">
+                </label>
+                <label class="field">
+                  <span class="field-label">Year</span>
+                  <input id="year" class="text-input" type="text">
+                </label>
+                <label class="field">
+                  <span class="field-label">Project type</span>
+                  <input id="projectType" class="text-input" type="text">
+                </label>
+                <label class="field field-span-2">
+                  <span class="field-label">Role</span>
+                  <input id="role" class="text-input" type="text">
+                </label>
+                <label class="field">
+                  <span class="field-label">Thumbnail position</span>
+                  <input id="thumbnailPosition" class="text-input" type="text" placeholder="center center">
+                </label>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Categories</h2>
+              </div>
+              <div id="category-options" class="checkbox-grid"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Tags</h2>
+              </div>
+              <label class="field">
+                <span class="field-label">Comma separated</span>
+                <input id="tags" class="text-input" type="text" placeholder="podcast, community, documentation">
+              </label>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Descriptions</h2>
+              </div>
+              <label class="field">
+                <span class="field-label">Short description</span>
+                <textarea id="shortDescription" class="text-area" rows="3"></textarea>
+              </label>
+              <div class="repeatable-section">
+                <div class="repeatable-heading">
+                  <span class="field-label">Full description paragraphs</span>
+                  <button id="add-paragraph-button" type="button">Add paragraph</button>
+                </div>
+                <div id="paragraph-list" class="repeatable-list"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Links</h2>
+                <button id="add-link-button" type="button">Add link</button>
+              </div>
+              <div id="link-list" class="repeatable-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Images</h2>
+                <button id="add-image-button" type="button">Add image</button>
+              </div>
+              <div id="image-list" class="repeatable-list"></div>
+            </section>
+          </form>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Current object preview</h2>
+              <div class="button-row">
+                <button id="copy-current-button" type="button">Copy JSON</button>
+                <button id="download-current-button" type="button">Download JSON</button>
+              </div>
+            </div>
+            <pre id="object-preview" class="preview-box"></pre>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Git output</h2>
+              <p class="panel-meta">Save writes only <code>data/projects.js</code>. Publish stages <code>data/projects.js</code> and <code>PROJECT_STATUS.md</code>.</p>
+            </div>
+            <pre id="git-output" class="preview-box preview-box--git">Waiting for save or publish.</pre>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <template id="paragraph-template">
+      <div class="repeatable-item">
+        <label class="field">
+          <span class="field-label">Paragraph</span>
+          <textarea class="text-area" data-field="paragraph" rows="3"></textarea>
+        </label>
+        <button class="danger-button" type="button" data-remove-row>Remove</button>
+      </div>
+    </template>
+
+    <template id="link-template">
+      <div class="repeatable-item repeatable-item--grid">
+        <label class="field">
+          <span class="field-label">Label</span>
+          <input class="text-input" data-field="label" type="text">
+        </label>
+        <label class="field">
+          <span class="field-label">URL</span>
+          <input class="text-input" data-field="url" type="text">
+        </label>
+        <button class="danger-button align-end" type="button" data-remove-row>Remove</button>
+      </div>
+    </template>
+
+    <template id="image-template">
+      <div class="repeatable-item repeatable-item--image-grid">
+        <label class="field">
+          <span class="field-label">Src</span>
+          <input class="text-input" data-field="src" type="text">
+        </label>
+        <label class="field">
+          <span class="field-label">Alt</span>
+          <input class="text-input" data-field="alt" type="text">
+        </label>
+        <label class="field">
+          <span class="field-label">Width</span>
+          <input class="text-input" data-field="width" type="number" min="0" step="1">
+        </label>
+        <label class="field">
+          <span class="field-label">Height</span>
+          <input class="text-input" data-field="height" type="number" min="0" step="1">
+        </label>
+        <button class="danger-button align-end" type="button" data-remove-row>Remove</button>
+      </div>
+    </template>
+  </body>
+</html>
