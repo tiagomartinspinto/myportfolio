@@ -9,6 +9,7 @@
   --muted: #8d8d8d;
   --faint: #707070;
   --max-width: 1080px;
+  --shell-text-size: 13px;
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
@@ -103,7 +104,7 @@ ul {
 .footer-column h2,
 .footer-links a {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--shell-text-size);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -278,19 +279,19 @@ ul {
 .footer-column p {
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  font-size: var(--shell-text-size);
   line-height: 1.35;
 }
 
 .footer-column h2 {
   color: var(--text);
-  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  font-size: var(--shell-text-size);
   letter-spacing: 0.05em;
 }
 
 .footer-kicker {
   color: var(--text);
-  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  font-size: var(--shell-text-size);
   letter-spacing: 0.02em;
   text-transform: none;
 }
@@ -301,7 +302,7 @@ ul {
 }
 
 .footer-links a {
-  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  font-size: var(--shell-text-size);
   line-height: 1.35;
   letter-spacing: 0.02em;
   text-transform: none;

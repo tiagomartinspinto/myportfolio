@@ -7,6 +7,7 @@ Date: 2026-05-17
 - Tightened the footer/about block so it reads closer to the Cargo reference: smaller monospace text, less padding, lower line-height, and quieter spacing
 - Changed the About copy ending to "in art education."
 - Reordered the simplified project filters to: All, Teaching, Research, Youth work, Exhibitions, Web / tools, AV
+- Balanced the header and footer shell typography onto the same text size for a more even overall rhythm
 - Simplified the project filters to a smaller display set: All, Teaching, Research, Youth work, Exhibitions, Web / tools, and AV
 - Removed the visible "Work" heading so the project grid starts more quietly
 - Kept the full project metadata intact and added a simple display-filter mapping layer instead of deleting category detail
