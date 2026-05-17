@@ -149,8 +149,8 @@ export const PROJECTS = [
     ],
     links: [
       {
-        label: "Research portal",
-        url: "https://research.aalto.fi/en/publications/carried-by-invisible-bodies/"
+        label: "Project page",
+        url: "https://www.buda.be/en/residentie/carried-by-invisible-bodies/"
       }
     ],
     images: [
@@ -196,8 +196,8 @@ export const PROJECTS = [
     ],
     links: [
       {
-        label: "Research portal",
-        url: "https://research.aalto.fi/en/publications/from-the-dead-air-orgy-on-the-nature-of-things/"
+        label: "Broadcasts",
+        url: "https://fromthedeadairorgy.hotglue.me/?broadcasts/"
       }
     ],
     images: [
