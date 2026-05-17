@@ -2,31 +2,24 @@
 
 ## Latest update
 
-Date: 2026-05-16
+Date: 2026-05-17
 
-- Redesigned the site as a compact artist portfolio
-- Cut the homepage copy down to a short introduction
-- Moved work higher so project images appear immediately
-- Removed the particle background, glass cards, oversized buttons, and rounded SaaS-like UI
-- Reduced project cards to image, title, year, and one short line
-- Kept longer project descriptions inside the modal only
-- Kept the project data in `data/projects.js` and UI behavior in `script.js`
-- Updated `og:image` and `twitter:image` to absolute GitHub Pages URLs
-- Verified the site on localhost and on a `/myportfolio/` rehearsal path
-- Verified filters, project modals, gallery buttons, and Escape-close behavior
+- Reworked the header to match the old Cargo site reference more closely
+- Replaced the generic lower notes section with a three-column Cargo-style footer/about block
+- Kept the project grid, filters, and modal behavior unchanged
+- Tightened the global content width so the shell feels more centered and deliberate
+- Kept the implementation flat and simple in `index.html` and `styles.css`
 
 ## Files changed in the latest update
 
 - `index.html`
 - `styles.css`
-- `script.js`
-- `data/projects.js`
 - `PROJECT_STATUS.md`
 
 ## Current structure
 
-- `index.html`: compact page structure and modal markup
-- `styles.css`: minimal portfolio styling
+- `index.html`: compact portfolio structure, Cargo-style header/footer shell, and modal markup
+- `styles.css`: minimal portfolio styling and header/footer layout
 - `script.js`: filters, project rendering, modal behavior
 - `data/projects.js`: project data and local image paths
 - `assets/projects/`: local project images
@@ -36,14 +29,15 @@ Date: 2026-05-16
 - Project media is local
 - No runtime `freight.cargo.site` URLs remain
 - `script.js` contains UI behavior only
-- The live GitHub Pages metadata now points at the correct absolute image URL
-- The site is much smaller and more image-led than the previous version
+- The live GitHub Pages metadata points at the correct absolute image URL
+- The site shell now follows the old Cargo reference more closely at the top and bottom
+- The project grid and modal behavior remain unchanged
 
 ## Remaining tasks
 
 - Check the deployed GitHub Pages site after it updates
 - Click through intentional external links in a normal browser session
-- Do one last visual polish pass only if something feels off on the live site
+- Fine-tune spacing only if the live page still feels too open or too tight
 
 ## Known issues
 
@@ -53,7 +47,7 @@ Date: 2026-05-16
 ## Manual tests to run next
 
 1. Open the live GitHub Pages deployment at `/myportfolio/`
-2. Check desktop and mobile layouts on the live site
+2. Check the header and footer alignment on desktop and mobile
 3. Click through external links
 4. Open several project modals and confirm images, text, and close behavior feel right
 
