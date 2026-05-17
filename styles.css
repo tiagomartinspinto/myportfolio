@@ -259,49 +259,50 @@ ul {
 
 .site-footer {
   border-top: 1px solid var(--border);
-  padding-top: 18px;
-  padding-bottom: 36px;
+  padding-top: 22px;
+  padding-bottom: 28px;
 }
 
 .site-footer__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
+  gap: 22px;
 }
 
 .footer-column {
   display: grid;
-  gap: 18px;
+  gap: 10px;
   align-content: start;
 }
 
 .footer-column p {
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
-  line-height: 1.45;
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  line-height: 1.35;
 }
 
 .footer-column h2 {
   color: var(--text);
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
-  letter-spacing: 0.02em;
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  letter-spacing: 0.05em;
 }
 
 .footer-kicker {
   color: var(--text);
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
   letter-spacing: 0.02em;
   text-transform: none;
 }
 
 .footer-links {
   display: grid;
-  gap: 4px;
+  gap: 2px;
 }
 
 .footer-links a {
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  line-height: 1.35;
   letter-spacing: 0.02em;
   text-transform: none;
   text-decoration: underline;
@@ -510,12 +511,12 @@ ul {
   }
 
   .site-footer {
-    padding-top: 16px;
-    padding-bottom: 28px;
+    padding-top: 18px;
+    padding-bottom: 24px;
   }
 
   .site-footer__grid {
-    gap: 24px;
+    gap: 18px;
   }
 }
 

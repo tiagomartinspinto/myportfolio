@@ -1,8 +1,8 @@
 export const PROJECT_DISPLAY_FILTERS = [
   "all",
   "teaching",
-  "youth work",
   "research",
+  "youth work",
   "exhibitions",
   "web / tools",
   "AV"
