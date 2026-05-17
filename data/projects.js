@@ -12,7 +12,7 @@ export const PROJECTS = [
   {
     slug: "kuperkeikka",
     title: "Kuperkeikka",
-    year: "2024-2025",
+    year: "2025",
     projectType: "Podcast series",
     role: "Podcast concept, facilitation, editing, and youth-centered development",
     categories: [
@@ -103,12 +103,12 @@ export const PROJECTS = [
   {
     slug: "sattuma-com",
     title: "Sattuma.com",
-    year: "2023-2024",
+    year: "2024",
     projectType: "Hybrid card game and web tool",
     role: "Full-stack web development, visual design, and interaction design",
     categories: [
-      "web",
-      "learning"
+      "learning",
+      "web"
     ],
     tags: [
       "game interface",
@@ -209,9 +209,45 @@ export const PROJECTS = [
     ]
   },
   {
+    slug: "tyohuoneella-swap",
+    title: "Työhuonella / SWAP",
+    year: "2022",
+    projectType: "Exhibition documentation",
+    role: "Video production, editing, and visual documentation",
+    categories: [
+      "moving image",
+      "exhibitions"
+    ],
+    tags: [
+      "exhibition",
+      "studio process",
+      "collaboration",
+      "documentation"
+    ],
+    shortDescription: "Video documentation across exhibition and studio contexts.",
+    fullDescription: [
+      "Produced and edited a video for the Työhuonella exhibition at Seinäjoen Taidehalli, documenting the collaborative process of four artists working across performance, poetry, costume, and visual art.",
+      "The project also connected with documentation from the SWAP exhibition at Gallery Oksasenkatu 11 in Helsinki, making process and exhibition space visible as part of the same conversation."
+    ],
+    links: [
+      {
+        label: "Research portal",
+        url: "https://research.aalto.fi/en/publications/ty%C3%B6huoneella-videon%C3%A4yt%C3%B6s/"
+      }
+    ],
+    images: [
+      {
+        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01.jpg",
+        alt: "Työhuonella / SWAP documentation still with visitors in a gallery space",
+        width: 1600,
+        height: 1067
+      }
+    ]
+  },
+  {
     slug: "from-the-dead-air-orgy",
     title: "From the Dead Air Orgy",
-    year: "2020-2021",
+    year: "2021",
     projectType: "Distributed live performance broadcast",
     role: "Live video production, technical design, coordination, and editing",
     categories: [
@@ -264,13 +300,13 @@ export const PROJECTS = [
   {
     slug: "eating-together",
     title: "Eating Together",
-    year: "2018-2019",
+    year: "2019",
     projectType: "Research performance",
     role: "Community-based art research, facilitation, and performance",
     categories: [
-      "research",
+      "learning",
       "community",
-      "learning"
+      "research"
     ],
     tags: [
       "community",
@@ -290,42 +326,6 @@ export const PROJECTS = [
         alt: "Eating Together workshop table with participants gathered around collective activity",
         width: 1532,
         height: 1147
-      }
-    ]
-  },
-  {
-    slug: "tyohuoneella-swap",
-    title: "Työhuonella / SWAP",
-    year: "2022",
-    projectType: "Exhibition documentation",
-    role: "Video production, editing, and visual documentation",
-    categories: [
-      "moving image",
-      "exhibitions"
-    ],
-    tags: [
-      "exhibition",
-      "studio process",
-      "collaboration",
-      "documentation"
-    ],
-    shortDescription: "Video documentation across exhibition and studio contexts.",
-    fullDescription: [
-      "Produced and edited a video for the Työhuonella exhibition at Seinäjoen Taidehalli, documenting the collaborative process of four artists working across performance, poetry, costume, and visual art.",
-      "The project also connected with documentation from the SWAP exhibition at Gallery Oksasenkatu 11 in Helsinki, making process and exhibition space visible as part of the same conversation."
-    ],
-    links: [
-      {
-        label: "Research portal",
-        url: "https://research.aalto.fi/en/publications/ty%C3%B6huoneella-videon%C3%A4yt%C3%B6s/"
-      }
-    ],
-    images: [
-      {
-        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01.jpg",
-        alt: "Työhuonella / SWAP documentation still with visitors in a gallery space",
-        width: 1600,
-        height: 1067
       }
     ]
   },
@@ -370,12 +370,12 @@ export const PROJECTS = [
   {
     slug: "bqg",
     title: "BQG",
-    year: "2013-2015",
+    year: "2015",
     projectType: "Participatory photography project",
     role: "Photography facilitation, community collaboration, and exhibition development",
     categories: [
-      "community",
-      "learning"
+      "learning",
+      "community"
     ],
     tags: [
       "Lisbon",
@@ -406,7 +406,7 @@ export const PROJECTS = [
   {
     slug: "sagrada-familia",
     title: "Sagrada Família",
-    year: "2013-2015",
+    year: "2015",
     projectType: "Community portrait project",
     role: "Community-based art research, portrait photography, and exhibition development",
     categories: [
