@@ -75,6 +75,7 @@ Important:
 - it is not deployed as a public CMS
 - it does not use GitHub tokens, passwords, or external APIs
 - it writes only `data/projects.js`
+- it also maintains `data/projects.backup.js` for recovery
 - it publishes only through local git
 
 Run the editor:
@@ -95,6 +96,10 @@ The editor can:
 - edit existing projects in a form
 - create new projects
 - reorder projects
+- preview image paths and thumbnail cropping
+- browse local images under `assets/projects/`
+- detect image dimensions from local files
+- run image diagnostics for missing, unused, or incomplete image metadata
 - save changes locally
 - publish changes with local git
 
@@ -106,7 +111,20 @@ The editor can:
 data/projects.js
 ```
 
-It does not write HTML, CSS, JS, images, or any other repo file.
+Before writing, it refreshes:
+
+```text
+data/projects.backup.js
+```
+
+It does not write HTML, CSS, JS, image files, or any other repo file.
+
+### Undo and restore
+
+- `Undo last save` restores `data/projects.backup.js` over `data/projects.js`
+- `Restore backup` does the same thing deliberately if you want to recover the last saved version again
+
+The backup file is local-only and ignored by git.
 
 ### Publish
 
@@ -120,6 +138,20 @@ git push
 
 The admin shows the git output or error directly in the UI.
 
+Before publishing, the editor shows:
+
+- project totals
+- added projects
+- modified projects
+- deleted projects
+
+If the portfolio would become empty:
+
+- `Save locally` requires typing `DELETE ALL PROJECTS`
+- `Publish` requires typing `PUBLISH EMPTY PORTFOLIO`
+
+The publish button also asks for a final confirmation before running git.
+
 ## Where images live
 
 All project images are local and grouped by project:
@@ -132,6 +164,23 @@ assets/projects/sattuma-com/
 ```
 
 Each `images` entry in `data/projects.js` points to one of these local files. The site does not require remote image hosting for project media.
+
+## Image workflow
+
+1. Add image files manually into:
+
+```text
+assets/projects/[slug]/
+```
+
+2. Open the local editor and select or create the project
+3. Use the image browser in the editor to pick a file from `assets/projects/`
+4. Use `Detect dimensions` to fill width and height
+5. Add or refine alt text
+6. Adjust `thumbnailPosition` if needed and review the square preview
+7. Save locally
+8. Preview the public site
+9. Publish when ready
 
 ## Local preview
 

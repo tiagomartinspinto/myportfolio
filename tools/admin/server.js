@@ -4,6 +4,7 @@ const path = require("node:path");
 const { promisify } = require("node:util");
 const { execFile } = require("node:child_process");
 const { parseProjectsModule, serializeProjectsModule, validateProjects } = require("./project-data");
+const { detectImageSize, listProjectImages, normalizeAssetPath, resolveProjectAssetPath } = require("./image-utils");
 
 const execFileAsync = promisify(execFile);
 
@@ -14,9 +15,12 @@ const port = Number(process.env.PORT || (mode === "preview" ? 8080 : 8787));
 const repoRoot = path.resolve(__dirname, "..", "..");
 const adminRoot = path.join(repoRoot, "tools", "admin");
 const dataPath = path.join(repoRoot, "data", "projects.js");
+const backupPath = path.join(repoRoot, "data", "projects.backup.js");
+const assetsRoot = path.join(repoRoot, "assets");
 
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
+  ".gif": "image/gif",
   ".html": "text/html; charset=utf-8",
   ".ico": "image/x-icon",
   ".jpeg": "image/jpeg",
@@ -25,6 +29,7 @@ const contentTypes = {
   ".json": "application/json; charset=utf-8",
   ".png": "image/png",
   ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
   ".webp": "image/webp"
 };
 
@@ -46,6 +51,7 @@ const safeJoin = (root, requestPath) => {
 
 const readJsonBody = async (request) => {
   const chunks = [];
+
   for await (const chunk of request) {
     chunks.push(chunk);
   }
@@ -60,10 +66,20 @@ const readJsonBody = async (request) => {
 const readProjects = async () => {
   const source = await fs.readFile(dataPath, "utf8");
   const parsed = parseProjectsModule(source);
+
   return {
     filters: parsed.PROJECT_DISPLAY_FILTERS || [],
     projects: parsed.PROJECTS || []
   };
+};
+
+const backupExists = async () => {
+  try {
+    await fs.access(backupPath);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 const getScopedGitStatus = async () => {
@@ -96,15 +112,54 @@ const runGit = async (args) => {
   }
 };
 
+const requireEmptyPortfolioConfirmation = (projects, confirmation, phrase) =>
+  projects.length > 0 || confirmation === phrase;
+
 const handleProjects = async (response) => {
   const payload = await readProjects();
   const gitStatus = await getScopedGitStatus();
+
   sendJson(response, 200, {
     filters: payload.filters,
     projects: payload.projects,
     gitStatus,
-    previewUrl: "http://127.0.0.1:8080/"
+    previewUrl: "http://127.0.0.1:8080/",
+    backupExists: await backupExists()
   });
+};
+
+const handleImageLibrary = async (response) => {
+  const library = await listProjectImages(repoRoot);
+  sendJson(response, 200, library);
+};
+
+const handleImageDimensions = async (request, response) => {
+  const body = await readJsonBody(request);
+  const src = normalizeAssetPath(body.src);
+  const absolutePath = resolveProjectAssetPath(repoRoot, src);
+
+  if (!absolutePath) {
+    sendJson(response, 400, {
+      ok: false,
+      message: "Image path must stay inside assets/projects/."
+    });
+    return;
+  }
+
+  try {
+    const dimensions = await detectImageSize(absolutePath);
+    sendJson(response, 200, {
+      ok: true,
+      src,
+      width: dimensions.width,
+      height: dimensions.height
+    });
+  } catch (error) {
+    sendJson(response, 404, {
+      ok: false,
+      message: error.message || "Image file not found."
+    });
+  }
 };
 
 const handleSave = async (request, response) => {
@@ -119,16 +174,59 @@ const handleSave = async (request, response) => {
     return;
   }
 
+  if (!requireEmptyPortfolioConfirmation(validation.projects, body.emptyPortfolioConfirmation, "DELETE ALL PROJECTS")) {
+    sendJson(response, 400, {
+      ok: false,
+      message: "Saving an empty portfolio requires the exact confirmation text: DELETE ALL PROJECTS."
+    });
+    return;
+  }
+
+  await fs.copyFile(dataPath, backupPath);
   await fs.writeFile(dataPath, serializeProjectsModule(validation.projects), "utf8");
-  const gitStatus = await getScopedGitStatus();
+
   sendJson(response, 200, {
     ok: true,
-    message: "Saved locally to data/projects.js.",
-    gitStatus
+    message: "Saved locally to data/projects.js and refreshed data/projects.backup.js.",
+    gitStatus: await getScopedGitStatus(),
+    backupExists: true
   });
 };
 
-const handlePublish = async (response) => {
+const handleRestoreBackup = async (request, response) => {
+  const body = await readJsonBody(request);
+  const modeLabel = body.mode === "undo" ? "Undo last save" : "Restore backup";
+
+  if (!(await backupExists())) {
+    sendJson(response, 404, {
+      ok: false,
+      message: "No backup file exists yet."
+    });
+    return;
+  }
+
+  await fs.copyFile(backupPath, dataPath);
+
+  sendJson(response, 200, {
+    ok: true,
+    message: `${modeLabel} completed. data/projects.js was restored from data/projects.backup.js.`,
+    gitStatus: await getScopedGitStatus(),
+    backupExists: true
+  });
+};
+
+const handlePublish = async (request, response) => {
+  const body = await readJsonBody(request);
+  const { projects } = await readProjects();
+
+  if (!requireEmptyPortfolioConfirmation(projects, body.emptyPortfolioConfirmation, "PUBLISH EMPTY PORTFOLIO")) {
+    sendJson(response, 400, {
+      ok: false,
+      message: "Publishing an empty portfolio requires the exact confirmation text: PUBLISH EMPTY PORTFOLIO."
+    });
+    return;
+  }
+
   const steps = [];
 
   const add = await runGit(["add", "data/projects.js", "PROJECT_STATUS.md"]);
@@ -139,13 +237,12 @@ const handlePublish = async (response) => {
   }
 
   const stagedCheck = await runGit(["diff", "--cached", "--name-only", "--", "data/projects.js", "PROJECT_STATUS.md"]);
+  steps.push(stagedCheck.output);
   if (!stagedCheck.ok) {
-    steps.push(stagedCheck.output);
     sendJson(response, 500, { ok: false, message: "Could not inspect staged changes.", output: steps.join("\n\n") });
     return;
   }
 
-  steps.push(stagedCheck.output);
   if (!stagedCheck.output.split("\n").some((line) => line.trim() && !line.startsWith("$ git"))) {
     sendJson(response, 409, {
       ok: false,
@@ -169,13 +266,31 @@ const handlePublish = async (response) => {
     return;
   }
 
-  const gitStatus = await getScopedGitStatus();
   sendJson(response, 200, {
     ok: true,
     message: "Published data/projects.js and PROJECT_STATUS.md.",
     output: steps.join("\n\n"),
-    gitStatus
+    gitStatus: await getScopedGitStatus()
   });
+};
+
+const serveFile = async (response, filePath) => {
+  try {
+    const stats = await fs.stat(filePath);
+
+    if (stats.isDirectory()) {
+      send(response, 404, "Not found");
+      return;
+    }
+
+    const contents = await fs.readFile(filePath);
+    send(response, 200, contents, {
+      "Content-Type": contentTypes[path.extname(filePath)] || "application/octet-stream",
+      "Cache-Control": "no-store"
+    });
+  } catch {
+    send(response, 404, "Not found");
+  }
 };
 
 const handleAdminRequest = async (request, response, url) => {
@@ -184,13 +299,39 @@ const handleAdminRequest = async (request, response, url) => {
     return;
   }
 
+  if (request.method === "GET" && url.pathname === "/api/images") {
+    await handleImageLibrary(response);
+    return;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/image-dimensions") {
+    await handleImageDimensions(request, response);
+    return;
+  }
+
   if (request.method === "POST" && url.pathname === "/api/save") {
     await handleSave(request, response);
     return;
   }
 
+  if (request.method === "POST" && url.pathname === "/api/restore-backup") {
+    await handleRestoreBackup(request, response);
+    return;
+  }
+
   if (request.method === "POST" && url.pathname === "/api/publish") {
-    await handlePublish(response);
+    await handlePublish(request, response);
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname.startsWith("/assets/")) {
+    const assetFilePath = safeJoin(repoRoot, url.pathname);
+    if (!assetFilePath || !assetFilePath.startsWith(assetsRoot)) {
+      send(response, 403, "Forbidden");
+      return;
+    }
+
+    await serveFile(response, assetFilePath);
     return;
   }
 
@@ -202,15 +343,7 @@ const handleAdminRequest = async (request, response, url) => {
     return;
   }
 
-  try {
-    const contents = await fs.readFile(filePath);
-    send(response, 200, contents, {
-      "Content-Type": contentTypes[path.extname(filePath)] || "application/octet-stream",
-      "Cache-Control": "no-store"
-    });
-  } catch {
-    send(response, 404, "Not found");
-  }
+  await serveFile(response, filePath);
 };
 
 const resolvePreviewPath = (requestPath) => {
@@ -222,12 +355,7 @@ const resolvePreviewPath = (requestPath) => {
     return path.join(repoRoot, "index.html");
   }
 
-  const directPath = safeJoin(repoRoot, requestPath);
-  if (!directPath) {
-    return null;
-  }
-
-  return directPath;
+  return safeJoin(repoRoot, requestPath);
 };
 
 const handlePreviewRequest = async (response, url) => {
@@ -241,17 +369,11 @@ const handlePreviewRequest = async (response, url) => {
     const stats = await fs.stat(filePath);
     if (stats.isDirectory()) {
       const directoryIndex = path.join(filePath, "index.html");
-      const contents = await fs.readFile(directoryIndex);
-      send(response, 200, contents, {
-        "Content-Type": "text/html; charset=utf-8"
-      });
+      await serveFile(response, directoryIndex);
       return;
     }
 
-    const contents = await fs.readFile(filePath);
-    send(response, 200, contents, {
-      "Content-Type": contentTypes[path.extname(filePath)] || "application/octet-stream"
-    });
+    await serveFile(response, filePath);
   } catch {
     send(response, 404, "Not found");
   }

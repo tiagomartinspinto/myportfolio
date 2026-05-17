@@ -14,7 +14,7 @@
         <p class="admin-kicker">Local only</p>
         <h1>Portfolio project editor</h1>
         <p class="admin-subtitle">
-          This tool runs only on your computer. It edits <code>data/projects.js</code>, saves locally, and can publish through local git.
+          This tool runs only on your computer. It edits <code>data/projects.js</code>, creates a local backup, and can publish through local git when you confirm it.
         </p>
       </div>
     </header>
@@ -23,17 +23,19 @@
       <section class="warning-box">
         <p>This editor is local only and binds only to <code>127.0.0.1</code>.</p>
         <p>It does not use GitHub tokens, passwords, external APIs, analytics, or remote uploads.</p>
-        <p>Image files still need to be added manually to <code>assets/projects/[slug]/</code>.</p>
+        <p>It can only write <code>data/projects.js</code> and <code>data/projects.backup.js</code>. Image files still need to be added manually to <code>assets/projects/[slug]/</code>.</p>
       </section>
 
       <div class="admin-toolbar panel">
         <div>
           <p class="toolbar-label">Workflow</p>
-          <p class="toolbar-copy">Edit, apply, save locally, then publish when you are ready.</p>
+          <p class="toolbar-copy">Edit, apply, inspect the image checks, save locally, preview the site, then publish when you are ready.</p>
         </div>
         <div class="button-row">
-          <a class="button-link" href="http://127.0.0.1:8080/" target="_blank" rel="noreferrer">Preview site</a>
+          <a id="preview-link" class="button-link" href="http://127.0.0.1:8080/" target="_blank" rel="noreferrer">Preview site</a>
           <button id="reload-button" type="button">Reload from file</button>
+          <button id="undo-save-button" type="button">Undo last save</button>
+          <button id="restore-backup-button" type="button">Restore backup</button>
           <button id="save-button" type="button">Save locally</button>
           <button id="publish-button" type="button">Publish</button>
         </div>
@@ -66,6 +68,26 @@
             </div>
             <div id="project-list" class="project-list" aria-label="Projects"></div>
           </div>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Image library</h2>
+              <p id="image-library-target" class="panel-meta">Select an image row first</p>
+            </div>
+            <label class="field">
+              <span class="field-label">Folder</span>
+              <select id="image-folder-select" class="text-input"></select>
+            </label>
+            <div id="image-library-grid" class="image-library-grid"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Image check</h2>
+              <p class="panel-meta">Live diagnostics from the current working state</p>
+            </div>
+            <div id="image-diagnostics" class="diagnostics-list"></div>
+          </section>
         </aside>
 
         <section class="admin-main">
@@ -95,10 +117,20 @@
                   <span class="field-label">Role</span>
                   <input id="role" class="text-input" type="text">
                 </label>
-                <label class="field">
+                <label class="field field-span-2">
                   <span class="field-label">Thumbnail position</span>
                   <input id="thumbnailPosition" class="text-input" type="text" placeholder="center center">
                 </label>
+              </div>
+              <div class="thumbnail-preset-row">
+                <span class="field-label">Quick presets</span>
+                <div class="button-row">
+                  <button type="button" data-thumbnail-preset="center center">center center</button>
+                  <button type="button" data-thumbnail-preset="center top">center top</button>
+                  <button type="button" data-thumbnail-preset="center bottom">center bottom</button>
+                  <button type="button" data-thumbnail-preset="left center">left center</button>
+                  <button type="button" data-thumbnail-preset="right center">right center</button>
+                </div>
               </div>
             </section>
 
@@ -167,7 +199,7 @@
           <section class="panel">
             <div class="panel-heading">
               <h2>Git output</h2>
-              <p class="panel-meta">Save writes only <code>data/projects.js</code>. Publish stages <code>data/projects.js</code> and <code>PROJECT_STATUS.md</code>.</p>
+              <p class="panel-meta">Publish stages only <code>data/projects.js</code> and <code>PROJECT_STATUS.md</code>.</p>
             </div>
             <pre id="git-output" class="preview-box preview-box--git">Waiting for save or publish.</pre>
           </section>
@@ -200,24 +232,51 @@
     </template>
 
     <template id="image-template">
-      <div class="repeatable-item repeatable-item--image-grid">
-        <label class="field">
-          <span class="field-label">Src</span>
-          <input class="text-input" data-field="src" type="text">
-        </label>
-        <label class="field">
-          <span class="field-label">Alt</span>
-          <input class="text-input" data-field="alt" type="text">
-        </label>
-        <label class="field">
-          <span class="field-label">Width</span>
-          <input class="text-input" data-field="width" type="number" min="0" step="1">
-        </label>
-        <label class="field">
-          <span class="field-label">Height</span>
-          <input class="text-input" data-field="height" type="number" min="0" step="1">
-        </label>
-        <button class="danger-button align-end" type="button" data-remove-row>Remove</button>
+      <div class="repeatable-item repeatable-item--image">
+        <div class="image-entry__preview-panel">
+          <div class="image-entry__thumb">
+            <img data-image-preview alt="">
+          </div>
+          <p class="image-entry__warning" data-image-warning></p>
+          <p class="image-entry__meta" data-image-detected-meta></p>
+        </div>
+
+        <div class="image-entry__content">
+          <div class="repeatable-item--image-grid">
+            <label class="field">
+              <span class="field-label">Src</span>
+              <input class="text-input" data-field="src" type="text">
+            </label>
+            <label class="field">
+              <span class="field-label">Alt</span>
+              <input class="text-input" data-field="alt" type="text">
+            </label>
+            <label class="field">
+              <span class="field-label">Width</span>
+              <input class="text-input" data-field="width" type="number" min="0" step="1">
+            </label>
+            <label class="field">
+              <span class="field-label">Height</span>
+              <input class="text-input" data-field="height" type="number" min="0" step="1">
+            </label>
+          </div>
+
+          <div class="image-entry__action-groups">
+            <div class="button-row">
+              <button type="button" data-image-action="browse">Use image browser</button>
+              <button type="button" data-image-action="detect-dimensions">Detect dimensions</button>
+              <button type="button" data-image-action="copy-path">Copy image path</button>
+              <button type="button" data-image-action="open-image">Open image</button>
+            </div>
+            <div class="button-row">
+              <button type="button" data-image-action="move-up">Move up</button>
+              <button type="button" data-image-action="move-down">Move down</button>
+              <button type="button" data-image-action="set-first">Set as first image</button>
+              <button type="button" data-image-action="duplicate">Duplicate image</button>
+              <button class="danger-button" type="button" data-image-action="remove">Remove image</button>
+            </div>
+          </div>
+        </div>
       </div>
     </template>
   </body>
