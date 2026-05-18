@@ -13,10 +13,12 @@ Date: 2026-05-18
 - Added a dark/light admin theme toggle, defaulting to dark and storing only the UI preference in `localStorage`
 - Kept existing backup, undo, restore, empty-portfolio, publish-summary, and localhost-only safety protections
 - Added the visible publish-access note: cloning the repo does not grant publish permission
+- Added a discreet public-footer `local editor` launcher that points only to `http://127.0.0.1:8787/`
 - Updated README files to document the tabbed admin, crop metadata, theme toggle, and safe crop download
 
 ## Files changed in the latest update
 
+- `index.html`
 - `README.md`
 - `PROJECT_STATUS.md`
 - `script.js`
@@ -57,6 +59,7 @@ Date: 2026-05-18
 - Image diagnostics report missing files, unused files, invalid paths, missing alt text, and missing width/height
 - The public project grid uses `thumbnailPosition` and `thumbnailZoom` for thumbnails
 - Light mode is available for the admin and persists only as a local UI preference
+- The public footer has a tiny muted `local editor` link that opens `http://127.0.0.1:8787/` in a new tab and only works when `npm run admin` is running locally
 
 ## Remaining tasks
 
@@ -91,6 +94,7 @@ Date: 2026-05-18
 8. Verified the Images tab large preview, thumbnail crop preview, canvas preview, and diagnostics
 9. Tested the Subject center preset and confirmed it updates `thumbnailPosition` and `thumbnailZoom`
 10. Verified light mode colors and toggled back to dark mode
+11. Verified the footer `local editor` link targets localhost only and `_config.yml` still excludes `tools/`
 
 ## Notes for future chats
 

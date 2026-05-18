@@ -91,6 +91,14 @@ Then open:
 http://127.0.0.1:8787/
 ```
 
+The public footer includes a very small `local editor` link that points only to:
+
+```text
+http://127.0.0.1:8787/
+```
+
+That link only works when the local admin server is running with `npm run admin`. It does not expose a public admin.
+
 The editor can:
 
 - load existing projects from `data/projects.js`
