@@ -206,7 +206,8 @@ export const PROJECTS = [
         width: 1538,
         height: 921
       }
-    ]
+    ],
+    thumbnailPosition: "0% 50%"
   },
   {
     slug: "tyohuoneella-swap",
