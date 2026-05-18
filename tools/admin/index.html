@@ -14,194 +14,309 @@
         <p class="admin-kicker">Local only</p>
         <h1>Portfolio project editor</h1>
         <p class="admin-subtitle">
-          This tool runs only on your computer. It edits <code>data/projects.js</code>, creates a local backup, and can publish through local git when you confirm it.
+          Edits local project data, keeps a local backup, and publishes only through this computer's git setup.
         </p>
       </div>
     </header>
 
+    <div class="action-bar">
+      <div class="admin-shell action-bar__inner">
+        <div class="action-bar__status">
+          <p id="editor-mode">Loading projects...</p>
+          <p id="editor-status" class="status-message" aria-live="polite"></p>
+        </div>
+        <div class="action-bar__buttons">
+          <button id="save-button" type="button" class="primary-button">Save locally</button>
+          <a id="preview-link" class="button-link" href="http://127.0.0.1:8080/" target="_blank" rel="noreferrer">Preview site</a>
+          <button id="publish-button" type="button">Publish</button>
+          <button id="reload-button" type="button">Reload</button>
+          <button id="undo-save-button" type="button">Undo save</button>
+          <button id="theme-toggle-button" type="button">Light mode</button>
+        </div>
+      </div>
+    </div>
+
     <main class="admin-shell admin-page">
-      <section class="warning-box">
-        <p>This editor is local only and binds only to <code>127.0.0.1</code>.</p>
-        <p>It does not use GitHub tokens, passwords, external APIs, analytics, or remote uploads.</p>
-        <p>It can only write <code>data/projects.js</code> and <code>data/projects.backup.js</code>. Image files still need to be added manually to <code>assets/projects/[slug]/</code>.</p>
+      <section class="notice-box">
+        <p>This editor binds only to <code>127.0.0.1</code> and is excluded from GitHub Pages.</p>
+        <p>It does not use GitHub tokens, passwords, external APIs, cloud uploads, analytics, or remote image editing.</p>
       </section>
 
-      <div class="admin-toolbar panel">
-        <div>
-          <p class="toolbar-label">Workflow</p>
-          <p class="toolbar-copy">Edit, apply, inspect the image checks, save locally, preview the site, then publish when you are ready.</p>
-        </div>
-        <div class="button-row">
-          <a id="preview-link" class="button-link" href="http://127.0.0.1:8080/" target="_blank" rel="noreferrer">Preview site</a>
-          <button id="reload-button" type="button">Reload from file</button>
-          <button id="undo-save-button" type="button">Undo last save</button>
-          <button id="restore-backup-button" type="button">Restore backup</button>
-          <button id="save-button" type="button">Save locally</button>
-          <button id="publish-button" type="button">Publish</button>
-        </div>
-      </div>
-
-      <div class="status-row">
-        <p id="editor-mode">Loading projects...</p>
-        <p id="editor-status" class="status-message" aria-live="polite"></p>
-      </div>
-
       <div class="admin-layout">
-        <aside class="admin-sidebar">
-          <div class="panel">
+        <aside class="admin-sidebar" aria-label="Project controls">
+          <section class="panel project-controls">
             <label class="field">
               <span class="field-label">Search projects</span>
-              <input id="project-search" class="text-input" type="search" placeholder="Search by title">
+              <input id="project-search" class="text-input" type="search" placeholder="Search by title, year, or slug">
             </label>
-            <div class="button-row button-row--stack">
+            <div class="sidebar-actions">
               <button id="new-project-button" type="button">New project</button>
-              <button id="apply-project-button" type="button">Apply changes</button>
-              <button id="delete-project-button" type="button">Delete project</button>
+              <button id="duplicate-project-button" type="button">Duplicate project</button>
+              <button id="apply-project-button" type="button" class="primary-button">Apply changes</button>
               <button id="reset-form-button" type="button">Reset form</button>
+              <button id="delete-project-button" type="button" class="danger-button">Delete project</button>
             </div>
-          </div>
+          </section>
 
-          <div class="panel">
+          <section class="panel project-list-panel">
             <div class="panel-heading">
               <h2>Projects</h2>
               <p id="project-count" class="panel-meta"></p>
             </div>
             <div id="project-list" class="project-list" aria-label="Projects"></div>
-          </div>
-
-          <section class="panel">
-            <div class="panel-heading">
-              <h2>Image library</h2>
-              <p id="image-library-target" class="panel-meta">Select an image row first</p>
-            </div>
-            <label class="field">
-              <span class="field-label">Folder</span>
-              <select id="image-folder-select" class="text-input"></select>
-            </label>
-            <div id="image-library-grid" class="image-library-grid"></div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-heading">
-              <h2>Image check</h2>
-              <p class="panel-meta">Live diagnostics from the current working state</p>
-            </div>
-            <div id="image-diagnostics" class="diagnostics-list"></div>
           </section>
         </aside>
 
         <section class="admin-main">
-          <form id="project-form" class="editor-grid">
-            <section class="panel">
-              <div class="panel-heading">
-                <h2>General</h2>
+          <nav class="tab-list" aria-label="Editor sections">
+            <button type="button" class="tab-button is-active" data-tab-target="projects" aria-selected="true">Projects</button>
+            <button type="button" class="tab-button" data-tab-target="content" aria-selected="false">Content</button>
+            <button type="button" class="tab-button" data-tab-target="images" aria-selected="false">Images</button>
+            <button type="button" class="tab-button" data-tab-target="preview" aria-selected="false">Preview</button>
+            <button type="button" class="tab-button" data-tab-target="publish" aria-selected="false">Publish / Safety</button>
+          </nav>
+
+          <form id="project-form" class="tabbed-editor">
+            <section id="tab-projects" class="tab-panel is-active" data-tab-panel="projects">
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Project basics</h2>
+                  <p class="panel-meta">Identity, order, and thumbnail metadata</p>
+                </div>
+                <div class="field-grid">
+                  <label class="field">
+                    <span class="field-label">Slug</span>
+                    <input id="slug" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Title</span>
+                    <input id="title" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Year</span>
+                    <input id="year" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Project type</span>
+                    <input id="projectType" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field field-span-2">
+                    <span class="field-label">Role</span>
+                    <input id="role" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Thumbnail position</span>
+                    <input id="thumbnailPosition" class="text-input" type="text" placeholder="50% 50%">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Thumbnail zoom</span>
+                    <input id="thumbnailZoom" class="text-input" type="number" min="1" max="3" step="0.05" placeholder="1">
+                  </label>
+                </div>
               </div>
-              <div class="field-grid">
-                <label class="field">
-                  <span class="field-label">Slug</span>
-                  <input id="slug" class="text-input" type="text">
-                </label>
-                <label class="field">
-                  <span class="field-label">Title</span>
-                  <input id="title" class="text-input" type="text">
-                </label>
-                <label class="field">
-                  <span class="field-label">Year</span>
-                  <input id="year" class="text-input" type="text">
-                </label>
-                <label class="field">
-                  <span class="field-label">Project type</span>
-                  <input id="projectType" class="text-input" type="text">
-                </label>
-                <label class="field field-span-2">
-                  <span class="field-label">Role</span>
-                  <input id="role" class="text-input" type="text">
-                </label>
-                <label class="field field-span-2">
-                  <span class="field-label">Thumbnail position</span>
-                  <input id="thumbnailPosition" class="text-input" type="text" placeholder="center center">
-                </label>
-              </div>
-              <div class="thumbnail-preset-row">
-                <span class="field-label">Quick presets</span>
-                <div class="button-row">
-                  <button type="button" data-thumbnail-preset="center center">center center</button>
-                  <button type="button" data-thumbnail-preset="center top">center top</button>
-                  <button type="button" data-thumbnail-preset="center bottom">center bottom</button>
-                  <button type="button" data-thumbnail-preset="left center">left center</button>
-                  <button type="button" data-thumbnail-preset="right center">right center</button>
+
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Categories and tags</h2>
+                </div>
+                <div class="split-panel">
+                  <div class="field">
+                    <span class="field-label">Categories</span>
+                    <div id="category-options" class="checkbox-grid"></div>
+                  </div>
+                  <label class="field">
+                    <span class="field-label">Tags, comma separated</span>
+                    <input id="tags" class="text-input" type="text" placeholder="podcast, community, documentation">
+                  </label>
                 </div>
               </div>
             </section>
 
-            <section class="panel">
-              <div class="panel-heading">
-                <h2>Categories</h2>
-              </div>
-              <div id="category-options" class="checkbox-grid"></div>
-            </section>
-
-            <section class="panel">
-              <div class="panel-heading">
-                <h2>Tags</h2>
-              </div>
-              <label class="field">
-                <span class="field-label">Comma separated</span>
-                <input id="tags" class="text-input" type="text" placeholder="podcast, community, documentation">
-              </label>
-            </section>
-
-            <section class="panel">
-              <div class="panel-heading">
-                <h2>Descriptions</h2>
-              </div>
-              <label class="field">
-                <span class="field-label">Short description</span>
-                <textarea id="shortDescription" class="text-area" rows="3"></textarea>
-              </label>
-              <div class="repeatable-section">
-                <div class="repeatable-heading">
-                  <span class="field-label">Full description paragraphs</span>
-                  <button id="add-paragraph-button" type="button">Add paragraph</button>
+            <section id="tab-content" class="tab-panel" data-tab-panel="content" hidden>
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Descriptions</h2>
                 </div>
-                <div id="paragraph-list" class="repeatable-list"></div>
+                <label class="field">
+                  <span class="field-label">Short description</span>
+                  <textarea id="shortDescription" class="text-area" rows="3"></textarea>
+                </label>
+                <div class="repeatable-section">
+                  <div class="repeatable-heading">
+                    <span class="field-label">Full description paragraphs</span>
+                    <button id="add-paragraph-button" type="button">Add paragraph</button>
+                  </div>
+                  <div id="paragraph-list" class="repeatable-list"></div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Links</h2>
+                  <button id="add-link-button" type="button">Add link</button>
+                </div>
+                <div id="link-list" class="repeatable-list"></div>
               </div>
             </section>
 
-            <section class="panel">
-              <div class="panel-heading">
-                <h2>Links</h2>
-                <button id="add-link-button" type="button">Add link</button>
-              </div>
-              <div id="link-list" class="repeatable-list"></div>
-            </section>
+            <section id="tab-images" class="tab-panel" data-tab-panel="images" hidden>
+              <div class="image-workspace">
+                <section class="panel image-editor-panel">
+                  <div class="panel-heading">
+                    <h2>Thumbnail crop</h2>
+                    <p id="thumbnail-source-label" class="panel-meta">Select an image row</p>
+                  </div>
 
-            <section class="panel">
-              <div class="panel-heading">
-                <h2>Images</h2>
-                <button id="add-image-button" type="button">Add image</button>
+                  <div class="crop-editor">
+                    <div class="crop-preview-grid">
+                      <figure class="crop-figure">
+                        <div class="large-image-preview">
+                          <img id="large-image-preview" alt="">
+                        </div>
+                        <figcaption>Large preview</figcaption>
+                      </figure>
+                      <figure class="crop-figure">
+                        <div class="thumbnail-crop-preview">
+                          <img id="thumbnail-crop-preview" alt="">
+                        </div>
+                        <figcaption>Thumbnail crop preview</figcaption>
+                      </figure>
+                      <figure class="crop-figure">
+                        <canvas id="thumbnail-canvas-preview" width="900" height="900"></canvas>
+                        <figcaption>Canvas export preview</figcaption>
+                      </figure>
+                    </div>
+
+                    <p id="thumbnail-crop-warning" class="image-entry__warning"></p>
+
+                    <div class="crop-controls">
+                      <label class="range-field">
+                        <span class="field-label">Pan X</span>
+                        <input id="thumbnail-pan-x" type="range" min="0" max="100" step="1" value="50">
+                        <output id="thumbnail-pan-x-output">50%</output>
+                      </label>
+                      <label class="range-field">
+                        <span class="field-label">Pan Y</span>
+                        <input id="thumbnail-pan-y" type="range" min="0" max="100" step="1" value="50">
+                        <output id="thumbnail-pan-y-output">50%</output>
+                      </label>
+                      <label class="range-field">
+                        <span class="field-label">Zoom</span>
+                        <input id="thumbnail-zoom-range" type="range" min="1" max="3" step="0.05" value="1">
+                        <output id="thumbnail-zoom-output">1.00x</output>
+                      </label>
+                    </div>
+
+                    <div class="preset-grid" aria-label="Thumbnail crop presets">
+                      <button type="button" data-thumbnail-preset="50% 50%" data-thumbnail-zoom="1">Center</button>
+                      <button type="button" data-thumbnail-preset="50% 0%" data-thumbnail-zoom="1">Top</button>
+                      <button type="button" data-thumbnail-preset="50% 100%" data-thumbnail-zoom="1">Bottom</button>
+                      <button type="button" data-thumbnail-preset="0% 50%" data-thumbnail-zoom="1">Left</button>
+                      <button type="button" data-thumbnail-preset="100% 50%" data-thumbnail-zoom="1">Right</button>
+                      <button type="button" data-thumbnail-preset="50% 38%" data-thumbnail-zoom="1.15">Subject center</button>
+                    </div>
+
+                    <div class="button-row">
+                      <button id="download-crop-button" type="button">Download cropped thumbnail</button>
+                    </div>
+                  </div>
+                </section>
+
+                <aside class="image-side-panels">
+                  <section class="panel">
+                    <div class="panel-heading">
+                      <h2>Image library</h2>
+                      <p id="image-library-target" class="panel-meta">Select an image row first</p>
+                    </div>
+                    <label class="field">
+                      <span class="field-label">Folder</span>
+                      <select id="image-folder-select" class="text-input"></select>
+                    </label>
+                    <div id="image-library-grid" class="image-library-grid"></div>
+                  </section>
+
+                  <section class="panel">
+                    <div class="panel-heading">
+                      <h2>Image check</h2>
+                      <p class="panel-meta">Current working state</p>
+                    </div>
+                    <div id="image-diagnostics" class="diagnostics-list"></div>
+                  </section>
+                </aside>
               </div>
-              <div id="image-list" class="repeatable-list"></div>
+
+              <section class="panel">
+                <div class="panel-heading">
+                  <h2>Project images</h2>
+                  <button id="add-image-button" type="button">Add image</button>
+                </div>
+                <div id="image-list" class="repeatable-list image-list"></div>
+              </section>
             </section>
           </form>
 
-          <section class="panel">
-            <div class="panel-heading">
-              <h2>Current object preview</h2>
-              <div class="button-row">
-                <button id="copy-current-button" type="button">Copy JSON</button>
-                <button id="download-current-button" type="button">Download JSON</button>
-              </div>
+          <section id="tab-preview" class="tab-panel" data-tab-panel="preview" hidden>
+            <div class="preview-layout">
+              <section class="panel">
+                <div class="panel-heading">
+                  <h2>Current object preview</h2>
+                  <div class="button-row">
+                    <button id="copy-current-button" type="button">Copy JSON</button>
+                    <button id="download-current-button" type="button">Download JSON</button>
+                  </div>
+                </div>
+                <pre id="object-preview" class="preview-box"></pre>
+              </section>
+
+              <section class="panel">
+                <div class="panel-heading">
+                  <h2>Selected project preview</h2>
+                  <p class="panel-meta">Uses the first image and crop metadata</p>
+                </div>
+                <article class="mini-project-card">
+                  <div class="mini-project-card__image">
+                    <img id="mini-project-image" alt="">
+                  </div>
+                  <div class="mini-project-card__body">
+                    <h3 id="mini-project-title">Untitled</h3>
+                    <p id="mini-project-description"></p>
+                  </div>
+                </article>
+              </section>
             </div>
-            <pre id="object-preview" class="preview-box"></pre>
           </section>
 
-          <section class="panel">
-            <div class="panel-heading">
-              <h2>Git output</h2>
-              <p class="panel-meta">Publish stages only <code>data/projects.js</code> and <code>PROJECT_STATUS.md</code>.</p>
+          <section id="tab-publish" class="tab-panel" data-tab-panel="publish" hidden>
+            <div class="panel">
+              <div class="panel-heading">
+                <h2>Publish and safety</h2>
+              </div>
+              <div class="safety-grid">
+                <div class="safety-note">
+                  <h3>Local boundaries</h3>
+                  <p>This admin stays on localhost, writes only project data plus the backup, and never edits original image files.</p>
+                </div>
+                <div class="safety-note">
+                  <h3>Publish access</h3>
+                  <p>Cloning this repo does not give anyone permission to publish. Publish only works on computers where Git is authenticated with write access to this repository.</p>
+                </div>
+                <div class="safety-note">
+                  <h3>Backups</h3>
+                  <p>Save locally refreshes <code>data/projects.backup.js</code> before rewriting <code>data/projects.js</code>.</p>
+                </div>
+              </div>
+              <div class="button-row safety-actions">
+                <button id="restore-backup-button" type="button">Restore backup</button>
+              </div>
             </div>
-            <pre id="git-output" class="preview-box preview-box--git">Waiting for save or publish.</pre>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Git output</h2>
+                <p class="panel-meta">Publish stages only <code>data/projects.js</code> and <code>PROJECT_STATUS.md</code>.</p>
+              </div>
+              <pre id="git-output" class="preview-box preview-box--git">Waiting for save or publish.</pre>
+            </section>
           </section>
         </section>
       </div>
@@ -237,17 +352,20 @@
           <div class="image-entry__thumb">
             <img data-image-preview alt="">
           </div>
+          <div class="image-entry__crop-thumb">
+            <img data-image-crop-preview alt="">
+          </div>
           <p class="image-entry__warning" data-image-warning></p>
           <p class="image-entry__meta" data-image-detected-meta></p>
         </div>
 
         <div class="image-entry__content">
           <div class="repeatable-item--image-grid">
-            <label class="field">
+            <label class="field field-span-2">
               <span class="field-label">Src</span>
               <input class="text-input" data-field="src" type="text">
             </label>
-            <label class="field">
+            <label class="field field-span-2">
               <span class="field-label">Alt</span>
               <input class="text-input" data-field="alt" type="text">
             </label>
@@ -263,17 +381,17 @@
 
           <div class="image-entry__action-groups">
             <div class="button-row">
-              <button type="button" data-image-action="browse">Use image browser</button>
+              <button type="button" data-image-action="browse">Use browser</button>
               <button type="button" data-image-action="detect-dimensions">Detect dimensions</button>
-              <button type="button" data-image-action="copy-path">Copy image path</button>
+              <button type="button" data-image-action="copy-path">Copy path</button>
               <button type="button" data-image-action="open-image">Open image</button>
             </div>
             <div class="button-row">
               <button type="button" data-image-action="move-up">Move up</button>
               <button type="button" data-image-action="move-down">Move down</button>
-              <button type="button" data-image-action="set-first">Set as first image</button>
-              <button type="button" data-image-action="duplicate">Duplicate image</button>
-              <button class="danger-button" type="button" data-image-action="remove">Remove image</button>
+              <button type="button" data-image-action="set-first">Set as thumbnail</button>
+              <button type="button" data-image-action="duplicate">Duplicate</button>
+              <button class="danger-button" type="button" data-image-action="remove">Remove from project</button>
             </div>
           </div>
         </div>
