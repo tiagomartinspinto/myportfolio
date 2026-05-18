@@ -183,16 +183,16 @@ export const PROJECTS = [
     ],
     images: [
       {
-        src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01.png",
-        alt: "Carried by Invisible Bodies title image with pale typography on white field",
-        width: 1053,
-        height: 705
-      },
-      {
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02.png",
         alt: "Carried by Invisible Bodies documentation still with performers and sculptural materials",
         width: 1538,
         height: 921
+      },
+      {
+        src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01.png",
+        alt: "Carried by Invisible Bodies title image with pale typography on white field",
+        width: 1053,
+        height: 705
       },
       {
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-03.png",
@@ -207,7 +207,7 @@ export const PROJECTS = [
         height: 921
       }
     ],
-    thumbnailPosition: "0% 50%"
+    thumbnailPosition: "50% 100%"
   },
   {
     slug: "tyohuoneella-swap",
