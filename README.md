@@ -91,7 +91,7 @@ Then open:
 http://127.0.0.1:8787/
 ```
 
-The public footer includes a very small `local editor` link that points only to:
+The public footer includes a nearly hidden `::` local editor launcher at the bottom-right of the footer. It points only to:
 
 ```text
 http://127.0.0.1:8787/

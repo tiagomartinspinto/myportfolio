@@ -251,6 +251,7 @@ ul {
 }
 
 .site-footer {
+  position: relative;
   border-top: 1px solid var(--border);
   padding-top: 22px;
   padding-bottom: 28px;
@@ -295,17 +296,23 @@ ul {
   text-underline-offset: 0.18em;
 }
 
-.footer-links a.footer-local-editor {
+.footer-local-editor {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
   color: var(--faint);
-  font-size: 0.72rem;
-  letter-spacing: 0.01em;
-  opacity: 0.72;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  opacity: 0.18;
   text-decoration: none;
+  text-transform: none;
 }
 
-.footer-links a.footer-local-editor:hover {
+.footer-local-editor:hover,
+.footer-local-editor:focus-visible {
   color: var(--muted);
-  opacity: 1;
+  opacity: 0.55;
 }
 
 .project-dialog {
