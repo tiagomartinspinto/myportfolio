@@ -21,7 +21,8 @@ const PROJECT_KEYS = new Set([
   "fullDescription",
   "links",
   "images",
-  "thumbnailPosition"
+  "thumbnailPosition",
+  "thumbnailZoom"
 ]);
 
 const LINK_KEYS = new Set(["label", "url"]);
@@ -87,6 +88,10 @@ const validateProjects = (projects) => {
       const role = trimString(project.role);
       const shortDescription = trimString(project.shortDescription);
       const thumbnailPosition = trimString(project.thumbnailPosition);
+      const thumbnailZoom =
+        project.thumbnailZoom === undefined || project.thumbnailZoom === ""
+          ? null
+          : Number(project.thumbnailZoom);
 
       if (!slug) {
         errors.push(`projects[${index}].slug is required.`);
@@ -112,6 +117,9 @@ const validateProjects = (projects) => {
       }
       if (!shortDescription) {
         errors.push(`projects[${index}].shortDescription is required.`);
+      }
+      if (thumbnailZoom !== null && (!Number.isFinite(thumbnailZoom) || thumbnailZoom < 1 || thumbnailZoom > 3)) {
+        errors.push(`projects[${index}].thumbnailZoom must be a number from 1 to 3.`);
       }
 
       const categories = ensureArrayOfStrings(project.categories, `projects[${index}].categories`, errors);
@@ -220,6 +228,9 @@ const validateProjects = (projects) => {
 
       if (thumbnailPosition) {
         sanitized.thumbnailPosition = thumbnailPosition;
+      }
+      if (thumbnailZoom !== null && thumbnailZoom > 1) {
+        sanitized.thumbnailZoom = thumbnailZoom;
       }
 
       return sanitized;

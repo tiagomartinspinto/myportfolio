@@ -1,3 +1,12 @@
+import {
+  clearCanvas,
+  downloadCanvasAsPng,
+  drawCroppedThumbnail,
+  formatObjectPosition,
+  parseObjectPosition,
+  parseThumbnailZoom
+} from "./thumbnail-tools.js";
+
 const state = {
   filters: [],
   projects: [],
@@ -14,7 +23,9 @@ const state = {
   },
   selectedLibraryFolder: "",
   activeImageRowId: null,
-  nextImageRowId: 1
+  nextImageRowId: 1,
+  cropRenderToken: 0,
+  theme: "dark"
 };
 
 const elements = {
@@ -28,7 +39,9 @@ const elements = {
   restoreBackupButton: document.querySelector("#restore-backup-button"),
   saveButton: document.querySelector("#save-button"),
   publishButton: document.querySelector("#publish-button"),
+  themeToggleButton: document.querySelector("#theme-toggle-button"),
   newProjectButton: document.querySelector("#new-project-button"),
+  duplicateProjectButton: document.querySelector("#duplicate-project-button"),
   applyProjectButton: document.querySelector("#apply-project-button"),
   deleteProjectButton: document.querySelector("#delete-project-button"),
   resetFormButton: document.querySelector("#reset-form-button"),
@@ -41,6 +54,19 @@ const elements = {
   projectType: document.querySelector("#projectType"),
   role: document.querySelector("#role"),
   thumbnailPosition: document.querySelector("#thumbnailPosition"),
+  thumbnailZoom: document.querySelector("#thumbnailZoom"),
+  thumbnailPanX: document.querySelector("#thumbnail-pan-x"),
+  thumbnailPanY: document.querySelector("#thumbnail-pan-y"),
+  thumbnailPanXOutput: document.querySelector("#thumbnail-pan-x-output"),
+  thumbnailPanYOutput: document.querySelector("#thumbnail-pan-y-output"),
+  thumbnailZoomRange: document.querySelector("#thumbnail-zoom-range"),
+  thumbnailZoomOutput: document.querySelector("#thumbnail-zoom-output"),
+  thumbnailSourceLabel: document.querySelector("#thumbnail-source-label"),
+  thumbnailCropWarning: document.querySelector("#thumbnail-crop-warning"),
+  largeImagePreview: document.querySelector("#large-image-preview"),
+  thumbnailCropPreview: document.querySelector("#thumbnail-crop-preview"),
+  thumbnailCanvasPreview: document.querySelector("#thumbnail-canvas-preview"),
+  downloadCropButton: document.querySelector("#download-crop-button"),
   tags: document.querySelector("#tags"),
   shortDescription: document.querySelector("#shortDescription"),
   categoryOptions: document.querySelector("#category-options"),
@@ -57,10 +83,15 @@ const elements = {
   copyCurrentButton: document.querySelector("#copy-current-button"),
   downloadCurrentButton: document.querySelector("#download-current-button"),
   preview: document.querySelector("#object-preview"),
+  miniProjectImage: document.querySelector("#mini-project-image"),
+  miniProjectTitle: document.querySelector("#mini-project-title"),
+  miniProjectDescription: document.querySelector("#mini-project-description"),
   paragraphTemplate: document.querySelector("#paragraph-template"),
   linkTemplate: document.querySelector("#link-template"),
   imageTemplate: document.querySelector("#image-template"),
-  thumbnailPresetButtons: Array.from(document.querySelectorAll("[data-thumbnail-preset]"))
+  thumbnailPresetButtons: Array.from(document.querySelectorAll("[data-thumbnail-preset]")),
+  tabButtons: Array.from(document.querySelectorAll("[data-tab-target]")),
+  tabPanels: Array.from(document.querySelectorAll("[data-tab-panel]"))
 };
 
 const deepClone = (value) => JSON.parse(JSON.stringify(value));
@@ -77,7 +108,8 @@ const createBlankProject = () => ({
   fullDescription: [""],
   links: [{ label: "", url: "" }],
   images: [{ src: "", alt: "", width: "", height: "" }],
-  thumbnailPosition: ""
+  thumbnailPosition: "",
+  thumbnailZoom: ""
 });
 
 const labelForCategory = (category) =>
@@ -159,6 +191,31 @@ const downloadText = (filename, content, type = "application/json") => {
   URL.revokeObjectURL(url);
 };
 
+const applyTheme = (theme) => {
+  state.theme = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = state.theme;
+  elements.themeToggleButton.textContent = state.theme === "dark" ? "Light mode" : "Dark mode";
+  localStorage.setItem("portfolio-admin-theme", state.theme);
+};
+
+const initTheme = () => {
+  applyTheme(localStorage.getItem("portfolio-admin-theme") || "dark");
+};
+
+const showTab = (target) => {
+  elements.tabButtons.forEach((button) => {
+    const active = button.dataset.tabTarget === target;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+
+  elements.tabPanels.forEach((panel) => {
+    const active = panel.dataset.tabPanel === target;
+    panel.classList.toggle("is-active", active);
+    panel.hidden = !active;
+  });
+};
+
 const parseNumber = (value) => {
   const trimmed = String(value).trim();
   if (!trimmed) {
@@ -167,6 +224,38 @@ const parseNumber = (value) => {
 
   const numeric = Number(trimmed);
   return Number.isFinite(numeric) ? numeric : undefined;
+};
+
+const formatZoomOutput = (value) => `${parseThumbnailZoom(value).toFixed(2)}x`;
+
+const getThumbnailPositionValue = () => {
+  const parsed = parseObjectPosition(elements.thumbnailPosition.value);
+  return formatObjectPosition(parsed);
+};
+
+const getThumbnailZoomValue = () => parseThumbnailZoom(elements.thumbnailZoom.value || 1);
+
+const syncCropControlsFromFields = () => {
+  const position = parseObjectPosition(elements.thumbnailPosition.value);
+  const zoom = getThumbnailZoomValue();
+
+  elements.thumbnailPanX.value = String(Math.round(position.x));
+  elements.thumbnailPanY.value = String(Math.round(position.y));
+  elements.thumbnailPanXOutput.value = `${Math.round(position.x)}%`;
+  elements.thumbnailPanYOutput.value = `${Math.round(position.y)}%`;
+  elements.thumbnailZoom.value = zoom === 1 ? "" : String(zoom);
+  elements.thumbnailZoomRange.value = String(zoom);
+  elements.thumbnailZoomOutput.value = formatZoomOutput(zoom);
+};
+
+const syncFieldsFromCropControls = () => {
+  const x = Number(elements.thumbnailPanX.value);
+  const y = Number(elements.thumbnailPanY.value);
+  const zoom = parseThumbnailZoom(elements.thumbnailZoomRange.value);
+
+  elements.thumbnailPosition.value = formatObjectPosition({ x, y });
+  elements.thumbnailZoom.value = zoom === 1 ? "" : String(zoom);
+  syncCropControlsFromFields();
 };
 
 const compactObject = (object) =>
@@ -219,7 +308,8 @@ const projectForForm = (project = createBlankProject()) => ({
           height: image.height ?? ""
         }))
       : [{ src: "", alt: "", width: "", height: "" }],
-  thumbnailPosition: project.thumbnailPosition || ""
+  thumbnailPosition: project.thumbnailPosition || "",
+  thumbnailZoom: project.thumbnailZoom ?? ""
 });
 
 const createParagraphRow = (value = "") => {
@@ -266,6 +356,7 @@ const setActiveImageRow = (rowId) => {
   const activeRow = getImageRowById(rowId);
   const src = activeRow ? activeRow.querySelector("[data-field='src']").value.trim() : "";
   elements.imageLibraryTarget.textContent = activeRow ? `Target row: ${src || "new image entry"}` : "Select an image row first";
+  updateCropWorkspace();
 };
 
 const moveImageRow = (row, delta) => {
@@ -289,6 +380,8 @@ const moveImageRow = (row, delta) => {
 
 const setImageAsFirst = (row) => {
   elements.imageList.prepend(row);
+  setActiveImageRow(row.dataset.rowId);
+  setStatus("Image set as the project thumbnail source.");
   refreshPreview();
 };
 
@@ -343,7 +436,7 @@ const detectDimensionsForRow = async (row) => {
 
     row.querySelector("[data-field='width']").value = payload.width;
     row.querySelector("[data-field='height']").value = payload.height;
-    setStatus(`Detected dimensions for ${src}: ${payload.width} × ${payload.height}.`);
+    setStatus(`Detected dimensions for ${src}: ${payload.width} x ${payload.height}.`);
     refreshPreview();
   } catch (error) {
     setStatus(error.message);
@@ -457,6 +550,11 @@ const buildProjectFromForm = () => {
     project.thumbnailPosition = thumbnailPosition;
   }
 
+  const thumbnailZoom = getThumbnailZoomValue();
+  if (thumbnailZoom > 1) {
+    project.thumbnailZoom = thumbnailZoom;
+  }
+
   return project;
 };
 
@@ -475,7 +573,8 @@ const hasMeaningfulData = (project) =>
       project.fullDescription.length ||
       project.links.length ||
       project.images.length ||
-      project.thumbnailPosition
+      project.thumbnailPosition ||
+      project.thumbnailZoom
   );
 
 const getProjectsForAnalysis = () => {
@@ -523,6 +622,9 @@ const updateMode = () => {
       : `Editing: ${project.title}${suffix}`;
     elements.deleteProjectButton.disabled = false;
   }
+
+  const current = buildProjectFromForm();
+  elements.duplicateProjectButton.disabled = !current.slug || !current.title;
 };
 
 const updateImageRowPreview = (row) => {
@@ -531,30 +633,37 @@ const updateImageRowPreview = (row) => {
   const heightInput = row.querySelector("[data-field='height']");
   const altInput = row.querySelector("[data-field='alt']");
   const previewImage = row.querySelector("[data-image-preview]");
+  const cropPreviewImage = row.querySelector("[data-image-crop-preview]");
   const warning = row.querySelector("[data-image-warning]");
   const meta = row.querySelector("[data-image-detected-meta]");
   const openButton = row.querySelector("[data-image-action='open-image']");
-  const thumbnailPosition = elements.thumbnailPosition.value.trim() || "center center";
+  const thumbnailPosition = getThumbnailPositionValue();
+  const thumbnailZoom = getThumbnailZoomValue();
   const src = normalizeAssetPath(srcInput.value);
   const file = getImageLibraryFile(src);
   const metadataWidth = widthInput.value.trim();
   const metadataHeight = heightInput.value.trim();
-  const metadataText = metadataWidth && metadataHeight ? `${metadataWidth} × ${metadataHeight}` : "missing metadata";
-  const fileText = file?.width && file?.height ? `${file.width} × ${file.height}` : "unknown file size";
+  const metadataText = metadataWidth && metadataHeight ? `${metadataWidth} x ${metadataHeight}` : "missing metadata";
+  const fileText = file?.width && file?.height ? `${file.width} x ${file.height}` : "unknown file size";
 
   previewImage.style.objectPosition = thumbnailPosition;
+  cropPreviewImage.style.setProperty("--thumb-position", thumbnailPosition);
+  cropPreviewImage.style.setProperty("--thumb-zoom", String(thumbnailZoom));
   previewImage.alt = altInput.value.trim() || "Image preview";
+  cropPreviewImage.alt = altInput.value.trim() || "Thumbnail crop preview";
 
   if (!src) {
     previewImage.removeAttribute("src");
+    cropPreviewImage.removeAttribute("src");
     warning.textContent = "No image selected";
-    meta.textContent = `Path: —\nMetadata: ${metadataText}`;
+    meta.textContent = `Path: -\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
   }
 
   if (!isValidAssetPath(src)) {
     previewImage.removeAttribute("src");
+    cropPreviewImage.removeAttribute("src");
     warning.textContent = "Invalid path. Use assets/projects/...";
     meta.textContent = `Path: ${src}\nMetadata: ${metadataText}`;
     openButton.disabled = true;
@@ -563,16 +672,142 @@ const updateImageRowPreview = (row) => {
 
   if (!file) {
     previewImage.removeAttribute("src");
-    warning.textContent = "Image file not found";
+    cropPreviewImage.removeAttribute("src");
+    warning.textContent = "Missing file. Check the path or add the image under assets/projects/[slug]/.";
     meta.textContent = `Path: ${src}\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
   }
 
   previewImage.src = `/${encodeURI(file.src)}`;
+  cropPreviewImage.src = `/${encodeURI(file.src)}`;
   warning.textContent = "";
-  meta.textContent = `Path: ${src}\nMetadata: ${metadataText}\nFile: ${fileText}`;
+  meta.textContent = `Path: ${src}\nMetadata: ${metadataText}\nFile: ${fileText}\nCrop: ${thumbnailPosition}, ${thumbnailZoom.toFixed(2)}x`;
   openButton.disabled = false;
+};
+
+const clearImagePreview = (image) => {
+  image.removeAttribute("src");
+  image.alt = "";
+};
+
+const getActiveImageInfo = () => {
+  const row = getImageRowById(state.activeImageRowId) || getImageRows()[0] || null;
+  const src = row ? normalizeAssetPath(row.querySelector("[data-field='src']").value) : "";
+  const alt = row ? row.querySelector("[data-field='alt']").value.trim() : "";
+  const file = getImageLibraryFile(src);
+
+  return { row, src, alt, file };
+};
+
+const setThumbnailPreviewStyle = (image, position, zoom) => {
+  image.style.setProperty("--thumb-position", position);
+  image.style.setProperty("--thumb-zoom", String(zoom));
+};
+
+const updateCropWorkspace = () => {
+  if (!elements.thumbnailCanvasPreview) {
+    return;
+  }
+
+  const position = getThumbnailPositionValue();
+  const zoom = getThumbnailZoomValue();
+  const { row, src, alt, file } = getActiveImageInfo();
+
+  setThumbnailPreviewStyle(elements.thumbnailCropPreview, position, zoom);
+  elements.thumbnailSourceLabel.textContent = src || "Select an image row";
+  elements.downloadCropButton.disabled = true;
+  state.cropRenderToken += 1;
+
+  if (!row) {
+    clearImagePreview(elements.largeImagePreview);
+    clearImagePreview(elements.thumbnailCropPreview);
+    clearCanvas(elements.thumbnailCanvasPreview);
+    elements.thumbnailCropWarning.textContent = "Add an image row to edit thumbnail cropping.";
+    return;
+  }
+
+  if (!src) {
+    clearImagePreview(elements.largeImagePreview);
+    clearImagePreview(elements.thumbnailCropPreview);
+    clearCanvas(elements.thumbnailCanvasPreview);
+    elements.thumbnailCropWarning.textContent = "The active image row does not have a path yet.";
+    return;
+  }
+
+  if (!isValidAssetPath(src)) {
+    clearImagePreview(elements.largeImagePreview);
+    clearImagePreview(elements.thumbnailCropPreview);
+    clearCanvas(elements.thumbnailCanvasPreview);
+    elements.thumbnailCropWarning.textContent = "The active image path must start with assets/projects/.";
+    return;
+  }
+
+  if (!file) {
+    clearImagePreview(elements.largeImagePreview);
+    clearImagePreview(elements.thumbnailCropPreview);
+    clearCanvas(elements.thumbnailCanvasPreview);
+    elements.thumbnailCropWarning.textContent = "Missing file. Add it under assets/projects/[slug]/ or choose another image.";
+    return;
+  }
+
+  const imageUrl = `/${encodeURI(file.src)}`;
+  const token = state.cropRenderToken;
+
+  elements.largeImagePreview.src = imageUrl;
+  elements.largeImagePreview.alt = alt || "Large image preview";
+  elements.thumbnailCropPreview.src = imageUrl;
+  elements.thumbnailCropPreview.alt = alt || "Thumbnail crop preview";
+  elements.thumbnailCropWarning.textContent = "";
+  elements.downloadCropButton.disabled = false;
+
+  drawCroppedThumbnail(elements.thumbnailCanvasPreview, imageUrl, position, zoom).catch((error) => {
+    if (token === state.cropRenderToken) {
+      clearCanvas(elements.thumbnailCanvasPreview);
+      elements.thumbnailCropWarning.textContent = error.message;
+    }
+  });
+};
+
+const updateMiniProjectPreview = () => {
+  const project = buildProjectFromForm();
+  const image = project.images[0];
+  const position = project.thumbnailPosition || getThumbnailPositionValue();
+  const zoom = parseThumbnailZoom(project.thumbnailZoom);
+
+  elements.miniProjectTitle.textContent = project.title || "Untitled";
+  elements.miniProjectDescription.textContent = project.shortDescription || "";
+  setThumbnailPreviewStyle(elements.miniProjectImage, position, zoom);
+
+  if (!image?.src || !isValidAssetPath(image.src) || !getImageLibraryFile(image.src)) {
+    clearImagePreview(elements.miniProjectImage);
+    return;
+  }
+
+  elements.miniProjectImage.src = `/${encodeURI(normalizeAssetPath(image.src))}`;
+  elements.miniProjectImage.alt = image.alt || `${project.title || "Project"} thumbnail preview`;
+};
+
+const downloadCroppedThumbnail = async () => {
+  const position = getThumbnailPositionValue();
+  const zoom = getThumbnailZoomValue();
+  const { src, file } = getActiveImageInfo();
+
+  if (!src || !file) {
+    setStatus("Choose an existing local image before downloading a cropped thumbnail.");
+    return;
+  }
+
+  const slug = elements.slug.value.trim() || file.folder || "project";
+  const filename = `${slug}-thumbnail-crop.png`;
+
+  try {
+    await drawCroppedThumbnail(elements.thumbnailCanvasPreview, `/${encodeURI(file.src)}`, position, zoom);
+    downloadCanvasAsPng(elements.thumbnailCanvasPreview, filename);
+    setStatus(`Downloaded ${filename}. Original image was not changed.`);
+  } catch (error) {
+    setStatus(error.message);
+  }
 };
 
 const buildImageDiagnostics = (projects) => {
@@ -672,8 +907,11 @@ const renderImageDiagnostics = () => {
 };
 
 const refreshPreview = () => {
+  syncCropControlsFromFields();
   elements.preview.textContent = currentProjectPreview();
   getImageRows().forEach(updateImageRowPreview);
+  updateCropWorkspace();
+  updateMiniProjectPreview();
   renderImageDiagnostics();
   updateMode();
 };
@@ -689,6 +927,7 @@ const populateForm = (project, index = null) => {
   elements.projectType.value = safe.projectType;
   elements.role.value = safe.role;
   elements.thumbnailPosition.value = safe.thumbnailPosition;
+  elements.thumbnailZoom.value = safe.thumbnailZoom;
   elements.tags.value = safe.tags.join(", ");
   elements.shortDescription.value = safe.shortDescription;
 
@@ -716,7 +955,8 @@ const renderProjectList = () => {
   const fragment = document.createDocumentFragment();
 
   state.projects.forEach((project, index) => {
-    if (query && !project.title.toLowerCase().includes(query)) {
+    const haystack = [project.title, project.year, project.slug, project.projectType].filter(Boolean).join(" ").toLowerCase();
+    if (query && !haystack.includes(query)) {
       return;
     }
 
@@ -746,13 +986,13 @@ const renderProjectList = () => {
 
     const upButton = document.createElement("button");
     upButton.type = "button";
-    upButton.textContent = "↑";
+    upButton.textContent = "Up";
     upButton.disabled = index === 0;
     upButton.addEventListener("click", () => moveProject(index, -1));
 
     const downButton = document.createElement("button");
     downButton.type = "button";
-    downButton.textContent = "↓";
+    downButton.textContent = "Down";
     downButton.disabled = index === state.projects.length - 1;
     downButton.addEventListener("click", () => moveProject(index, 1));
 
@@ -767,6 +1007,19 @@ const renderProjectList = () => {
 
 const ensureUniqueSlug = (project, currentIndex = null) =>
   !state.projects.some((item, index) => index !== currentIndex && item.slug === project.slug);
+
+const uniqueCopySlug = (slug) => {
+  const base = `${slug || "project"}-copy`;
+  let candidate = base;
+  let suffix = 2;
+
+  while (state.projects.some((project) => project.slug === candidate)) {
+    candidate = `${base}-${suffix}`;
+    suffix += 1;
+  }
+
+  return candidate;
+};
 
 const applyCurrentProject = () => {
   const project = buildProjectFromForm();
@@ -794,6 +1047,23 @@ const applyCurrentProject = () => {
   updateMode();
   renderImageDiagnostics();
   return true;
+};
+
+const duplicateCurrentProject = () => {
+  const source = buildProjectFromForm();
+  if (!source.slug || !source.title) {
+    setStatus("Add a slug and title before duplicating a project.");
+    return;
+  }
+
+  const copy = deepClone(source);
+  copy.slug = uniqueCopySlug(source.slug);
+  copy.title = `${source.title} copy`;
+
+  const insertIndex = state.selectedIndex === null ? 0 : state.selectedIndex + 1;
+  state.projects.splice(insertIndex, 0, copy);
+  populateForm(copy, insertIndex);
+  setStatus(`Duplicated project as ${copy.title}.`);
 };
 
 const moveProject = (index, delta) => {
@@ -974,7 +1244,7 @@ const renderImageLibrary = () => {
       <span class="image-library-item__thumb"><img src="/${encodeURI(file.src)}" alt=""></span>
       <span>
         <span class="image-library-item__name">${file.name}</span>
-        <span class="image-library-item__meta">${file.width && file.height ? `${file.width} × ${file.height}` : "size unknown"}</span>
+        <span class="image-library-item__meta">${file.width && file.height ? `${file.width} x ${file.height}` : "size unknown"}</span>
       </span>
     `;
     button.addEventListener("click", () => fillActiveImageRow(file.src));
@@ -1164,6 +1434,14 @@ const publishChanges = async () => {
 };
 
 const bindEvents = () => {
+  elements.tabButtons.forEach((button) => {
+    button.addEventListener("click", () => showTab(button.dataset.tabTarget));
+  });
+
+  elements.themeToggleButton.addEventListener("click", () => {
+    applyTheme(state.theme === "dark" ? "light" : "dark");
+  });
+
   elements.reloadButton.addEventListener("click", async () => {
     if (!confirmDiscardIfDirty()) {
       return;
@@ -1188,6 +1466,7 @@ const bindEvents = () => {
     populateForm(createBlankProject(), null);
     setStatus("New project form ready.");
   });
+  elements.duplicateProjectButton.addEventListener("click", duplicateCurrentProject);
   elements.applyProjectButton.addEventListener("click", applyCurrentProject);
   elements.deleteProjectButton.addEventListener("click", deleteCurrentProject);
   elements.resetFormButton.addEventListener("click", resetForm);
@@ -1195,6 +1474,14 @@ const bindEvents = () => {
   elements.publishButton.addEventListener("click", publishChanges);
   elements.copyCurrentButton.addEventListener("click", copyCurrentObject);
   elements.downloadCurrentButton.addEventListener("click", downloadCurrentObject);
+  [elements.thumbnailPanX, elements.thumbnailPanY, elements.thumbnailZoomRange].forEach((input) => {
+    input.addEventListener("input", (event) => {
+      event.stopPropagation();
+      syncFieldsFromCropControls();
+      refreshPreview();
+    });
+  });
+  elements.downloadCropButton.addEventListener("click", downloadCroppedThumbnail);
   elements.form.addEventListener("input", () => {
     syncLibraryFolderWithSlug();
     renderImageLibrary();
@@ -1222,12 +1509,14 @@ const bindEvents = () => {
   elements.thumbnailPresetButtons.forEach((button) => {
     button.addEventListener("click", () => {
       elements.thumbnailPosition.value = button.dataset.thumbnailPreset;
+      elements.thumbnailZoom.value = button.dataset.thumbnailZoom === "1" ? "" : button.dataset.thumbnailZoom;
       refreshPreview();
     });
   });
 };
 
 const init = async () => {
+  initTheme();
   bindEvents();
   updateBackupButtons();
 

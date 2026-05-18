@@ -82,6 +82,7 @@ const renderProjects = () => {
     const imageWrap = document.createElement("div");
     imageWrap.className = "project-card__image";
     imageWrap.style.setProperty("--thumb-position", project.thumbnailPosition || "center center");
+    imageWrap.style.setProperty("--thumb-zoom", String(project.thumbnailZoom || 1));
     imageWrap.innerHTML = `
       <img
         src="${image.src}"

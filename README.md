@@ -50,6 +50,7 @@ Each project record includes:
 - `images`
 - `links`
 - optional `thumbnailPosition`
+- optional `thumbnailZoom`
 
 The current allowed `categories` values are:
 
@@ -95,13 +96,20 @@ The editor can:
 - load existing projects from `data/projects.js`
 - edit existing projects in a form
 - create new projects
+- duplicate existing projects
 - reorder projects
+- organize editing into Projects, Content, Images, Preview, and Publish / Safety tabs
 - preview image paths and thumbnail cropping
+- adjust thumbnail crop position and zoom without modifying original image files
 - browse local images under `assets/projects/`
 - detect image dimensions from local files
 - run image diagnostics for missing, unused, or incomplete image metadata
+- download a generated cropped-thumbnail preview as a new PNG file
+- switch between dark and light editor themes
 - save changes locally
 - publish changes with local git
+
+The editor theme preference is stored only in `localStorage`. Project data is never stored in `localStorage`.
 
 ### Save locally
 
@@ -152,6 +160,8 @@ If the portfolio would become empty:
 
 The publish button also asks for a final confirmation before running git.
 
+Cloning this repo does not give anyone permission to publish. Publish only works on computers where Git is authenticated with write access to this repository.
+
 ## Where images live
 
 All project images are local and grouped by project:
@@ -177,10 +187,17 @@ assets/projects/[slug]/
 3. Use the image browser in the editor to pick a file from `assets/projects/`
 4. Use `Detect dimensions` to fill width and height
 5. Add or refine alt text
-6. Adjust `thumbnailPosition` if needed and review the square preview
+6. Open the Images tab and adjust the non-destructive crop controls:
+   - `thumbnailPosition` stores the visual pan position
+   - `thumbnailZoom` stores the simulated thumbnail zoom
+   - presets cover center, top, bottom, left, right, and a manual subject-center starting point
 7. Save locally
 8. Preview the public site
 9. Publish when ready
+
+The public project grid reads `thumbnailPosition` and `thumbnailZoom` when rendering the first project image as the project thumbnail.
+
+The Images tab can also draw the current crop onto a canvas and download it as a new PNG file. This is export-only: it does not overwrite, delete, upload, or automatically place image files in `assets/projects/[slug]/`.
 
 ## Local preview
 

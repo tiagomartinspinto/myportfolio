@@ -39,11 +39,16 @@ The preview server blocks `tools/admin/` so it behaves more like the public GitH
 - loads existing projects from `data/projects.js`
 - lets you edit existing projects
 - lets you create new projects
+- lets you duplicate projects
 - lets you reorder projects
+- separates editing into Projects, Content, Images, Preview, and Publish / Safety tabs
 - previews each image entry with the same square crop logic used by the public thumbnails
 - browses local images inside `assets/projects/`
 - detects width and height from local image files
+- edits non-destructive thumbnail crop metadata with pan and zoom controls
+- downloads a generated cropped-thumbnail PNG without saving it into the repo
 - runs image diagnostics for missing files, unused files, invalid paths, missing alt text, and missing metadata
+- supports dark and light UI themes; the preference is stored only in `localStorage`
 - saves changes locally back into `data/projects.js`
 - can publish `data/projects.js` and `PROJECT_STATUS.md` using local git
 
@@ -89,6 +94,8 @@ If the portfolio would become empty:
 - saving requires typing `DELETE ALL PROJECTS`
 - publishing requires typing `PUBLISH EMPTY PORTFOLIO`
 
+Cloning this repo does not give anyone permission to publish. Publish only works on computers where Git is authenticated with write access to this repository.
+
 ## Images
 
 Image files are still manual.
@@ -105,8 +112,12 @@ Then:
 2. select the image path
 3. run `Detect dimensions`
 4. add alt text
-5. review the square preview
-6. save locally
+5. use the Images tab to adjust `thumbnailPosition` and `thumbnailZoom`
+6. review the square preview and canvas export preview
+7. optionally download a cropped-thumbnail PNG and place it manually under `assets/projects/[slug]/`
+8. save locally
+
+Original images are never overwritten or deleted by the editor.
 
 ## Security note
 
@@ -117,3 +128,4 @@ Then:
 - no external services
 - no analytics
 - no arbitrary file writes
+- no destructive image editing by default
