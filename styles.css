@@ -295,6 +295,19 @@ ul {
   text-underline-offset: 0.18em;
 }
 
+.footer-links a.footer-local-editor {
+  color: var(--faint);
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+  opacity: 0.72;
+  text-decoration: none;
+}
+
+.footer-links a.footer-local-editor:hover {
+  color: var(--muted);
+  opacity: 1;
+}
+
 .project-dialog {
   width: min(1080px, calc(100% - 24px));
   max-height: calc(100vh - 24px);
