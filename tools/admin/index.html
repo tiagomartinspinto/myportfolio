@@ -37,6 +37,12 @@
     </div>
 
     <main class="admin-shell admin-page">
+      <section id="runtime-banner" class="local-only-banner">
+        <p class="runtime-banner__title">LOCAL EDITOR ONLY</p>
+        <p>Changes require local git access and repository write permissions.</p>
+        <p id="runtime-mode-message">Checking runtime...</p>
+      </section>
+
       <section class="notice-box">
         <p>This editor binds only to <code>127.0.0.1</code> and is excluded from GitHub Pages.</p>
         <p>It does not use GitHub tokens, passwords, external APIs, cloud uploads, analytics, or remote image editing.</p>
@@ -321,6 +327,10 @@
         </section>
       </div>
     </main>
+
+    <footer class="admin-shell admin-footer">
+      <p>Cloning or opening this editor does not grant publishing access.</p>
+    </footer>
 
     <template id="paragraph-template">
       <div class="repeatable-item">

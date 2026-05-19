@@ -34,6 +34,23 @@ http://127.0.0.1:8080/
 
 The preview server blocks `tools/admin/` so it behaves more like the public GitHub Pages site.
 
+## Public/read-only hardening
+
+The editor shows a `LOCAL EDITOR ONLY` banner.
+
+Changes require local git access and repository write permissions.
+
+Cloning or opening this editor does not grant publishing access.
+
+If the editor is ever opened from a public/static site, it enters public read-only mode:
+
+- editing the in-memory project draft is allowed
+- previewing and copying/downloading generated project data is allowed
+- `Save locally`, `Publish`, backup restore, image library scanning, and dimension detection are blocked
+- the UI shows `Publishing disabled on public site`
+
+Write actions are enabled only on localhost, or with explicit developer mode via `?admin-dev=1` for controlled local/testing setups. Even then, publish still requires a compatible local API, git authentication, and repository write access.
+
 ## What the editor does
 
 - loads existing projects from `data/projects.js`
