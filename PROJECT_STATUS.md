@@ -2,7 +2,7 @@
 
 ## Latest update
 
-Date: 2026-05-18
+Date: 2026-05-19
 
 - Reorganized the local admin around Projects, Content, Images, Preview, and Publish / Safety tabs
 - Added a sticky action bar for Save locally, Preview site, Publish, Reload, Undo save, and theme switching
@@ -14,6 +14,9 @@ Date: 2026-05-18
 - Kept existing backup, undo, restore, empty-portfolio, publish-summary, and localhost-only safety protections
 - Added the visible publish-access note: cloning the repo does not grant publish permission
 - Moved the public-footer local editor launcher out of the footer links and made it a nearly hidden bottom-right `::` control pointing only to `http://127.0.0.1:8787/`
+- Added a visible `LOCAL EDITOR ONLY` admin banner and footer note
+- Added public/read-only admin hardening: public/static mode allows editing, previewing, and generated project-data export, but blocks save, publish, backup restore, image scanning, dimension detection, and local API/filesystem access
+- Added explicit developer-mode gating with `?admin-dev=1`; write actions otherwise require localhost
 - Updated README files to document the tabbed admin, crop metadata, theme toggle, and safe crop download
 
 ## Files changed in the latest update
@@ -49,6 +52,10 @@ Date: 2026-05-18
 - The local editor exists only under `tools/admin/`, binds only to `127.0.0.1`, and is not publicly linked from the site
 - `_config.yml` excludes `tools/admin/` from GitHub Pages publishing
 - The admin UI is tabbed so project metadata, content, images, preview, and safety controls are not shown all at once
+- The admin shows a visible `LOCAL EDITOR ONLY` banner: changes require local git access and repository write permissions
+- Opening the admin from a public/static site uses public read-only mode and shows `Publishing disabled on public site`
+- Public read-only mode blocks save, publish, backup restore, image scanning, dimension detection, and local API/filesystem access
+- Public read-only mode still allows editing the in-memory draft, previewing, and copying/downloading generated project data
 - The sticky action bar keeps save, preview, publish, reload, undo, and theme actions available
 - The editor can save directly to `data/projects.js` and refreshes `data/projects.backup.js` before every save
 - The editor can undo or restore the latest saved backup
@@ -95,6 +102,8 @@ Date: 2026-05-18
 9. Tested the Subject center preset and confirmed it updates `thumbnailPosition` and `thumbnailZoom`
 10. Verified light mode colors and toggled back to dark mode
 11. Verified the footer `::` launcher targets localhost only, stays outside the footer link list, and `_config.yml` still excludes `tools/`
+12. Verified local mode keeps Save and Publish available on `127.0.0.1`
+13. Verified simulated public mode disables Save, Publish, backup restore, image scanning, and dimension detection while keeping in-memory editing and JSON export available
 
 ## Notes for future chats
 

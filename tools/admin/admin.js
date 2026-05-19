@@ -7,6 +7,16 @@ import {
   parseThumbnailZoom
 } from "./thumbnail-tools.js";
 
+const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+const currentSearchParams = new URLSearchParams(window.location.search);
+const runtime = {
+  forcePublicMode: currentSearchParams.get("admin-public") === "1",
+  isLocalhost: LOCAL_HOSTS.has(window.location.hostname),
+  isDevMode: currentSearchParams.get("admin-dev") === "1" || currentSearchParams.get("dev") === "1",
+  isGitHubPages: window.location.hostname.endsWith("github.io")
+};
+runtime.canUseLocalApi = !runtime.forcePublicMode && (runtime.isLocalhost || runtime.isDevMode);
+
 const state = {
   filters: [],
   projects: [],
@@ -25,10 +35,13 @@ const state = {
   activeImageRowId: null,
   nextImageRowId: 1,
   cropRenderToken: 0,
-  theme: "dark"
+  theme: "dark",
+  runtime
 };
 
 const elements = {
+  runtimeBanner: document.querySelector("#runtime-banner"),
+  runtimeModeMessage: document.querySelector("#runtime-mode-message"),
   editorMode: document.querySelector("#editor-mode"),
   editorStatus: document.querySelector("#editor-status"),
   gitOutput: document.querySelector("#git-output"),
@@ -132,9 +145,59 @@ const setGitOutput = (value) => {
   elements.gitOutput.textContent = value || "No git output yet.";
 };
 
+const publicDisabledMessage = () => "Publishing disabled on public site.";
+
+const updateRuntimeUi = () => {
+  document.documentElement.dataset.runtime = state.runtime.canUseLocalApi ? "local" : "public";
+
+  if (state.runtime.canUseLocalApi) {
+    elements.runtimeModeMessage.textContent = state.runtime.isDevMode
+      ? "Developer mode is enabled. Write actions still require a compatible local API, git access, and repository write permissions."
+      : "Local mode active. Save and publish actions use this computer's local filesystem and git credentials.";
+    return;
+  }
+
+  elements.runtimeModeMessage.textContent =
+    "Publishing disabled on public site. Editing, previews, and project-data export are available; save, publish, and filesystem access are blocked.";
+};
+
+const assetUrlForSrc = (src) => {
+  const normalized = normalizeAssetPath(src);
+  if (!normalized) {
+    return "";
+  }
+
+  return state.runtime.canUseLocalApi
+    ? `/${encodeURI(normalized)}`
+    : new URL(`../../${normalized}`, import.meta.url).href;
+};
+
+const staticSitePreviewUrl = () => new URL("../../", import.meta.url).href;
+
+const blockLocalApiAction = (actionLabel = "Action") => {
+  if (state.runtime.canUseLocalApi) {
+    return false;
+  }
+
+  const message = `${actionLabel} blocked. ${publicDisabledMessage()}`;
+  setStatus(message);
+  setGitOutput(`${publicDisabledMessage()}\n\nOpen http://127.0.0.1:8787/ after running npm run admin to save or publish.`);
+  return true;
+};
+
 const updateBackupButtons = () => {
-  elements.undoSaveButton.disabled = !state.backupExists;
-  elements.restoreBackupButton.disabled = !state.backupExists;
+  elements.undoSaveButton.disabled = !state.runtime.canUseLocalApi || !state.backupExists;
+  elements.restoreBackupButton.disabled = !state.runtime.canUseLocalApi || !state.backupExists;
+};
+
+const updateLocalActionButtons = () => {
+  const disabled = !state.runtime.canUseLocalApi;
+  elements.saveButton.disabled = disabled;
+  elements.publishButton.disabled = disabled;
+  elements.saveButton.title = disabled ? "Save locally is disabled on public site." : "";
+  elements.publishButton.title = disabled ? "Publishing disabled on public site." : "";
+  elements.imageFolderSelect.disabled = disabled;
+  updateBackupButtons();
 };
 
 const parseJsonResponse = async (response) => {
@@ -151,6 +214,10 @@ const parseJsonResponse = async (response) => {
 };
 
 const apiRequest = async (path, options = {}) => {
+  if (!state.runtime.canUseLocalApi) {
+    throw new Error("Local API and filesystem access are disabled outside localhost.");
+  }
+
   const response = await fetch(path, {
     ...options,
     headers: {
@@ -415,10 +482,14 @@ const openImageFromRow = (row) => {
     return;
   }
 
-  window.open(`/${encodeURI(file.src)}`, "_blank", "noopener,noreferrer");
+  window.open(assetUrlForSrc(file.src), "_blank", "noopener,noreferrer");
 };
 
 const detectDimensionsForRow = async (row) => {
+  if (blockLocalApiAction("Dimension detection")) {
+    return;
+  }
+
   const src = normalizeAssetPath(row.querySelector("[data-field='src']").value);
   if (!src) {
     setStatus("Add an image path first.");
@@ -471,12 +542,23 @@ const createImageRow = (image = {}) => {
 
   row.addEventListener("click", () => setActiveImageRow(row.dataset.rowId));
 
-  row.querySelector("[data-image-action='browse']").addEventListener("click", () => {
+  const browseButton = row.querySelector("[data-image-action='browse']");
+  const detectButton = row.querySelector("[data-image-action='detect-dimensions']");
+
+  browseButton.disabled = !state.runtime.canUseLocalApi;
+  browseButton.title = state.runtime.canUseLocalApi ? "" : "Image library browsing is disabled on public site.";
+  detectButton.disabled = !state.runtime.canUseLocalApi;
+  detectButton.title = state.runtime.canUseLocalApi ? "" : "Dimension detection is disabled on public site.";
+
+  browseButton.addEventListener("click", () => {
+    if (blockLocalApiAction("Image library browsing")) {
+      return;
+    }
     setActiveImageRow(row.dataset.rowId);
     elements.imageFolderSelect.focus();
   });
 
-  row.querySelector("[data-image-action='detect-dimensions']").addEventListener("click", () => {
+  detectButton.addEventListener("click", () => {
     setActiveImageRow(row.dataset.rowId);
     detectDimensionsForRow(row);
   });
@@ -679,8 +761,8 @@ const updateImageRowPreview = (row) => {
     return;
   }
 
-  previewImage.src = `/${encodeURI(file.src)}`;
-  cropPreviewImage.src = `/${encodeURI(file.src)}`;
+  previewImage.src = assetUrlForSrc(file.src);
+  cropPreviewImage.src = assetUrlForSrc(file.src);
   warning.textContent = "";
   meta.textContent = `Path: ${src}\nMetadata: ${metadataText}\nFile: ${fileText}\nCrop: ${thumbnailPosition}, ${thumbnailZoom.toFixed(2)}x`;
   openButton.disabled = false;
@@ -751,7 +833,7 @@ const updateCropWorkspace = () => {
     return;
   }
 
-  const imageUrl = `/${encodeURI(file.src)}`;
+  const imageUrl = assetUrlForSrc(file.src);
   const token = state.cropRenderToken;
 
   elements.largeImagePreview.src = imageUrl;
@@ -784,7 +866,7 @@ const updateMiniProjectPreview = () => {
     return;
   }
 
-  elements.miniProjectImage.src = `/${encodeURI(normalizeAssetPath(image.src))}`;
+  elements.miniProjectImage.src = assetUrlForSrc(image.src);
   elements.miniProjectImage.alt = image.alt || `${project.title || "Project"} thumbnail preview`;
 };
 
@@ -802,7 +884,7 @@ const downloadCroppedThumbnail = async () => {
   const filename = `${slug}-thumbnail-crop.png`;
 
   try {
-    await drawCroppedThumbnail(elements.thumbnailCanvasPreview, `/${encodeURI(file.src)}`, position, zoom);
+    await drawCroppedThumbnail(elements.thumbnailCanvasPreview, assetUrlForSrc(file.src), position, zoom);
     downloadCanvasAsPng(elements.thumbnailCanvasPreview, filename);
     setStatus(`Downloaded ${filename}. Original image was not changed.`);
   } catch (error) {
@@ -1206,6 +1288,46 @@ const loadImageLibrary = async () => {
   renderImageLibrary();
 };
 
+const buildReadOnlyImageLibrary = (projects) => {
+  const filesBySrc = new Map();
+  const foldersByName = new Map();
+
+  projects.forEach((project) => {
+    (project.images || []).forEach((image) => {
+      const src = normalizeAssetPath(image.src);
+      if (!isValidAssetPath(src) || filesBySrc.has(src)) {
+        return;
+      }
+
+      const parts = src.split("/");
+      const folder = parts[2] || project.slug || "project";
+      const file = {
+        folder,
+        name: parts[parts.length - 1] || src,
+        src,
+        width: image.width ?? null,
+        height: image.height ?? null
+      };
+
+      filesBySrc.set(src, file);
+      if (!foldersByName.has(folder)) {
+        foldersByName.set(folder, []);
+      }
+      foldersByName.get(folder).push(file);
+    });
+  });
+
+  state.imageLibrary.flatFiles = Array.from(filesBySrc.values()).sort((a, b) => a.src.localeCompare(b.src));
+  state.imageLibrary.folders = Array.from(foldersByName, ([name, files]) => ({
+    name,
+    files: files.sort((a, b) => a.name.localeCompare(b.name))
+  })).sort((a, b) => a.name.localeCompare(b.name));
+  state.imageLibrary.fileMap = new Map(state.imageLibrary.flatFiles.map((file) => [file.src, file]));
+
+  syncLibraryFolderWithSlug();
+  renderImageLibrary();
+};
+
 const syncLibraryFolderWithSlug = () => {
   const slugFolder = elements.slug.value.trim();
   const availableFolders = state.imageLibrary.folders.map((folder) => folder.name);
@@ -1219,6 +1341,18 @@ const syncLibraryFolderWithSlug = () => {
 
 const renderImageLibrary = () => {
   const folders = state.imageLibrary.folders;
+
+  if (!state.runtime.canUseLocalApi) {
+    elements.imageFolderSelect.replaceChildren();
+    elements.imageFolderSelect.disabled = true;
+    elements.imageLibraryGrid.replaceChildren(
+      document.createTextNode(
+        "Image library scanning and dimension detection are disabled on public site. Existing project image paths can still be edited manually and previewed."
+      )
+    );
+    return;
+  }
+
   const folderOptions = folders.map((folder) => {
     const option = document.createElement("option");
     option.value = folder.name;
@@ -1241,7 +1375,7 @@ const renderImageLibrary = () => {
     button.type = "button";
     button.className = "image-library-item";
     button.innerHTML = `
-      <span class="image-library-item__thumb"><img src="/${encodeURI(file.src)}" alt=""></span>
+      <span class="image-library-item__thumb"><img src="${assetUrlForSrc(file.src)}" alt=""></span>
       <span>
         <span class="image-library-item__name">${file.name}</span>
         <span class="image-library-item__meta">${file.width && file.height ? `${file.width} x ${file.height}` : "size unknown"}</span>
@@ -1255,26 +1389,48 @@ const renderImageLibrary = () => {
 };
 
 const loadProjects = async () => {
-  const payload = await apiRequest("/api/projects");
+  const payload = state.runtime.canUseLocalApi ? await apiRequest("/api/projects") : await loadStaticProjects();
   state.filters = payload.filters.filter((category) => category !== "all");
   state.projects = deepClone(payload.projects);
   state.sourceProjects = deepClone(payload.projects);
   state.savedProjectsSnapshot = JSON.stringify(state.projects);
   state.backupExists = Boolean(payload.backupExists);
-  state.previewUrl = payload.previewUrl || state.previewUrl;
+  state.previewUrl = state.runtime.canUseLocalApi ? payload.previewUrl || state.previewUrl : staticSitePreviewUrl();
 
   elements.previewLink.href = state.previewUrl;
   renderCategoryOptions();
-  await loadImageLibrary();
+  if (state.runtime.canUseLocalApi) {
+    await loadImageLibrary();
+  } else {
+    buildReadOnlyImageLibrary(state.projects);
+  }
   renderProjectList();
-  setGitOutput(payload.gitStatus?.join("\n") || "Working tree clean for data/projects.js and PROJECT_STATUS.md.");
+  setGitOutput(
+    state.runtime.canUseLocalApi
+      ? payload.gitStatus?.join("\n") || "Working tree clean for data/projects.js and PROJECT_STATUS.md."
+      : `${publicDisabledMessage()}\n\nEditing, previews, and JSON export are available. Save, publish, backup restore, image scanning, and dimension detection are blocked.`
+  );
   updateBackupButtons();
+  updateLocalActionButtons();
 
   if (state.projects.length) {
     populateForm(state.projects[0], 0);
   } else {
     populateForm(createBlankProject(), null);
   }
+};
+
+const loadStaticProjects = async () => {
+  const moduleUrl = new URL(`../../data/projects.js?admin-cache=${Date.now()}`, import.meta.url).href;
+  const module = await import(moduleUrl);
+
+  return {
+    filters: module.PROJECT_DISPLAY_FILTERS || [],
+    projects: module.PROJECTS || [],
+    gitStatus: [publicDisabledMessage()],
+    previewUrl: staticSitePreviewUrl(),
+    backupExists: false
+  };
 };
 
 const renderCategoryOptions = () => {
@@ -1291,6 +1447,11 @@ const renderCategoryOptions = () => {
 };
 
 const saveLocally = async ({ skipConfirm = false, emptyConfirmationOverride = null } = {}) => {
+  if (blockLocalApiAction("Save locally")) {
+    updateLocalActionButtons();
+    return false;
+  }
+
   if (!persistCurrentFormIfNeeded()) {
     return false;
   }
@@ -1339,10 +1500,16 @@ const saveLocally = async ({ skipConfirm = false, emptyConfirmationOverride = nu
     return false;
   } finally {
     elements.saveButton.disabled = false;
+    updateLocalActionButtons();
   }
 };
 
 const restoreBackup = async (mode) => {
+  if (blockLocalApiAction(mode === "undo" ? "Undo save" : "Restore backup")) {
+    updateLocalActionButtons();
+    return;
+  }
+
   if (!state.backupExists) {
     setStatus("No backup file exists yet.");
     return;
@@ -1374,6 +1541,11 @@ const restoreBackup = async (mode) => {
 };
 
 const publishChanges = async () => {
+  if (blockLocalApiAction("Publish")) {
+    updateLocalActionButtons();
+    return;
+  }
+
   if (!persistCurrentFormIfNeeded()) {
     return;
   }
@@ -1430,6 +1602,7 @@ const publishChanges = async () => {
     setGitOutput(error.payload?.output || error.payload?.message || error.message);
   } finally {
     elements.publishButton.disabled = false;
+    updateLocalActionButtons();
   }
 };
 
@@ -1517,15 +1690,26 @@ const bindEvents = () => {
 
 const init = async () => {
   initTheme();
+  updateRuntimeUi();
   bindEvents();
   updateBackupButtons();
+  updateLocalActionButtons();
 
   try {
     await loadProjects();
-    setStatus("Projects loaded from data/projects.js.");
+    setStatus(
+      state.runtime.canUseLocalApi
+        ? "Projects loaded from data/projects.js."
+        : "Projects loaded in public read-only mode. Publishing disabled on public site."
+    );
   } catch (error) {
     setStatus(error.message);
-    setGitOutput("Make sure the local admin server is running with `npm run admin`.");
+    setGitOutput(
+      state.runtime.canUseLocalApi
+        ? "Make sure the local admin server is running with `npm run admin`."
+        : `${publicDisabledMessage()}\n\nThe static project data could not be loaded.`
+    );
+    updateLocalActionButtons();
   }
 };
 
