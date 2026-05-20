@@ -25,6 +25,7 @@ index.html
 styles.css
 script.js
 data/projects.js
+data/site.js
 assets/favicon.ico
 assets/projects/[project-slug]/
 package.json
@@ -70,34 +71,79 @@ Allowed `categories` values:
 The public gallery and local editor support mixed project media:
 
 ```js
-media: [
-  {
-    type: "image",
-    src: "assets/projects/example/example-01.jpg",
-    alt: "Image description",
-    width: 1600,
-    height: 1067,
-    caption: "Optional caption."
-  },
-  {
-    type: "video",
-    provider: "youtube",
-    source: "https://youtu.be/example",
-    caption: "Optional caption.",
-    thumbnail: "assets/projects/example/example-01.jpg"
-  },
-  {
-    type: "audio",
-    provider: "file",
-    source: "assets/projects/example/example-audio.mp3",
-    caption: "Optional caption."
-  }
-]
+{
+  type: "image",
+  src: "assets/projects/project-name/image.jpg",
+  alt: "Description of image",
+  width: 1600,
+  height: 1000,
+  caption: "Optional caption"
+}
 ```
 
-Images should stay local under `assets/projects/[slug]/`. Video supports YouTube, Vimeo, direct video URLs, and local video files. Audio supports local files, SoundCloud, and direct audio URLs.
+```js
+{
+  type: "video",
+  provider: "youtube",
+  source: "https://www.youtube.com/watch?v=VIDEO_ID",
+  thumbnail: "assets/projects/project-name/video-thumb.jpg",
+  caption: "Performance documentation excerpt"
+}
+```
+
+```js
+{
+  type: "video",
+  provider: "vimeo",
+  source: "https://vimeo.com/123456789",
+  thumbnail: "assets/projects/project-name/video-thumb.jpg",
+  caption: "Full documentation"
+}
+```
+
+```js
+{
+  type: "video",
+  provider: "file",
+  source: "assets/projects/project-name/video.mp4",
+  thumbnail: "assets/projects/project-name/video-thumb.jpg",
+  caption: "Local video excerpt"
+}
+```
+
+```js
+{
+  type: "audio",
+  provider: "soundcloud",
+  source: "https://soundcloud.com/...",
+  caption: "Sound work"
+}
+```
+
+```js
+{
+  type: "audio",
+  provider: "file",
+  source: "assets/projects/project-name/audio.mp3",
+  caption: "Audio excerpt"
+}
+```
+
+Images should stay local under `assets/projects/[slug]/`. Use YouTube or Vimeo for larger video files when possible, and local files for small or archival media. Keep repository size reasonable. If video or audio appears first in a project, always add a thumbnail.
 
 Older `images` arrays are still accepted by the local editor as a compatibility fallback, but new project data should use `media`.
+
+Draft projects can stay in `data/projects.js` with `draft: true`. They remain visible in the local editor, but the public portfolio hides them and public filters ignore them.
+
+## Site Data
+
+Site-wide text and links live in:
+
+```text
+data/site.js
+```
+
+This file stores document metadata, social preview metadata, header text, contact email, footer links, about text, location text, and Aalto role links. Layout structure, CSS, modal behavior, and project-grid behavior remain code-only.
 
 ## Local Admin Editor
 
@@ -124,6 +170,7 @@ The public footer includes a nearly hidden `::` launcher at the bottom-right of 
 The editor is organized into tabs:
 
 - Projects
+- Site
 - Content
 - Images
 - Preview
@@ -134,7 +181,9 @@ The sticky action bar keeps Save locally, Preview site, Publish, Reload, Undo sa
 The editor can:
 
 - load and edit `data/projects.js`
+- load and edit `data/site.js`
 - create, duplicate, delete, and reorder projects
+- mark projects as drafts
 - add image, video, and audio media entries
 - reorder media and set a media item first
 - preview mixed media metadata in the editor
@@ -145,6 +194,8 @@ The editor can:
 - download a generated cropped-thumbnail PNG without saving it into the repo
 - switch between dark and light editor themes
 - save locally and publish through local git
+
+The Site tab edits only text and links. It does not allow scripts or arbitrary HTML.
 
 The editor theme preference is stored only in `localStorage`. Project data is never stored in `localStorage`.
 
@@ -177,27 +228,30 @@ The download tool is export-only. It creates a new PNG download and does not wri
 
 ```text
 data/projects.js
+data/site.js
 ```
 
 Before writing, it refreshes:
 
 ```text
 data/projects.backup.js
+data/site.backup.js
 ```
 
-The backup file is ignored by git.
+Backup files are ignored by git.
 
-`Undo last save` and `Restore backup` restore `data/projects.backup.js` over `data/projects.js`.
+`Undo last save` and `Restore backup` restore available backup files over the live project and site data.
 
 `Publish` runs local git commands:
 
 ```bash
-git add data/projects.js PROJECT_STATUS.md
-git commit -m "Update portfolio projects"
+npm run check
+git add data/projects.js data/site.js PROJECT_STATUS.md assets/projects/ README.md tools/admin/README.md
+git commit -m "Update portfolio"
 git push
 ```
 
-Before publishing, the editor shows a summary of added, modified, and deleted projects. Empty portfolio saves and publishes require explicit typed confirmations.
+Before publishing, the editor shows a summary of added, modified, and deleted projects. It runs `npm run check` before staging. If the check fails, nothing is committed or pushed. Empty portfolio saves and publishes require explicit typed confirmations.
 
 Cloning this repo does not give anyone permission to publish. Publish only works on computers where Git is authenticated with write access to this repository.
 
@@ -239,6 +293,16 @@ http://127.0.0.1:8080/
 ```
 
 The preview server blocks `tools/admin/`, so it stays close to the public GitHub Pages output.
+
+## Validation
+
+Run:
+
+```bash
+npm run check
+```
+
+The check validates project structure, approved filters, draft handling, media paths, local asset existence, link formats, site metadata, social preview image, contact email, and footer links. It exits with code `1` on failure and code `0` on success.
 
 ## GitHub Pages Deployment
 

@@ -21,9 +21,12 @@ const state = {
   filters: [],
   projects: [],
   sourceProjects: [],
+  site: null,
+  sourceSite: null,
   selectedIndex: null,
   loadedSnapshot: "",
   savedProjectsSnapshot: "",
+  savedSiteSnapshot: "",
   backupExists: false,
   previewUrl: "http://127.0.0.1:8080/",
   imageLibrary: {
@@ -62,6 +65,7 @@ const elements = {
   projectList: document.querySelector("#project-list"),
   form: document.querySelector("#project-form"),
   slug: document.querySelector("#slug"),
+  draft: document.querySelector("#draft"),
   title: document.querySelector("#title"),
   year: document.querySelector("#year"),
   projectType: document.querySelector("#projectType"),
@@ -106,13 +110,32 @@ const elements = {
   imageTemplate: document.querySelector("#image-template"),
   thumbnailPresetButtons: Array.from(document.querySelectorAll("[data-thumbnail-preset]")),
   tabButtons: Array.from(document.querySelectorAll("[data-tab-target]")),
-  tabPanels: Array.from(document.querySelectorAll("[data-tab-panel]"))
+  tabPanels: Array.from(document.querySelectorAll("[data-tab-panel]")),
+  siteTitle: document.querySelector("#site-title"),
+  siteDescription: document.querySelector("#site-description"),
+  siteOgTitle: document.querySelector("#site-og-title"),
+  siteOgDescription: document.querySelector("#site-og-description"),
+  siteSocialImage: document.querySelector("#site-social-image"),
+  siteSocialImageAlt: document.querySelector("#site-social-image-alt"),
+  siteCanonicalUrl: document.querySelector("#site-canonical-url"),
+  siteHeaderName: document.querySelector("#site-header-name"),
+  siteHeaderMark: document.querySelector("#site-header-mark"),
+  siteContactLabel: document.querySelector("#site-contact-label"),
+  siteContactEmail: document.querySelector("#site-contact-email"),
+  siteAboutTitle: document.querySelector("#site-about-title"),
+  siteAboutLines: document.querySelector("#site-about-lines"),
+  siteLocation: document.querySelector("#site-location"),
+  siteSocialLinkList: document.querySelector("#site-social-link-list"),
+  siteRoleLinkList: document.querySelector("#site-role-link-list"),
+  addSiteSocialLinkButton: document.querySelector("#add-site-social-link-button"),
+  addSiteRoleLinkButton: document.querySelector("#add-site-role-link-button")
 };
 
 const deepClone = (value) => JSON.parse(JSON.stringify(value));
 
 const createBlankProject = () => ({
   slug: "",
+  draft: false,
   title: "",
   year: "",
   projectType: "",
@@ -125,6 +148,29 @@ const createBlankProject = () => ({
   media: [{ type: "image", src: "", alt: "", width: "", height: "" }],
   thumbnailPosition: "",
   thumbnailZoom: ""
+});
+
+const createBlankSite = () => ({
+  title: "",
+  description: "",
+  ogTitle: "",
+  ogDescription: "",
+  socialImage: "",
+  socialImageAlt: "",
+  canonicalUrl: "",
+  header: {
+    name: "",
+    mark: "",
+    contactLabel: "",
+    contactEmail: ""
+  },
+  footer: {
+    socialLinks: [{ label: "", url: "" }],
+    aboutTitle: "",
+    aboutLines: [""],
+    location: "",
+    roleLinks: [{ label: "", url: "" }]
+  }
 });
 
 const labelForCategory = (category) =>
@@ -382,6 +428,7 @@ const ensureActiveImageRow = () => {
 
 const projectForForm = (project = createBlankProject()) => ({
   slug: project.slug || "",
+  draft: project.draft === true,
   title: project.title || "",
   year: project.year || "",
   projectType: project.projectType || "",
@@ -429,6 +476,110 @@ const createLinkRow = (link = {}) => {
     refreshPreview();
   });
   return row;
+};
+
+const createSiteLinkRow = (listElement, link = {}) => {
+  const row = elements.linkTemplate.content.firstElementChild.cloneNode(true);
+  row.querySelector("[data-field='label']").value = link.label || "";
+  row.querySelector("[data-field='url']").value = link.url || "";
+  row.querySelector("[data-remove-row]").addEventListener("click", () => {
+    row.remove();
+    if (!listElement.children.length) {
+      listElement.append(createSiteLinkRow(listElement));
+    }
+    updateMode();
+  });
+  row.addEventListener("input", updateMode);
+  return row;
+};
+
+const getLinksFromList = (listElement) =>
+  Array.from(listElement.querySelectorAll(".repeatable-item"), (row) => {
+    const label = row.querySelector("[data-field='label']").value.trim();
+    const url = row.querySelector("[data-field='url']").value.trim();
+    return compactObject({ label, url });
+  }).filter((item) => Object.keys(item).length > 0);
+
+const siteForForm = (site = createBlankSite()) => ({
+  title: site.title || "",
+  description: site.description || "",
+  ogTitle: site.ogTitle || "",
+  ogDescription: site.ogDescription || "",
+  socialImage: site.socialImage || "",
+  socialImageAlt: site.socialImageAlt || "",
+  canonicalUrl: site.canonicalUrl || "",
+  header: {
+    name: site.header?.name || "",
+    mark: site.header?.mark || "",
+    contactLabel: site.header?.contactLabel || "",
+    contactEmail: site.header?.contactEmail || ""
+  },
+  footer: {
+    socialLinks:
+      Array.isArray(site.footer?.socialLinks) && site.footer.socialLinks.length
+        ? site.footer.socialLinks.map((link) => ({ label: link.label || "", url: link.url || "" }))
+        : [{ label: "", url: "" }],
+    aboutTitle: site.footer?.aboutTitle || "",
+    aboutLines:
+      Array.isArray(site.footer?.aboutLines) && site.footer.aboutLines.length
+        ? [...site.footer.aboutLines]
+        : [""],
+    location: site.footer?.location || "",
+    roleLinks:
+      Array.isArray(site.footer?.roleLinks) && site.footer.roleLinks.length
+        ? site.footer.roleLinks.map((link) => ({ label: link.label || "", url: link.url || "" }))
+        : [{ label: "", url: "" }]
+  }
+});
+
+const buildSiteFromForm = () => ({
+  title: elements.siteTitle.value.trim(),
+  description: elements.siteDescription.value.trim(),
+  ogTitle: elements.siteOgTitle.value.trim(),
+  ogDescription: elements.siteOgDescription.value.trim(),
+  socialImage: elements.siteSocialImage.value.trim(),
+  socialImageAlt: elements.siteSocialImageAlt.value.trim(),
+  canonicalUrl: elements.siteCanonicalUrl.value.trim(),
+  header: {
+    name: elements.siteHeaderName.value.trim(),
+    mark: elements.siteHeaderMark.value.trim(),
+    contactLabel: elements.siteContactLabel.value.trim(),
+    contactEmail: elements.siteContactEmail.value.trim()
+  },
+  footer: {
+    socialLinks: getLinksFromList(elements.siteSocialLinkList),
+    aboutTitle: elements.siteAboutTitle.value.trim(),
+    aboutLines: elements.siteAboutLines.value.split("\n").map((line) => line.trim()).filter(Boolean),
+    location: elements.siteLocation.value.trim(),
+    roleLinks: getLinksFromList(elements.siteRoleLinkList)
+  }
+});
+
+const populateSiteForm = (site) => {
+  const safe = siteForForm(site);
+  elements.siteTitle.value = safe.title;
+  elements.siteDescription.value = safe.description;
+  elements.siteOgTitle.value = safe.ogTitle;
+  elements.siteOgDescription.value = safe.ogDescription;
+  elements.siteSocialImage.value = safe.socialImage;
+  elements.siteSocialImageAlt.value = safe.socialImageAlt;
+  elements.siteCanonicalUrl.value = safe.canonicalUrl;
+  elements.siteHeaderName.value = safe.header.name;
+  elements.siteHeaderMark.value = safe.header.mark;
+  elements.siteContactLabel.value = safe.header.contactLabel;
+  elements.siteContactEmail.value = safe.header.contactEmail;
+  elements.siteAboutTitle.value = safe.footer.aboutTitle;
+  elements.siteAboutLines.value = safe.footer.aboutLines.join("\n");
+  elements.siteLocation.value = safe.footer.location;
+  elements.siteSocialLinkList.replaceChildren(
+    ...safe.footer.socialLinks.map((link) => createSiteLinkRow(elements.siteSocialLinkList, link))
+  );
+  elements.siteRoleLinkList.replaceChildren(
+    ...safe.footer.roleLinks.map((link) => createSiteLinkRow(elements.siteRoleLinkList, link))
+  );
+  state.site = safe;
+  state.sourceSite = deepClone(safe);
+  state.savedSiteSnapshot = JSON.stringify(safe);
 };
 
 const getImageRowValues = (row) => ({
@@ -695,6 +846,7 @@ const buildProjectFromForm = () => {
 
   const project = {
     slug: elements.slug.value.trim(),
+    ...(elements.draft.checked ? { draft: true } : {}),
     title: elements.title.value.trim(),
     year: elements.year.value.trim(),
     projectType: elements.projectType.value.trim(),
@@ -725,6 +877,7 @@ const currentProjectPreview = () => JSON.stringify(buildProjectFromForm(), null,
 const hasMeaningfulData = (project) =>
   Boolean(
     project.slug ||
+      project.draft ||
       project.title ||
       project.year ||
       project.projectType ||
@@ -759,8 +912,10 @@ const getProjectsForAnalysis = () => {
 
 const isDirty = () => JSON.stringify(buildProjectFromForm()) !== state.loadedSnapshot;
 
+const isSiteDirty = () => JSON.stringify(buildSiteFromForm()) !== state.savedSiteSnapshot;
+
 const confirmDiscardIfDirty = () => {
-  if (!isDirty()) {
+  if (!isDirty() && !isSiteDirty()) {
     return true;
   }
 
@@ -770,7 +925,12 @@ const confirmDiscardIfDirty = () => {
 const updateMode = () => {
   const dirty = isDirty();
   const workingListDirty = JSON.stringify(state.projects) !== state.savedProjectsSnapshot;
-  const suffix = workingListDirty ? " / local file not saved" : "";
+  const siteDirty = isSiteDirty();
+  const dirtyLabels = [
+    workingListDirty ? "project list not saved" : "",
+    siteDirty ? "site text not saved" : ""
+  ].filter(Boolean);
+  const suffix = dirtyLabels.length ? ` / ${dirtyLabels.join(", ")}` : "";
 
   if (state.selectedIndex === null) {
     elements.editorMode.textContent = dirty
@@ -1120,6 +1280,7 @@ const populateForm = (project, index = null) => {
   state.activeImageRowId = null;
 
   elements.slug.value = safe.slug;
+  elements.draft.checked = safe.draft;
   elements.title.value = safe.title;
   elements.year.value = safe.year;
   elements.projectType.value = safe.projectType;
@@ -1167,10 +1328,13 @@ const renderProjectList = () => {
     const selectButton = document.createElement("button");
     selectButton.type = "button";
     selectButton.className = "project-item__select";
-    selectButton.innerHTML = `
-      <div class="project-item__title">${project.title}</div>
-      <div class="project-item__meta">${project.year}</div>
-    `;
+    const title = document.createElement("div");
+    title.className = "project-item__title";
+    title.textContent = project.title || "Untitled";
+    const meta = document.createElement("div");
+    meta.className = "project-item__meta";
+    meta.textContent = [project.year, project.draft ? "Draft" : ""].filter(Boolean).join(" / ");
+    selectButton.append(title, meta);
     selectButton.addEventListener("click", () => {
       if (!confirmDiscardIfDirty()) {
         return;
@@ -1510,6 +1674,7 @@ const loadProjects = async () => {
   state.projects = deepClone(payload.projects);
   state.sourceProjects = deepClone(payload.projects);
   state.savedProjectsSnapshot = JSON.stringify(state.projects);
+  populateSiteForm(payload.site || createBlankSite());
   state.backupExists = Boolean(payload.backupExists);
   state.previewUrl = state.runtime.canUseLocalApi ? payload.previewUrl || state.previewUrl : staticSitePreviewUrl();
 
@@ -1523,7 +1688,7 @@ const loadProjects = async () => {
   renderProjectList();
   setGitOutput(
     state.runtime.canUseLocalApi
-      ? payload.gitStatus?.join("\n") || "Working tree clean for data/projects.js and PROJECT_STATUS.md."
+      ? payload.gitStatus?.join("\n") || "Working tree clean for approved portfolio files."
       : `${publicDisabledMessage()}\n\nEditing, previews, and JSON export are available. Save, publish, backup restore, image scanning, and dimension detection are blocked.`
   );
   updateBackupButtons();
@@ -1538,11 +1703,13 @@ const loadProjects = async () => {
 
 const loadStaticProjects = async () => {
   const moduleUrl = new URL(`../../data/projects.js?admin-cache=${Date.now()}`, import.meta.url).href;
-  const module = await import(moduleUrl);
+  const siteModuleUrl = new URL(`../../data/site.js?admin-cache=${Date.now()}`, import.meta.url).href;
+  const [module, siteModule] = await Promise.all([import(moduleUrl), import(siteModuleUrl)]);
 
   return {
     filters: module.PROJECT_DISPLAY_FILTERS || [],
     projects: module.PROJECTS || [],
+    site: siteModule.SITE || createBlankSite(),
     gitStatus: [publicDisabledMessage()],
     previewUrl: staticSitePreviewUrl(),
     backupExists: false
@@ -1574,7 +1741,7 @@ const saveLocally = async ({ skipConfirm = false, emptyConfirmationOverride = nu
 
   if (!skipConfirm) {
     const confirmed = window.confirm(
-      "Save locally?\n\nThis rewrites:\n- data/projects.js\n\nBefore saving, the editor refreshes:\n- data/projects.backup.js"
+      "Save locally?\n\nThis rewrites:\n- data/projects.js\n- data/site.js\n\nBefore saving, the editor refreshes local backups."
     );
     if (!confirmed) {
       return false;
@@ -1598,11 +1765,13 @@ const saveLocally = async ({ skipConfirm = false, emptyConfirmationOverride = nu
       },
       body: JSON.stringify({
         projects: state.projects,
+        site: buildSiteFromForm(),
         emptyPortfolioConfirmation: emptyConfirmation || ""
       })
     });
 
     state.savedProjectsSnapshot = JSON.stringify(state.projects);
+    state.savedSiteSnapshot = JSON.stringify(buildSiteFromForm());
     state.backupExists = Boolean(payload.backupExists);
     updateBackupButtons();
     setStatus(payload.message);
@@ -1632,7 +1801,7 @@ const restoreBackup = async (mode) => {
   }
 
   const confirmed = window.confirm(
-    `${mode === "undo" ? "Undo last save" : "Restore backup"}?\n\nThis replaces data/projects.js with data/projects.backup.js.`
+    `${mode === "undo" ? "Undo last save" : "Restore backup"}?\n\nThis restores available project and site data backups.`
   );
   if (!confirmed) {
     return;
@@ -1683,13 +1852,13 @@ const publishChanges = async () => {
   }
 
   const finalConfirmed = window.confirm(
-    "Publish changes to GitHub?\n\nThis will run:\n- git add data/projects.js PROJECT_STATUS.md\n- git commit -m \"Update portfolio projects\"\n- git push"
+    "Publish changes to GitHub?\n\nThis will run:\n- npm run check\n- git add approved portfolio files\n- git commit -m \"Update portfolio\"\n- git push"
   );
   if (!finalConfirmed) {
     return;
   }
 
-  if (JSON.stringify(state.projects) !== state.savedProjectsSnapshot) {
+  if (JSON.stringify(state.projects) !== state.savedProjectsSnapshot || isSiteDirty()) {
     const saved = await saveLocally({ skipConfirm: true, emptyConfirmationOverride: emptyConfirmation });
     if (!saved) {
       return;
@@ -1710,6 +1879,8 @@ const publishChanges = async () => {
 
     state.sourceProjects = deepClone(state.projects);
     state.savedProjectsSnapshot = JSON.stringify(state.projects);
+    state.sourceSite = deepClone(buildSiteFromForm());
+    state.savedSiteSnapshot = JSON.stringify(buildSiteFromForm());
     setStatus(payload.message);
     setGitOutput(payload.output);
     updateMode();
@@ -1788,6 +1959,14 @@ const bindEvents = () => {
   elements.addLinkButton.addEventListener("click", () => {
     elements.linkList.append(createLinkRow());
     refreshPreview();
+  });
+  elements.addSiteSocialLinkButton.addEventListener("click", () => {
+    elements.siteSocialLinkList.append(createSiteLinkRow(elements.siteSocialLinkList));
+    updateMode();
+  });
+  elements.addSiteRoleLinkButton.addEventListener("click", () => {
+    elements.siteRoleLinkList.append(createSiteLinkRow(elements.siteRoleLinkList));
+    updateMode();
   });
   elements.addImageButton.addEventListener("click", () => {
     const row = createImageRow({ type: "image" });

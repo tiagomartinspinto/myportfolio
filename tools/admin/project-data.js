@@ -11,6 +11,7 @@ const DISPLAY_FILTERS = ["all", ...APPROVED_CATEGORIES];
 
 const PROJECT_KEYS = new Set([
   "slug",
+  "draft",
   "title",
   "year",
   "projectType",
@@ -158,6 +159,7 @@ const validateProjects = (projects) => {
       }
 
       const slug = trimString(project.slug);
+      const draft = project.draft === true;
       const title = trimString(project.title);
       const year = trimString(project.year);
       const projectType = trimString(project.projectType);
@@ -253,20 +255,27 @@ const validateProjects = (projects) => {
           ? project.images.map((image) => ({ type: "image", ...image }))
           : [];
 
-      if (!Array.isArray(project.media) && !Array.isArray(project.images)) {
+      if (!Array.isArray(project.media) && !Array.isArray(project.images) && !draft) {
         errors.push(`projects[${index}].media must be an array.`);
       }
 
-      const media = rawMedia
+      const mediaItemsToValidate = draft
+        ? rawMedia.filter((item) =>
+            trimString(item?.source || item?.src || item?.thumbnail || item?.alt || item?.caption)
+          )
+        : rawMedia;
+
+      const media = mediaItemsToValidate
         .map((item, mediaIndex) => validateMediaItem(item, `projects[${index}].media[${mediaIndex}]`, errors))
         .filter(Boolean);
 
-      if (!media.length) {
+      if (!media.length && !draft) {
         errors.push(`projects[${index}].media must contain at least one media item.`);
       }
 
       const sanitized = {
         slug,
+        ...(draft ? { draft: true } : {}),
         title,
         year,
         projectType,
