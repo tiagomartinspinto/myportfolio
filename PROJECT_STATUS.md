@@ -7,7 +7,8 @@ Date: 2026-05-20
 - Refined project copy across the portfolio toward a more reflective art, technology, education, and research practice voice
 - Kept existing project identities, dates, roles, and directness while making the language more process-oriented and human
 - Added `Programming for Visual Artists` as a full 2026 teaching / creative coding / education portfolio project
-- Added a local course-preview SVG asset for the new teaching project
+- Replaced the Programming for Visual Artists thumbnail with fresh PNG screenshots of the current public course website
+- Added course landing, course-materials, and example sketch screenshots under `assets/projects/programming-for-visual-artists/`
 - Updated the homepage metadata and footer about text toward art, technology, education, Aalto teaching, art education research, workshop practice, Helsinki, and making
 - Extended project data from image-only galleries to mixed `media` entries for image, video, and audio
 - Preserved compatibility with older `images` arrays in the public renderer and local editor
@@ -28,7 +29,9 @@ Date: 2026-05-20
 - `data/projects.js`
 - `README.md`
 - `PROJECT_STATUS.md`
-- `assets/projects/programming-for-visual-artists/site-preview.svg`
+- `assets/projects/programming-for-visual-artists/site-preview.png`
+- `assets/projects/programming-for-visual-artists/course-materials-2025-2026.png`
+- `assets/projects/programming-for-visual-artists/particles-follow-sketch.png`
 - `tools/admin/README.md`
 - `tools/admin/admin.js`
 - `tools/admin/image-utils.js`
