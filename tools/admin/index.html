@@ -253,8 +253,12 @@
 
               <section class="panel">
                 <div class="panel-heading">
-                  <h2>Project images</h2>
-                  <button id="add-image-button" type="button">Add image</button>
+                  <h2>Project media</h2>
+                  <div class="button-row">
+                    <button id="add-image-button" type="button">Add image</button>
+                    <button id="add-video-button" type="button">Add video</button>
+                    <button id="add-audio-button" type="button">Add audio</button>
+                  </div>
                 </div>
                 <div id="image-list" class="repeatable-list image-list"></div>
               </section>
@@ -371,13 +375,40 @@
 
         <div class="image-entry__content">
           <div class="repeatable-item--image-grid">
+            <label class="field">
+              <span class="field-label">Type</span>
+              <select class="text-input" data-field="type">
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+                <option value="audio">Audio</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Provider</span>
+              <select class="text-input" data-field="provider">
+                <option value="">Auto / image</option>
+                <option value="youtube">YouTube</option>
+                <option value="vimeo">Vimeo</option>
+                <option value="file">Local file</option>
+                <option value="soundcloud">SoundCloud</option>
+                <option value="url">Direct URL</option>
+              </select>
+            </label>
             <label class="field field-span-2">
-              <span class="field-label">Src</span>
+              <span class="field-label">Source</span>
               <input class="text-input" data-field="src" type="text">
             </label>
             <label class="field field-span-2">
               <span class="field-label">Alt</span>
               <input class="text-input" data-field="alt" type="text">
+            </label>
+            <label class="field field-span-2">
+              <span class="field-label">Caption</span>
+              <input class="text-input" data-field="caption" type="text">
+            </label>
+            <label class="field field-span-2">
+              <span class="field-label">Thumbnail</span>
+              <input class="text-input" data-field="thumbnail" type="text" placeholder="Optional image path for video/audio">
             </label>
             <label class="field">
               <span class="field-label">Width</span>
@@ -393,13 +424,13 @@
             <div class="button-row">
               <button type="button" data-image-action="browse">Use browser</button>
               <button type="button" data-image-action="detect-dimensions">Detect dimensions</button>
-              <button type="button" data-image-action="copy-path">Copy path</button>
-              <button type="button" data-image-action="open-image">Open image</button>
+              <button type="button" data-image-action="copy-path">Copy source</button>
+              <button type="button" data-image-action="open-image">Open media</button>
             </div>
             <div class="button-row">
               <button type="button" data-image-action="move-up">Move up</button>
               <button type="button" data-image-action="move-down">Move down</button>
-              <button type="button" data-image-action="set-first">Set as thumbnail</button>
+              <button type="button" data-image-action="set-first">Set first</button>
               <button type="button" data-image-action="duplicate">Duplicate</button>
               <button class="danger-button" type="button" data-image-action="remove">Remove from project</button>
             </div>

@@ -10,6 +10,52 @@ export const PROJECT_DISPLAY_FILTERS = [
 
 export const PROJECTS = [
   {
+    slug: "programming-for-visual-artists",
+    title: "Programming for Visual Artists",
+    year: "2026",
+    projectType: "Teaching / Creative Coding / Education",
+    role: "Course author, lecturer, material development, and creative coding facilitation",
+    categories: [
+      "learning",
+      "research",
+      "web"
+    ],
+    tags: [
+      "Aalto",
+      "creative coding",
+      "p5.js",
+      "Processing",
+      "teaching"
+    ],
+    shortDescription: "Aalto course archive for drawing with code and treating software as studio material.",
+    fullDescription: [
+      "Programming for Visual Artists is an Aalto University course and public archive for learning code through visual practice, using Processing, JavaScript, and p5.js as studio materials.",
+      "The sessions move from coordinates, color, and interaction toward loops, noise, functions, particles, and small systems. The teaching asks artists to observe how a rule becomes an image, how a sketch becomes a method, and how programming can stay close to experimentation.",
+      "The site gathers slides, exercises, source sketches, and browser-based examples so students can return to the material during and after the course."
+    ],
+    links: [
+      {
+        label: "Course archive",
+        url: "https://tiagomartinspinto.github.io/aalto-programming-visual-artists/"
+      },
+      {
+        label: "GitHub repository",
+        url: "https://github.com/tiagomartinspinto/aalto-programming-visual-artists"
+      }
+    ],
+    media: [
+      {
+        type: "image",
+        src: "assets/projects/programming-for-visual-artists/site-preview.svg",
+        alt: "Programming for Visual Artists course preview with dark interface, grid, and course title",
+        width: 1200,
+        height: 630,
+        caption: "Public course archive for Aalto University creative coding teaching."
+      }
+    ],
+    thumbnailPosition: "50% 50%"
+  },
+  {
     slug: "kuperkeikka",
     title: "Kuperkeikka",
     year: "2025",
@@ -25,10 +71,10 @@ export const PROJECTS = [
       "inclusion",
       "education"
     ],
-    shortDescription: "Podcast with immigrant-background teenagers on education and belonging.",
+    shortDescription: "Podcast with immigrant-background teenagers on school, belonging, and being heard.",
     fullDescription: [
-      "Kuperkeikka is a podcast series that amplifies the voices of immigrant and immigrant-background teenagers, asking how schools and communities can better support them.",
-      "The project combines public pedagogy, media production, and youth work. Through open conversation and lived experience, it creates space for young people to speak back to the structures that shape their education."
+      "Kuperkeikka is a podcast series made with immigrant and immigrant-background teenagers, asking how schools and communities can listen and respond with more care.",
+      "The project brings together public pedagogy, youth work, and participatory media. Conversation becomes a place where lived experience can meet the systems that shape education."
     ],
     links: [
       {
@@ -36,12 +82,14 @@ export const PROJECTS = [
         url: "https://open.spotify.com/show/2itv5aRXDMaBTgLUOo389W?si=4d4df1ae65e543bf"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/kuperkeikka/kuperkeikka-logo.png",
         alt: "Kuperkeikka podcast artwork with silhouetted figures and title",
         width: 1600,
-        height: 1600
+        height: 1600,
+        caption: "Podcast artwork for the youth-centered series."
       }
     ]
   },
@@ -61,10 +109,10 @@ export const PROJECTS = [
       "materials research",
       "installation"
     ],
-    shortDescription: "Exhibition design for bio-based materials at Helsinki Design Week.",
+    shortDescription: "Exhibition design translating bio-based materials research into public space.",
     fullDescription: [
       "Aalto University and VTT presented Bioeconomy 2.0 during Helsinki Design Week 2024 as part of the Makers of the Impossible exhibitions at Designs for a Cooler Planet.",
-      "The work moved between spatial coordination, exhibition design, and visual communication, translating research on bio-based materials into a public-facing installation format."
+      "The work moved between spatial coordination, exhibition design, and visual communication, translating research on bio-based materials into an installation that could be encountered by a wider public."
     ],
     links: [
       {
@@ -72,26 +120,30 @@ export const PROJECTS = [
         url: "https://www.aalto.fi/en/events/bioeconomy-20"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-01.png",
         alt: "Cooler Planet 2024 exhibition view with dark sculptural display",
         width: 645,
         height: 644
       },
       {
+        type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-02.png",
         alt: "Cooler Planet 2024 exhibition wall with material samples and labels",
         width: 1600,
         height: 1068
       },
       {
+        type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-03.png",
         alt: "Cooler Planet 2024 exhibition interior with visitors and displays",
         width: 1600,
         height: 1067
       },
       {
+        type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-04.png",
         alt: "Cooler Planet 2024 exhibition poster layout in portrait format",
         width: 1126,
@@ -116,10 +168,10 @@ export const PROJECTS = [
       "digital pedagogy",
       "collaboration"
     ],
-    shortDescription: "Hybrid card game and web tool for collaborative play.",
+    shortDescription: "Hybrid card game and web tool for collaborative play, chance, and pedagogy.",
     fullDescription: [
       "Sattuma is a hybrid card game developed as part of the Taiteet ja Digi project, a collaboration between Aalto University and the Academy of Fine Arts in Helsinki.",
-      "The role combined full-stack web development, visual design, and the implementation of game mechanics. The project moved between artistic process, interface design, and accessible online play."
+      "The role combined web development, visual design, and game mechanics. The project moved between artistic process, interface design, and accessible online play as a shared space for making."
     ],
     links: [
       {
@@ -127,26 +179,30 @@ export const PROJECTS = [
         url: "https://github.com/tiagomartinspinto/sattumacards"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/sattuma-com/sattuma-01.png",
         alt: "Sattuma project cover with handwritten yellow logo on dark background",
         width: 675,
         height: 452
       },
       {
+        type: "image",
         src: "assets/projects/sattuma-com/sattuma-02.png",
         alt: "Sattuma interface showing illustrated cards and game layout",
         width: 809,
         height: 707
       },
       {
+        type: "image",
         src: "assets/projects/sattuma-com/sattuma-03.png",
         alt: "Sattuma browser experience with interface panels and card content",
         width: 1500,
         height: 974
       },
       {
+        type: "image",
         src: "assets/projects/sattuma-com/sattuma-04.png",
         alt: "Sattuma vertical screen showing card detail and interface controls",
         width: 750,
@@ -170,10 +226,10 @@ export const PROJECTS = [
       "poetry",
       "documentation"
     ],
-    shortDescription: "Visual identity and documentation for a performance work.",
+    shortDescription: "Visual identity and documentation for a performance of memory, body, and sound.",
     fullDescription: [
       "Carried by Invisible Bodies explores memory, movement, and materiality through dance, sculpture, poetry, and live harp music.",
-      "As visual designer and editor, the work focused on documentation and teasers that stayed close to the performance's shifting relationship between body, material, and sound."
+      "As visual designer and editor, the documentation stayed close to the performance's shifting relation between body, material, space, and sound."
     ],
     links: [
       {
@@ -181,26 +237,30 @@ export const PROJECTS = [
         url: "https://www.buda.be/en/residentie/carried-by-invisible-bodies/"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02.png",
         alt: "Carried by Invisible Bodies documentation still with performers and sculptural materials",
         width: 1538,
         height: 921
       },
       {
+        type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01.png",
         alt: "Carried by Invisible Bodies title image with pale typography on white field",
         width: 1053,
         height: 705
       },
       {
+        type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-03.png",
         alt: "Carried by Invisible Bodies detail still from performance documentation",
         width: 1538,
         height: 921
       },
       {
+        type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-04.png",
         alt: "Carried by Invisible Bodies performance teaser frame",
         width: 1538,
@@ -225,9 +285,9 @@ export const PROJECTS = [
       "collaboration",
       "documentation"
     ],
-    shortDescription: "Video documentation across exhibition and studio contexts.",
+    shortDescription: "Video documentation across exhibition, studio, and shared process.",
     fullDescription: [
-      "Produced and edited a video for the Työhuonella exhibition at Seinäjoen Taidehalli, documenting the collaborative process of four artists working across performance, poetry, costume, and visual art.",
+      "Produced and edited a video for the Työhuonella exhibition at Seinäjoen Taidehalli, documenting four artists working across performance, poetry, costume, and visual art.",
       "The project also connected with documentation from the SWAP exhibition at Gallery Oksasenkatu 11 in Helsinki, making process and exhibition space visible as part of the same conversation."
     ],
     links: [
@@ -236,8 +296,9 @@ export const PROJECTS = [
         url: "https://research.aalto.fi/en/publications/ty%C3%B6huoneella-videon%C3%A4yt%C3%B6s/"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01.jpg",
         alt: "Työhuonella / SWAP documentation still with visitors in a gallery space",
         width: 1600,
@@ -260,10 +321,10 @@ export const PROJECTS = [
       "distributed performance",
       "multicam"
     ],
-    shortDescription: "Live video production for a distributed performance series.",
+    shortDescription: "Live video production for distributed performance and remote stages.",
     fullDescription: [
       "From the Dead Air Orgy brought together live-streamed episodes, multicam feeds, pre-recorded material, and remote performance spaces.",
-      "The production work included building a recording system with cellphone cameras and WiFi across a full building, coordinating multiple stages, and shaping the final live broadcast experience."
+      "The production work included building a recording system with cellphone cameras and WiFi across a full building, coordinating multiple stages, and shaping the broadcast as a temporary media system."
     ],
     links: [
       {
@@ -271,26 +332,30 @@ export const PROJECTS = [
         url: "https://fromthedeadairorgy.hotglue.me/?broadcasts/"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-01.png",
         alt: "From the Dead Air Orgy visual still from live-streamed performance",
         width: 1441,
         height: 1012
       },
       {
+        type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-02.png",
         alt: "From the Dead Air Orgy stage frame with performers and projection",
         width: 1538,
         height: 1052
       },
       {
+        type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-03.png",
         alt: "From the Dead Air Orgy remote performance feed still",
         width: 1052,
         height: 554
       },
       {
+        type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-04.png",
         alt: "From the Dead Air Orgy documentation image from live broadcast production",
         width: 1538,
@@ -315,14 +380,15 @@ export const PROJECTS = [
       "participatory practice",
       "conference"
     ],
-    shortDescription: "Community research through cooking, performance, and shared process.",
+    shortDescription: "Community research through cooking, performance, and shared ritual.",
     fullDescription: [
       "Eating Together explored communal experience through cooking as both artistic practice and research method.",
-      "At the MAKING | INSEA 2019 conference at the University of British Columbia, the work included collaborative research and the performance Eating Together: A Reflection on Togetherness Through Cooking a Soup."
+      "At the MAKING | INSEA 2019 conference at the University of British Columbia, the work became a collective reflection on togetherness through the simple, material act of cooking a soup."
     ],
     links: [],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/eating-together/eating-together-01.jpeg",
         alt: "Eating Together workshop table with participants gathered around collective activity",
         width: 1532,
@@ -347,10 +413,10 @@ export const PROJECTS = [
       "borders",
       "young people"
     ],
-    shortDescription: "Youth media project on borders, exchange, and authorship.",
+    shortDescription: "Youth media project on borders, exchange, and shared authorship.",
     fullDescription: [
       "Produced conceptual videos for the START - Create Cultural Change program under the artistic direction of Vassia Valkanioti and with support from the Robert Bosch Stiftung.",
-      "The project explored interactions between German and Polish teenagers and used moving image to think through borders, cultural exchange, and shared authorship."
+      "The project explored encounters between German and Polish teenagers, using moving image to think through borders, cultural exchange, and the careful work of making together."
     ],
     links: [
       {
@@ -358,8 +424,9 @@ export const PROJECTS = [
         url: "https://flyingduets.wordpress.com/"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/flying-duets/flying-duets-01.jpeg",
         alt: "Flying Duets outdoor structure in a wooded landscape",
         width: 789,
@@ -384,10 +451,10 @@ export const PROJECTS = [
       "community",
       "participatory practice"
     ],
-    shortDescription: "Participatory photography project with young people in Lisbon.",
+    shortDescription: "Participatory photography with young people in Lisbon.",
     fullDescription: [
       "BQG a Preto e Branco brought together four months of photography sessions with young people from Bairro Quinta Grande in Lisbon.",
-      "Participants reflected on their neighborhood, explored its boundaries, and photographed places that mattered to them. The resulting work was later exhibited at Casa dos Mundos."
+      "Participants observed their neighborhood, tested its boundaries, and photographed places that mattered to them. The resulting work was later shown at Casa dos Mundos."
     ],
     links: [
       {
@@ -395,12 +462,20 @@ export const PROJECTS = [
         url: "https://youtu.be/vhMKGt1EqvY?si=f3UkkBLKGSVdAuUY"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/bqg/bqg-01.jpeg",
         alt: "BQG portrait photograph from the youth photography project",
         width: 1600,
         height: 1142
+      },
+      {
+        type: "video",
+        provider: "youtube",
+        source: "https://youtu.be/vhMKGt1EqvY?si=f3UkkBLKGSVdAuUY",
+        caption: "Project video documentation.",
+        thumbnail: "assets/projects/bqg/bqg-01.jpeg"
       }
     ]
   },
@@ -431,30 +506,41 @@ export const PROJECTS = [
         url: "https://youtu.be/vhMKGt1EqvY?si=1nF1nbrBvy6TECxa"
       }
     ],
-    images: [
+    media: [
       {
+        type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-01.jpeg",
         alt: "Sagrada Família family portrait photograph in an interior",
         width: 1600,
         height: 1143
       },
       {
+        type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-02.jpg",
         alt: "Sagrada Família documentary photograph of a family in their home",
         width: 750,
         height: 536
       },
       {
+        type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-03.jpg",
         alt: "Sagrada Família portrait photograph from the home-based series",
         width: 750,
         height: 536
       },
       {
+        type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-04.jpg",
         alt: "Sagrada Família interior portrait scene",
         width: 750,
         height: 536
+      },
+      {
+        type: "video",
+        provider: "youtube",
+        source: "https://youtu.be/vhMKGt1EqvY?si=1nF1nbrBvy6TECxa",
+        caption: "Project video documentation.",
+        thumbnail: "assets/projects/sagrada-familia/sagrada-familia-01.jpeg"
       }
     ]
   }

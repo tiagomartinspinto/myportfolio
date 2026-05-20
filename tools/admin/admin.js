@@ -93,6 +93,8 @@ const elements = {
   addParagraphButton: document.querySelector("#add-paragraph-button"),
   addLinkButton: document.querySelector("#add-link-button"),
   addImageButton: document.querySelector("#add-image-button"),
+  addVideoButton: document.querySelector("#add-video-button"),
+  addAudioButton: document.querySelector("#add-audio-button"),
   copyCurrentButton: document.querySelector("#copy-current-button"),
   downloadCurrentButton: document.querySelector("#download-current-button"),
   preview: document.querySelector("#object-preview"),
@@ -120,7 +122,7 @@ const createBlankProject = () => ({
   shortDescription: "",
   fullDescription: [""],
   links: [{ label: "", url: "" }],
-  images: [{ src: "", alt: "", width: "", height: "" }],
+  media: [{ type: "image", src: "", alt: "", width: "", height: "" }],
   thumbnailPosition: "",
   thumbnailZoom: ""
 });
@@ -134,6 +136,35 @@ const labelForCategory = (category) =>
 const normalizeAssetPath = (value) => String(value || "").trim().replace(/\\/g, "/").replace(/^\/+/, "");
 
 const isValidAssetPath = (value) => normalizeAssetPath(value).startsWith("assets/projects/");
+
+const mediaItemsForProject = (project = {}) => {
+  if (Array.isArray(project.media) && project.media.length) {
+    return project.media.map((item) => ({
+      type: item.type || "image",
+      provider: item.provider || "",
+      src: item.src || item.source || "",
+      alt: item.alt || "",
+      caption: item.caption || "",
+      thumbnail: item.thumbnail || "",
+      width: item.width ?? "",
+      height: item.height ?? ""
+    }));
+  }
+
+  return (project.images || []).map((image) => ({
+    type: "image",
+    provider: "",
+    src: image.src || "",
+    alt: image.alt || "",
+    caption: image.caption || "",
+    thumbnail: "",
+    width: image.width ?? "",
+    height: image.height ?? ""
+  }));
+};
+
+const imageMediaItemsForProject = (project = {}) =>
+  mediaItemsForProject(project).filter((item) => item.type === "image");
 
 const formatList = (items) => (items.length ? items.join(", ") : "none");
 
@@ -366,15 +397,9 @@ const projectForForm = (project = createBlankProject()) => ({
     Array.isArray(project.links) && project.links.length
       ? project.links.map((link) => ({ label: link.label || "", url: link.url || "" }))
       : [{ label: "", url: "" }],
-  images:
-    Array.isArray(project.images) && project.images.length
-      ? project.images.map((image) => ({
-          src: image.src || "",
-          alt: image.alt || "",
-          width: image.width ?? "",
-          height: image.height ?? ""
-        }))
-      : [{ src: "", alt: "", width: "", height: "" }],
+  media: mediaItemsForProject(project).length
+    ? mediaItemsForProject(project)
+    : [{ type: "image", provider: "", src: "", alt: "", caption: "", thumbnail: "", width: "", height: "" }],
   thumbnailPosition: project.thumbnailPosition || "",
   thumbnailZoom: project.thumbnailZoom ?? ""
 });
@@ -407,8 +432,12 @@ const createLinkRow = (link = {}) => {
 };
 
 const getImageRowValues = (row) => ({
+  type: row.querySelector("[data-field='type']").value || "image",
+  provider: row.querySelector("[data-field='provider']").value || "",
   src: row.querySelector("[data-field='src']").value.trim(),
   alt: row.querySelector("[data-field='alt']").value.trim(),
+  caption: row.querySelector("[data-field='caption']").value.trim(),
+  thumbnail: row.querySelector("[data-field='thumbnail']").value.trim(),
   width: row.querySelector("[data-field='width']").value.trim(),
   height: row.querySelector("[data-field='height']").value.trim()
 });
@@ -448,7 +477,7 @@ const moveImageRow = (row, delta) => {
 const setImageAsFirst = (row) => {
   elements.imageList.prepend(row);
   setActiveImageRow(row.dataset.rowId);
-  setStatus("Image set as the project thumbnail source.");
+  setStatus("Media item moved to the first position.");
   refreshPreview();
 };
 
@@ -475,18 +504,37 @@ const removeImageRow = (row) => {
 };
 
 const openImageFromRow = (row) => {
-  const src = normalizeAssetPath(row.querySelector("[data-field='src']").value);
-  const file = getImageLibraryFile(src);
-  if (!file) {
-    setStatus("Image file not found.");
+  const type = row.querySelector("[data-field='type']").value || "image";
+  const rawSource = row.querySelector("[data-field='src']").value.trim();
+  const src = type === "image" ? normalizeAssetPath(rawSource) : rawSource;
+
+  if (!src) {
+    setStatus("Add a media source first.");
     return;
   }
 
-  window.open(assetUrlForSrc(file.src), "_blank", "noopener,noreferrer");
+  if (type === "image") {
+    const file = getImageLibraryFile(src);
+    if (!file) {
+      setStatus("Image file not found.");
+      return;
+    }
+
+    window.open(assetUrlForSrc(file.src), "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  const openUrl = isValidAssetPath(src) ? assetUrlForSrc(src) : src;
+  window.open(openUrl, "_blank", "noopener,noreferrer");
 };
 
 const detectDimensionsForRow = async (row) => {
   if (blockLocalApiAction("Dimension detection")) {
+    return;
+  }
+
+  if ((row.querySelector("[data-field='type']").value || "image") !== "image") {
+    setStatus("Dimension detection is only available for image media.");
     return;
   }
 
@@ -521,6 +569,8 @@ const fillActiveImageRow = (src) => {
     return;
   }
 
+  row.querySelector("[data-field='type']").value = "image";
+  row.querySelector("[data-field='provider']").value = "";
   row.querySelector("[data-field='src']").value = src;
   setActiveImageRow(row.dataset.rowId);
   setStatus(`Selected ${src}.`);
@@ -531,12 +581,16 @@ const createImageRow = (image = {}) => {
   const row = elements.imageTemplate.content.firstElementChild.cloneNode(true);
   row.dataset.rowId = `image-row-${state.nextImageRowId++}`;
 
-  row.querySelector("[data-field='src']").value = image.src || "";
+  row.querySelector("[data-field='type']").value = image.type || "image";
+  row.querySelector("[data-field='provider']").value = image.provider || "";
+  row.querySelector("[data-field='src']").value = image.src || image.source || "";
   row.querySelector("[data-field='alt']").value = image.alt || "";
+  row.querySelector("[data-field='caption']").value = image.caption || "";
+  row.querySelector("[data-field='thumbnail']").value = image.thumbnail || "";
   row.querySelector("[data-field='width']").value = image.width ?? "";
   row.querySelector("[data-field='height']").value = image.height ?? "";
 
-  row.querySelectorAll("input").forEach((input) => {
+  row.querySelectorAll("input, select").forEach((input) => {
     input.addEventListener("focus", () => setActiveImageRow(row.dataset.rowId));
   });
 
@@ -544,11 +598,30 @@ const createImageRow = (image = {}) => {
 
   const browseButton = row.querySelector("[data-image-action='browse']");
   const detectButton = row.querySelector("[data-image-action='detect-dimensions']");
+  const typeSelect = row.querySelector("[data-field='type']");
 
-  browseButton.disabled = !state.runtime.canUseLocalApi;
-  browseButton.title = state.runtime.canUseLocalApi ? "" : "Image library browsing is disabled on public site.";
-  detectButton.disabled = !state.runtime.canUseLocalApi;
-  detectButton.title = state.runtime.canUseLocalApi ? "" : "Dimension detection is disabled on public site.";
+  const syncMediaRowControls = () => {
+    const isImage = typeSelect.value === "image";
+    browseButton.disabled = !state.runtime.canUseLocalApi || !isImage;
+    browseButton.title = state.runtime.canUseLocalApi
+      ? isImage
+        ? ""
+        : "The image browser is only for local image media."
+      : "Image library browsing is disabled on public site.";
+    detectButton.disabled = !state.runtime.canUseLocalApi || !isImage;
+    detectButton.title = state.runtime.canUseLocalApi
+      ? isImage
+        ? ""
+        : "Dimension detection is only for image media."
+      : "Dimension detection is disabled on public site.";
+  };
+
+  syncMediaRowControls();
+  typeSelect.addEventListener("change", () => {
+    syncMediaRowControls();
+    setActiveImageRow(row.dataset.rowId);
+    refreshPreview();
+  });
 
   browseButton.addEventListener("click", () => {
     if (blockLocalApiAction("Image library browsing")) {
@@ -566,10 +639,10 @@ const createImageRow = (image = {}) => {
   row.querySelector("[data-image-action='copy-path']").addEventListener("click", () => {
     const src = row.querySelector("[data-field='src']").value.trim();
     if (!src) {
-      setStatus("Add an image path first.");
+      setStatus("Add a media source first.");
       return;
     }
-    copyText(src, "Image path copied.");
+    copyText(src, "Media source copied.");
   });
 
   row.querySelector("[data-image-action='open-image']").addEventListener("click", () => {
@@ -603,13 +676,20 @@ const buildProjectFromForm = () => {
     return compactObject({ label, url });
   }).filter((item) => Object.keys(item).length > 0);
 
-  const images = getImageRows()
+  const media = getImageRows()
     .map((row) => {
+      const type = row.querySelector("[data-field='type']").value || "image";
+      const provider = row.querySelector("[data-field='provider']").value;
       const src = row.querySelector("[data-field='src']").value.trim();
       const alt = row.querySelector("[data-field='alt']").value.trim();
+      const caption = row.querySelector("[data-field='caption']").value.trim();
+      const thumbnail = row.querySelector("[data-field='thumbnail']").value.trim();
       const width = parseNumber(row.querySelector("[data-field='width']").value);
       const height = parseNumber(row.querySelector("[data-field='height']").value);
-      return compactObject({ src, alt, width, height });
+      if (type === "image") {
+        return compactObject({ type, src, alt, width, height, caption });
+      }
+      return compactObject({ type, provider, source: src, caption, thumbnail });
     })
     .filter((item) => Object.keys(item).length > 0);
 
@@ -624,7 +704,7 @@ const buildProjectFromForm = () => {
     shortDescription: elements.shortDescription.value.trim(),
     fullDescription,
     links,
-    images
+    media
   };
 
   const thumbnailPosition = elements.thumbnailPosition.value.trim();
@@ -654,7 +734,7 @@ const hasMeaningfulData = (project) =>
       project.tags.length ||
       project.fullDescription.length ||
       project.links.length ||
-      project.images.length ||
+      project.media.length ||
       project.thumbnailPosition ||
       project.thumbnailZoom
   );
@@ -710,10 +790,13 @@ const updateMode = () => {
 };
 
 const updateImageRowPreview = (row) => {
+  const typeInput = row.querySelector("[data-field='type']");
   const srcInput = row.querySelector("[data-field='src']");
   const widthInput = row.querySelector("[data-field='width']");
   const heightInput = row.querySelector("[data-field='height']");
   const altInput = row.querySelector("[data-field='alt']");
+  const captionInput = row.querySelector("[data-field='caption']");
+  const thumbnailInput = row.querySelector("[data-field='thumbnail']");
   const previewImage = row.querySelector("[data-image-preview]");
   const cropPreviewImage = row.querySelector("[data-image-crop-preview]");
   const warning = row.querySelector("[data-image-warning]");
@@ -721,8 +804,12 @@ const updateImageRowPreview = (row) => {
   const openButton = row.querySelector("[data-image-action='open-image']");
   const thumbnailPosition = getThumbnailPositionValue();
   const thumbnailZoom = getThumbnailZoomValue();
-  const src = normalizeAssetPath(srcInput.value);
+  const type = typeInput.value || "image";
+  const rawSource = srcInput.value.trim();
+  const src = type === "image" ? normalizeAssetPath(rawSource) : rawSource;
+  const thumbnail = normalizeAssetPath(thumbnailInput.value);
   const file = getImageLibraryFile(src);
+  const thumbnailFile = getImageLibraryFile(thumbnail);
   const metadataWidth = widthInput.value.trim();
   const metadataHeight = heightInput.value.trim();
   const metadataText = metadataWidth && metadataHeight ? `${metadataWidth} x ${metadataHeight}` : "missing metadata";
@@ -737,9 +824,29 @@ const updateImageRowPreview = (row) => {
   if (!src) {
     previewImage.removeAttribute("src");
     cropPreviewImage.removeAttribute("src");
-    warning.textContent = "No image selected";
-    meta.textContent = `Path: -\nMetadata: ${metadataText}`;
+    warning.textContent = "No media source selected";
+    meta.textContent = `Type: ${type}\nSource: -\nMetadata: ${metadataText}`;
     openButton.disabled = true;
+    return;
+  }
+
+  if (type !== "image") {
+    const previewSource = thumbnailFile ? assetUrlForSrc(thumbnailFile.src) : "";
+    if (previewSource) {
+      previewImage.src = previewSource;
+      cropPreviewImage.src = previewSource;
+    } else {
+      previewImage.removeAttribute("src");
+      cropPreviewImage.removeAttribute("src");
+    }
+    warning.textContent = thumbnail && !thumbnailFile ? "Thumbnail file not found. Check the path or leave it blank." : "";
+    meta.textContent = [
+      `Type: ${type}`,
+      `Source: ${src}`,
+      `Caption: ${captionInput.value.trim() || "-"}`,
+      `Thumbnail: ${thumbnail || "-"}`
+    ].join("\n");
+    openButton.disabled = false;
     return;
   }
 
@@ -747,7 +854,7 @@ const updateImageRowPreview = (row) => {
     previewImage.removeAttribute("src");
     cropPreviewImage.removeAttribute("src");
     warning.textContent = "Invalid path. Use assets/projects/...";
-    meta.textContent = `Path: ${src}\nMetadata: ${metadataText}`;
+    meta.textContent = `Type: image\nPath: ${src}\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
   }
@@ -756,7 +863,7 @@ const updateImageRowPreview = (row) => {
     previewImage.removeAttribute("src");
     cropPreviewImage.removeAttribute("src");
     warning.textContent = "Missing file. Check the path or add the image under assets/projects/[slug]/.";
-    meta.textContent = `Path: ${src}\nMetadata: ${metadataText}`;
+    meta.textContent = `Type: image\nPath: ${src}\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
   }
@@ -764,7 +871,7 @@ const updateImageRowPreview = (row) => {
   previewImage.src = assetUrlForSrc(file.src);
   cropPreviewImage.src = assetUrlForSrc(file.src);
   warning.textContent = "";
-  meta.textContent = `Path: ${src}\nMetadata: ${metadataText}\nFile: ${fileText}\nCrop: ${thumbnailPosition}, ${thumbnailZoom.toFixed(2)}x`;
+  meta.textContent = `Type: image\nPath: ${src}\nMetadata: ${metadataText}\nFile: ${fileText}\nCrop: ${thumbnailPosition}, ${thumbnailZoom.toFixed(2)}x`;
   openButton.disabled = false;
 };
 
@@ -775,11 +882,12 @@ const clearImagePreview = (image) => {
 
 const getActiveImageInfo = () => {
   const row = getImageRowById(state.activeImageRowId) || getImageRows()[0] || null;
+  const type = row ? row.querySelector("[data-field='type']").value || "image" : "image";
   const src = row ? normalizeAssetPath(row.querySelector("[data-field='src']").value) : "";
   const alt = row ? row.querySelector("[data-field='alt']").value.trim() : "";
   const file = getImageLibraryFile(src);
 
-  return { row, src, alt, file };
+  return { row, type, src, alt, file };
 };
 
 const setThumbnailPreviewStyle = (image, position, zoom) => {
@@ -794,7 +902,7 @@ const updateCropWorkspace = () => {
 
   const position = getThumbnailPositionValue();
   const zoom = getThumbnailZoomValue();
-  const { row, src, alt, file } = getActiveImageInfo();
+  const { row, type, src, alt, file } = getActiveImageInfo();
 
   setThumbnailPreviewStyle(elements.thumbnailCropPreview, position, zoom);
   elements.thumbnailSourceLabel.textContent = src || "Select an image row";
@@ -806,6 +914,14 @@ const updateCropWorkspace = () => {
     clearImagePreview(elements.thumbnailCropPreview);
     clearCanvas(elements.thumbnailCanvasPreview);
     elements.thumbnailCropWarning.textContent = "Add an image row to edit thumbnail cropping.";
+    return;
+  }
+
+  if (type !== "image") {
+    clearImagePreview(elements.largeImagePreview);
+    clearImagePreview(elements.thumbnailCropPreview);
+    clearCanvas(elements.thumbnailCanvasPreview);
+    elements.thumbnailCropWarning.textContent = "Select an image media row to edit thumbnail cropping.";
     return;
   }
 
@@ -853,7 +969,7 @@ const updateCropWorkspace = () => {
 
 const updateMiniProjectPreview = () => {
   const project = buildProjectFromForm();
-  const image = project.images[0];
+  const image = imageMediaItemsForProject(project)[0];
   const position = project.thumbnailPosition || getThumbnailPositionValue();
   const zoom = parseThumbnailZoom(project.thumbnailZoom);
 
@@ -873,9 +989,9 @@ const updateMiniProjectPreview = () => {
 const downloadCroppedThumbnail = async () => {
   const position = getThumbnailPositionValue();
   const zoom = getThumbnailZoomValue();
-  const { src, file } = getActiveImageInfo();
+  const { type, src, file } = getActiveImageInfo();
 
-  if (!src || !file) {
+  if (type !== "image" || !src || !file) {
     setStatus("Choose an existing local image before downloading a cropped thumbnail.");
     return;
   }
@@ -902,7 +1018,7 @@ const buildImageDiagnostics = (projects) => {
   const referencedPaths = new Set();
 
   projects.forEach((project) => {
-    (project.images || []).forEach((image, index) => {
+    imageMediaItemsForProject(project).forEach((image, index) => {
       const imageLabel = `${project.title || project.slug || "Untitled"} / image ${index + 1}`;
       const src = normalizeAssetPath(image.src);
       const file = getImageLibraryFile(src);
@@ -1019,7 +1135,7 @@ const populateForm = (project, index = null) => {
 
   elements.paragraphList.replaceChildren(...safe.fullDescription.map((paragraph) => createParagraphRow(paragraph)));
   elements.linkList.replaceChildren(...safe.links.map((link) => createLinkRow(link)));
-  elements.imageList.replaceChildren(...safe.images.map((image) => createImageRow(image)));
+  elements.imageList.replaceChildren(...safe.media.map((item) => createImageRow(item)));
 
   const firstImageRow = ensureActiveImageRow();
   if (firstImageRow) {
@@ -1293,7 +1409,7 @@ const buildReadOnlyImageLibrary = (projects) => {
   const foldersByName = new Map();
 
   projects.forEach((project) => {
-    (project.images || []).forEach((image) => {
+    imageMediaItemsForProject(project).forEach((image) => {
       const src = normalizeAssetPath(image.src);
       if (!isValidAssetPath(src) || filesBySrc.has(src)) {
         return;
@@ -1674,7 +1790,19 @@ const bindEvents = () => {
     refreshPreview();
   });
   elements.addImageButton.addEventListener("click", () => {
-    const row = createImageRow();
+    const row = createImageRow({ type: "image" });
+    elements.imageList.append(row);
+    setActiveImageRow(row.dataset.rowId);
+    refreshPreview();
+  });
+  elements.addVideoButton.addEventListener("click", () => {
+    const row = createImageRow({ type: "video", provider: "youtube" });
+    elements.imageList.append(row);
+    setActiveImageRow(row.dataset.rowId);
+    refreshPreview();
+  });
+  elements.addAudioButton.addEventListener("click", () => {
+    const row = createImageRow({ type: "audio", provider: "file" });
     elements.imageList.append(row);
     setActiveImageRow(row.dataset.rowId);
     refreshPreview();

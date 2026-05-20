@@ -27,9 +27,15 @@ const contentTypes = {
   ".jpg": "image/jpeg",
   ".js": "text/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".m4a": "audio/mp4",
+  ".mp3": "audio/mpeg",
+  ".mp4": "video/mp4",
+  ".ogg": "audio/ogg",
   ".png": "image/png",
   ".svg": "image/svg+xml",
   ".txt": "text/plain; charset=utf-8",
+  ".wav": "audio/wav",
+  ".webm": "video/webm",
   ".webp": "image/webp"
 };
 
@@ -321,6 +327,11 @@ const handleAdminRequest = async (request, response, url) => {
 
   if (request.method === "POST" && url.pathname === "/api/publish") {
     await handlePublish(request, response);
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/data/projects.js") {
+    await serveFile(response, dataPath);
     return;
   }
 

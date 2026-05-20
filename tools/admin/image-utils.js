@@ -1,7 +1,7 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
 
-const IMAGE_EXTENSIONS = new Set([".gif", ".jpeg", ".jpg", ".png", ".webp"]);
+const IMAGE_EXTENSIONS = new Set([".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 
 const toPosixPath = (value) => value.split(path.sep).join("/");
 
@@ -124,6 +124,26 @@ const detectImageSize = async (filePath) => {
 
   if (buffer.toString("ascii", 0, 4) === "RIFF" && buffer.toString("ascii", 8, 12) === "WEBP") {
     return detectWebpSize(buffer);
+  }
+
+  if (path.extname(filePath).toLowerCase() === ".svg") {
+    const svg = buffer.toString("utf8");
+    const viewBox = svg.match(/viewBox=["']\s*[-\d.]+\s+[-\d.]+\s+([\d.]+)\s+([\d.]+)\s*["']/i);
+    if (viewBox) {
+      return {
+        width: Number(viewBox[1]),
+        height: Number(viewBox[2])
+      };
+    }
+
+    const width = svg.match(/\bwidth=["']([\d.]+)["']/i);
+    const height = svg.match(/\bheight=["']([\d.]+)["']/i);
+    if (width && height) {
+      return {
+        width: Number(width[1]),
+        height: Number(height[1])
+      };
+    }
   }
 
   throw new Error("Unsupported image format.");
