@@ -12,7 +12,7 @@ const elements = {
   jumpButtons: Array.from(document.querySelectorAll("[data-filter-jump]")),
   dialog: document.querySelector("#project-dialog"),
   dialogClose: document.querySelector("#project-dialog-close"),
-  featureImage: document.querySelector("#project-feature-image"),
+  featureMedia: document.querySelector("#project-feature-media"),
   gallery: document.querySelector("#project-gallery"),
   dialogKicker: document.querySelector("#project-dialog-kicker"),
   dialogTitle: document.querySelector("#project-dialog-title"),
@@ -44,6 +44,169 @@ const matchesFilter = (project, filter) =>
 
 const getVisibleProjects = () =>
   PROJECTS.filter((project) => matchesFilter(project, state.activeFilter));
+
+const normalizeMediaItem = (item) => {
+  if (!item || typeof item !== "object") {
+    return null;
+  }
+
+  const type = item.type || "image";
+  return {
+    ...item,
+    type,
+    source: item.source || item.src || ""
+  };
+};
+
+const getProjectMedia = (project) => {
+  if (Array.isArray(project.media) && project.media.length) {
+    return project.media.map(normalizeMediaItem).filter(Boolean);
+  }
+
+  return (project.images || []).map((image) => normalizeMediaItem({ type: "image", ...image })).filter(Boolean);
+};
+
+const getPrimaryVisualMedia = (project) => {
+  const media = getProjectMedia(project);
+  return media.find((item) => item.type === "image") || media.find((item) => item.thumbnail) || media[0] || null;
+};
+
+const getThumbnailSource = (item) => {
+  if (!item) {
+    return null;
+  }
+
+  if (item.type === "image") {
+    return item.src || item.source;
+  }
+
+  return item.thumbnail || null;
+};
+
+const getYouTubeId = (source) => {
+  try {
+    const url = new URL(source);
+    if (url.hostname.includes("youtu.be")) {
+      return url.pathname.split("/").filter(Boolean)[0] || "";
+    }
+    if (url.searchParams.get("v")) {
+      return url.searchParams.get("v");
+    }
+    const parts = url.pathname.split("/").filter(Boolean);
+    const embedIndex = parts.findIndex((part) => part === "embed" || part === "shorts");
+    return embedIndex >= 0 ? parts[embedIndex + 1] || "" : "";
+  } catch {
+    return "";
+  }
+};
+
+const getVimeoId = (source) => {
+  try {
+    const url = new URL(source);
+    return url.pathname.split("/").filter(Boolean).find((part) => /^\d+$/.test(part)) || "";
+  } catch {
+    return "";
+  }
+};
+
+const createMediaFigureContent = (item, projectTitle) => {
+  const media = normalizeMediaItem(item);
+  const source = media?.source || "";
+
+  if (!media || !source) {
+    const empty = document.createElement("div");
+    empty.className = "media-placeholder";
+    empty.textContent = "Media unavailable";
+    return empty;
+  }
+
+  if (media.type === "image") {
+    const image = document.createElement("img");
+    image.src = source;
+    image.alt = media.alt || `${projectTitle} image`;
+    if (media.width) {
+      image.width = media.width;
+    }
+    if (media.height) {
+      image.height = media.height;
+    }
+    image.loading = "eager";
+    image.decoding = "async";
+    return image;
+  }
+
+  if (media.type === "video") {
+    if (media.provider === "youtube") {
+      const id = getYouTubeId(source);
+      if (id) {
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}`;
+        iframe.title = media.caption || `${projectTitle} video`;
+        iframe.loading = "lazy";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.allowFullscreen = true;
+        return iframe;
+      }
+    }
+
+    if (media.provider === "vimeo") {
+      const id = getVimeoId(source);
+      if (id) {
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://player.vimeo.com/video/${id}`;
+        iframe.title = media.caption || `${projectTitle} video`;
+        iframe.loading = "lazy";
+        iframe.allow = "autoplay; fullscreen; picture-in-picture";
+        iframe.allowFullscreen = true;
+        return iframe;
+      }
+    }
+
+    const video = document.createElement("video");
+    video.controls = true;
+    video.preload = "metadata";
+    video.src = source;
+    if (media.thumbnail) {
+      video.poster = media.thumbnail;
+    }
+    return video;
+  }
+
+  if (media.type === "audio") {
+    if (media.provider === "soundcloud") {
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(source)}`;
+      iframe.title = media.caption || `${projectTitle} audio`;
+      iframe.loading = "lazy";
+      iframe.allow = "autoplay";
+      return iframe;
+    }
+
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.preload = "metadata";
+    audio.src = source;
+    return audio;
+  }
+
+  const link = document.createElement("a");
+  link.href = source;
+  link.target = "_blank";
+  link.rel = "noreferrer";
+  link.textContent = media.caption || "Open media";
+  return link;
+};
+
+const createMediaCaption = (item) => {
+  if (!item?.caption) {
+    return null;
+  }
+
+  const caption = document.createElement("figcaption");
+  caption.className = "project-dialog__caption";
+  caption.textContent = item.caption;
+  return caption;
+};
 
 const createFilterButton = (filter) => {
   const button = document.createElement("button");
@@ -78,29 +241,41 @@ const renderProjects = () => {
     button.setAttribute("aria-label", `Open project: ${project.title}`);
     button.addEventListener("click", () => openProject(project, button));
 
-    const image = project.images[0];
+    const media = getPrimaryVisualMedia(project);
+    const thumbnailSource = getThumbnailSource(media);
     const imageWrap = document.createElement("div");
     imageWrap.className = "project-card__image";
     imageWrap.style.setProperty("--thumb-position", project.thumbnailPosition || "center center");
     imageWrap.style.setProperty("--thumb-zoom", String(project.thumbnailZoom || 1));
-    imageWrap.innerHTML = `
-      <img
-        src="${image.src}"
-        alt="${image.alt}"
-        width="${image.width}"
-        height="${image.height}"
-        loading="lazy"
-        decoding="async"
-        sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
-      >
-    `;
+    if (thumbnailSource) {
+      const image = document.createElement("img");
+      image.src = thumbnailSource;
+      image.alt = media?.alt || `${project.title} thumbnail`;
+      if (media?.width) {
+        image.width = media.width;
+      }
+      if (media?.height) {
+        image.height = media.height;
+      }
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.sizes = "(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw";
+      imageWrap.append(image);
+    } else {
+      const placeholder = document.createElement("span");
+      placeholder.className = "media-placeholder";
+      placeholder.textContent = project.title;
+      imageWrap.append(placeholder);
+    }
 
     const body = document.createElement("div");
     body.className = "project-card__body";
-    body.innerHTML = `
-      <h3>${project.title}</h3>
-      <p class="project-card__line">${project.shortDescription}</p>
-    `;
+    const title = document.createElement("h3");
+    title.textContent = project.title;
+    const line = document.createElement("p");
+    line.className = "project-card__line";
+    line.textContent = project.shortDescription;
+    body.append(title, line);
 
     button.append(imageWrap, body);
     card.append(button);
@@ -110,17 +285,17 @@ const renderProjects = () => {
   elements.projectGrid.replaceChildren(fragment);
 };
 
-const updateFeatureImage = (image, projectTitle) => {
-  elements.featureImage.src = image.src;
-  elements.featureImage.alt = image.alt || `${projectTitle} image`;
-  elements.featureImage.width = image.width;
-  elements.featureImage.height = image.height;
-  elements.featureImage.loading = "eager";
-  elements.featureImage.decoding = "async";
+const updateFeatureMedia = (item, projectTitle) => {
+  const media = normalizeMediaItem(item);
+  const content = createMediaFigureContent(media, projectTitle);
+  const caption = createMediaCaption(media);
+  elements.featureMedia.replaceChildren(...[content, caption].filter(Boolean));
 };
 
 const renderGallery = (project) => {
-  if (project.images.length <= 1) {
+  const mediaItems = getProjectMedia(project);
+
+  if (mediaItems.length <= 1) {
     elements.gallery.replaceChildren();
     elements.gallery.hidden = true;
     return;
@@ -129,27 +304,37 @@ const renderGallery = (project) => {
   elements.gallery.hidden = false;
   const fragment = document.createDocumentFragment();
 
-  project.images.forEach((image, index) => {
+  mediaItems.forEach((item, index) => {
+    const thumbnailSource = getThumbnailSource(item);
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gallery-thumb";
-    button.setAttribute("aria-label", `Show image ${index + 1} for ${project.title}`);
+    button.setAttribute("aria-label", `Show ${item.type || "media"} ${index + 1} for ${project.title}`);
     button.setAttribute("aria-pressed", String(index === 0));
 
-    button.innerHTML = `
-      <img
-        src="${image.src}"
-        alt="${image.alt}"
-        width="${image.width}"
-        height="${image.height}"
-        loading="lazy"
-        decoding="async"
-        sizes="160px"
-      >
-    `;
+    if (thumbnailSource) {
+      const image = document.createElement("img");
+      image.src = thumbnailSource;
+      image.alt = item.alt || item.caption || `${project.title} media ${index + 1}`;
+      if (item.width) {
+        image.width = item.width;
+      }
+      if (item.height) {
+        image.height = item.height;
+      }
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.sizes = "160px";
+      button.append(image);
+    } else {
+      const label = document.createElement("span");
+      label.className = "gallery-thumb__label";
+      label.textContent = item.type || "media";
+      button.append(label);
+    }
 
     button.addEventListener("click", () => {
-      updateFeatureImage(image, project.title);
+      updateFeatureMedia(item, project.title);
       elements.gallery.querySelectorAll(".gallery-thumb").forEach((thumb) => {
         thumb.setAttribute("aria-pressed", String(thumb === button));
       });
@@ -163,7 +348,7 @@ const renderGallery = (project) => {
 
 const renderProjectDetail = (project) => {
   state.activeProject = project.slug;
-  updateFeatureImage(project.images[0], project.title);
+  updateFeatureMedia(getProjectMedia(project)[0], project.title);
   renderGallery(project);
 
   elements.dialogKicker.textContent = `${project.projectType} / ${project.year}`;

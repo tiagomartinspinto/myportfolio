@@ -21,12 +21,17 @@ const PROJECT_KEYS = new Set([
   "fullDescription",
   "links",
   "images",
+  "media",
   "thumbnailPosition",
   "thumbnailZoom"
 ]);
 
 const LINK_KEYS = new Set(["label", "url"]);
 const IMAGE_KEYS = new Set(["src", "alt", "width", "height"]);
+const MEDIA_KEYS = new Set(["type", "src", "source", "provider", "alt", "caption", "thumbnail", "width", "height"]);
+const MEDIA_TYPES = new Set(["image", "video", "audio"]);
+const VIDEO_PROVIDERS = new Set(["youtube", "vimeo", "file", "url"]);
+const AUDIO_PROVIDERS = new Set(["file", "soundcloud", "url"]);
 
 const isPlainObject = (value) => typeof value === "object" && value !== null && !Array.isArray(value);
 const trimString = (value) => (typeof value === "string" ? value.trim() : "");
@@ -48,6 +53,77 @@ const ensureArrayOfStrings = (value, fieldName, errors) => {
     })
     .filter(Boolean);
 };
+
+const validateMediaItem = (item, fieldName, errors) => {
+  if (!isPlainObject(item)) {
+    errors.push(`${fieldName} must be an object.`);
+    return null;
+  }
+
+  const unexpectedMediaKeys = Object.keys(item).filter((key) => !MEDIA_KEYS.has(key));
+  if (unexpectedMediaKeys.length) {
+    errors.push(`${fieldName} has unexpected fields: ${unexpectedMediaKeys.join(", ")}.`);
+  }
+
+  const type = trimString(item.type || "image").toLowerCase();
+  const source = trimString(item.source || item.src);
+  const provider = trimString(item.provider).toLowerCase();
+  const alt = trimString(item.alt);
+  const caption = trimString(item.caption);
+  const thumbnail = trimString(item.thumbnail);
+  const width = item.width === undefined || item.width === "" ? null : Number(item.width);
+  const height = item.height === undefined || item.height === "" ? null : Number(item.height);
+
+  if (!MEDIA_TYPES.has(type)) {
+    errors.push(`${fieldName}.type must be image, video, or audio.`);
+  }
+
+  if (!source) {
+    errors.push(`${fieldName} requires a source.`);
+  }
+
+  if (type === "image") {
+    if (!alt) {
+      errors.push(`${fieldName}.alt is required for image media.`);
+    }
+    if (!Number.isFinite(width) || width <= 0) {
+      errors.push(`${fieldName}.width must be a positive number for image media.`);
+    }
+    if (!Number.isFinite(height) || height <= 0) {
+      errors.push(`${fieldName}.height must be a positive number for image media.`);
+    }
+
+    return compactObjectForData({
+      type: "image",
+      src: source,
+      alt,
+      width,
+      height,
+      caption
+    });
+  }
+
+  if (type === "video" && provider && !VIDEO_PROVIDERS.has(provider)) {
+    errors.push(`${fieldName}.provider must be youtube, vimeo, file, or url.`);
+  }
+
+  if (type === "audio" && provider && !AUDIO_PROVIDERS.has(provider)) {
+    errors.push(`${fieldName}.provider must be file, soundcloud, or url.`);
+  }
+
+  return compactObjectForData({
+    type,
+    provider: provider || (type === "video" ? "url" : "url"),
+    source,
+    caption,
+    thumbnail
+  });
+};
+
+const compactObjectForData = (object) =>
+  Object.fromEntries(
+    Object.entries(object).filter(([, value]) => value !== "" && value !== undefined && value !== null)
+  );
 
 const toObjectLiteral = (value) =>
   JSON.stringify(value, null, 2).replace(/"([A-Za-z_$][A-Za-z0-9_$]*)":/g, "$1:");
@@ -171,45 +247,22 @@ const validateProjects = (projects) => {
         errors.push(`projects[${index}].links must be an array.`);
       }
 
-      const images = Array.isArray(project.images)
-        ? project.images
-            .map((image, imageIndex) => {
-              if (!isPlainObject(image)) {
-                errors.push(`projects[${index}].images[${imageIndex}] must be an object.`);
-                return null;
-              }
+      const rawMedia = Array.isArray(project.media)
+        ? project.media
+        : Array.isArray(project.images)
+          ? project.images.map((image) => ({ type: "image", ...image }))
+          : [];
 
-              const unexpectedImageKeys = Object.keys(image).filter((key) => !IMAGE_KEYS.has(key));
-              if (unexpectedImageKeys.length) {
-                errors.push(
-                  `projects[${index}].images[${imageIndex}] has unexpected fields: ${unexpectedImageKeys.join(", ")}.`
-                );
-              }
+      if (!Array.isArray(project.media) && !Array.isArray(project.images)) {
+        errors.push(`projects[${index}].media must be an array.`);
+      }
 
-              const src = trimString(image.src);
-              const alt = trimString(image.alt);
-              const width = Number(image.width);
-              const height = Number(image.height);
+      const media = rawMedia
+        .map((item, mediaIndex) => validateMediaItem(item, `projects[${index}].media[${mediaIndex}]`, errors))
+        .filter(Boolean);
 
-              if (!src || !alt) {
-                errors.push(`projects[${index}].images[${imageIndex}] requires both src and alt.`);
-              }
-              if (!Number.isFinite(width) || width <= 0) {
-                errors.push(`projects[${index}].images[${imageIndex}].width must be a positive number.`);
-              }
-              if (!Number.isFinite(height) || height <= 0) {
-                errors.push(`projects[${index}].images[${imageIndex}].height must be a positive number.`);
-              }
-
-              return { src, alt, width, height };
-            })
-            .filter(Boolean)
-        : [];
-
-      if (!Array.isArray(project.images)) {
-        errors.push(`projects[${index}].images must be an array.`);
-      } else if (!images.length) {
-        errors.push(`projects[${index}].images must contain at least one image.`);
+      if (!media.length) {
+        errors.push(`projects[${index}].media must contain at least one media item.`);
       }
 
       const sanitized = {
@@ -223,7 +276,7 @@ const validateProjects = (projects) => {
         shortDescription,
         fullDescription,
         links,
-        images
+        media
       };
 
       if (thumbnailPosition) {

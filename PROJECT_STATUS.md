@@ -1,116 +1,112 @@
 # Project Status
 
-## Latest update
+## Latest Update
 
-Date: 2026-05-19
+Date: 2026-05-20
 
-- Reorganized the local admin around Projects, Content, Images, Preview, and Publish / Safety tabs
-- Added a sticky action bar for Save locally, Preview site, Publish, Reload, Undo save, and theme switching
-- Improved the left project column with search, new project, duplicate project, apply, reset, delete, and order controls
-- Added non-destructive thumbnail crop metadata editing with pan X, pan Y, zoom, presets, large preview, thumbnail preview, and canvas preview
-- Added download-only cropped-thumbnail PNG export; original images are not overwritten, deleted, uploaded, or auto-saved
-- Added project-level `thumbnailZoom` metadata and public thumbnail rendering support
-- Added a dark/light admin theme toggle, defaulting to dark and storing only the UI preference in `localStorage`
-- Kept existing backup, undo, restore, empty-portfolio, publish-summary, and localhost-only safety protections
-- Added the visible publish-access note: cloning the repo does not grant publish permission
-- Moved the public-footer local editor launcher out of the footer links and made it a nearly hidden bottom-right `::` control pointing only to `http://127.0.0.1:8787/`
-- Added a visible `LOCAL EDITOR ONLY` admin banner and footer note
-- Added public/read-only admin hardening: public/static mode allows editing, previewing, and generated project-data export, but blocks save, publish, backup restore, image scanning, dimension detection, and local API/filesystem access
-- Added explicit developer-mode gating with `?admin-dev=1`; write actions otherwise require localhost
-- Updated README files to document the tabbed admin, crop metadata, theme toggle, and safe crop download
+- Refined project copy across the portfolio toward a more reflective art, technology, education, and research practice voice
+- Kept existing project identities, dates, roles, and directness while making the language more process-oriented and human
+- Added `Programming for Visual Artists` as a full 2026 teaching / creative coding / education portfolio project
+- Added a local course-preview SVG asset for the new teaching project
+- Updated the homepage metadata and footer about text toward art, technology, education, Aalto teaching, art education research, workshop practice, Helsinki, and making
+- Extended project data from image-only galleries to mixed `media` entries for image, video, and audio
+- Preserved compatibility with older `images` arrays in the public renderer and local editor
+- Added public gallery rendering for image, YouTube, Vimeo, direct video, local video, SoundCloud, direct audio, and local audio media
+- Added mixed-media controls to the local editor Images tab: add image, add video, add audio, provider, source, caption, thumbnail, and media order controls
+- Kept thumbnail crop editing non-destructive and limited to image media
+- Added SVG dimension detection for local image assets
+- Rebalanced the project grid so wrapped rows center visually instead of leaving left-heavy gaps
+- Reworked the footer into left, center, and right areas while keeping the discreet localhost editor launcher outside the layout
+- Updated README files for tabbed admin, mixed media, crop metadata, light/dark mode, and export-only cropped thumbnail downloads
+- Completed a tracked-file trace scan; no requested trace terms remain
 
-## Files changed in the latest update
+## Files Changed In This Update
 
 - `index.html`
+- `styles.css`
+- `script.js`
+- `data/projects.js`
 - `README.md`
 - `PROJECT_STATUS.md`
-- `script.js`
-- `styles.css`
+- `assets/projects/programming-for-visual-artists/site-preview.svg`
 - `tools/admin/README.md`
-- `tools/admin/admin.css`
 - `tools/admin/admin.js`
+- `tools/admin/image-utils.js`
 - `tools/admin/index.html`
 - `tools/admin/project-data.js`
-- `tools/admin/thumbnail-tools.js`
+- `tools/admin/server.js`
 
-## Current structure
+## Current Structure
 
-- `index.html`: compact portfolio structure, Cargo-style header/footer shell, and modal markup
-- `styles.css`: minimal portfolio styling, shell typography, and thumbnail crop/zoom rendering
-- `script.js`: project rendering, direct filter matching, modal behavior, and thumbnail metadata binding
-- `data/projects.js`: project data, local image paths, content-based categories, optional `thumbnailPosition`, and optional `thumbnailZoom`
-- `assets/projects/`: local project images
-- `tools/admin/`: local-only tabbed project editor, localhost server, image helpers, and crop helper module
+- `index.html`: compact public shell, footer layout, project modal markup, and local editor launcher
+- `styles.css`: minimal public styling, centered responsive project grid, footer columns, and mixed-media modal styling
+- `script.js`: project filters, dynamic grid rendering, mixed-media gallery rendering, modal behavior, and thumbnail metadata binding
+- `data/projects.js`: project data, refined copy, mixed `media` arrays, links, categories, and thumbnail crop metadata
+- `assets/projects/`: local project media assets
+- `tools/admin/`: local-only tabbed editor, media controls, image helpers, crop helper module, and localhost server
 - `_config.yml`: excludes the local editor from GitHub Pages deployment
 - `package.json`: local helper scripts for admin and preview
-- `.gitignore`: ignores local backup and Finder noise
+- `.gitignore`: ignores local backup and operating-system noise
 
-## Current state
+## Current State
 
-- Project media is local
-- No runtime `freight.cargo.site` URLs remain
-- The local editor exists only under `tools/admin/`, binds only to `127.0.0.1`, and is not publicly linked from the site
-- `_config.yml` excludes `tools/admin/` from GitHub Pages publishing
-- The admin UI is tabbed so project metadata, content, images, preview, and safety controls are not shown all at once
-- The admin shows a visible `LOCAL EDITOR ONLY` banner: changes require local git access and repository write permissions
-- Opening the admin from a public/static site uses public read-only mode and shows `Publishing disabled on public site`
-- Public read-only mode blocks save, publish, backup restore, image scanning, dimension detection, and local API/filesystem access
-- Public read-only mode still allows editing the in-memory draft, previewing, and copying/downloading generated project data
-- The sticky action bar keeps save, preview, publish, reload, undo, and theme actions available
-- The editor can save directly to `data/projects.js` and refreshes `data/projects.backup.js` before every save
-- The editor can undo or restore the latest saved backup
-- Publish still runs only local git commands and depends on the machine already having write access
-- Image entries support path copy, open image, dimension detection, reorder, duplicate, remove, and set as thumbnail
-- The Images tab edits crop metadata only; original image files are untouched
-- The canvas crop export is download-only and must be manually placed in `assets/projects/[slug]/` if used
-- Image diagnostics report missing files, unused files, invalid paths, missing alt text, and missing width/height
-- The public project grid uses `thumbnailPosition` and `thumbnailZoom` for thumbnails
-- Light mode is available for the admin and persists only as a local UI preference
-- The public footer has a nearly hidden bottom-right `::` launcher that opens `http://127.0.0.1:8787/` in a new tab and only works when `npm run admin` is running locally
+- The portfolio now presents the work more clearly as artistic-research practice across art, technology, education, creative coding, exhibitions, participatory work, and media systems
+- `Programming for Visual Artists` has proper portfolio presence and links to the course archive and repository
+- Project galleries support `media` items while still reading old `images` data if encountered
+- The public project grid uses the first image media item plus `thumbnailPosition` and `thumbnailZoom` for thumbnail rendering
+- Video and audio media can appear in the gallery modal
+- The project grid centers wrapped rows on desktop and becomes a single column on small screens
+- The footer has three areas: links on the left, about text centered, and Helsinki / Aalto role links on the right
+- The local editor remains local-only, localhost-bound, and excluded from public deployment
+- The admin still shows the visible local-only banner and public/read-only warning when relevant
+- Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
+- Save locally still refreshes `data/projects.backup.js` before rewriting `data/projects.js`
+- Publish still runs only local git commands and depends on this computer already having repository write access
+- Image crop editing remains metadata-only; original image files are not changed
+- Cropped thumbnail export remains download-only
+- The admin dark/light theme preference is stored only in local UI storage, not in project data
 
-## Remaining tasks
+## Remaining Tasks
 
 - Check the deployed GitHub Pages site after publishing
 - Verify that `/tools/admin/` is not present on the deployed GitHub Pages site
-- Test one real end-to-end content edit through the admin: save, undo, restore, preview, and publish
-- Download one cropped thumbnail, place it manually under `assets/projects/[slug]/`, and decide whether generated thumbnails are worth using
-- Click through intentional external links in a normal browser session
-- Fine-tune thumbnail crop metadata only where subjects are still cropped awkwardly
+- Test one full content edit through the admin: save, undo, restore, preview, and publish
+- Add real video or audio entries to more projects when stable public media sources are available
+- Decide whether any generated cropped thumbnails should be manually placed under `assets/projects/[slug]/`
+- Fine-tune thumbnail crop metadata where the new centered grid reveals awkward crops
 
-## Known issues
+## Known Issues
 
-- Some external sites may block automated checks, so manual click-through is still worth doing
-- If a custom domain is added later, canonical and social metadata URLs should be updated again
-- README and project status intentionally still mention the Cargo migration as historical context
-- During local preview, a browser session may cache older module output; hard refresh if filters or card content look stale
-- Git publish still depends on local git authentication and repository write access
-- The admin does not upload images; `assets/projects/[slug]/` stays manual by design
+- Some external video/audio providers can block embeds or automated checks depending on browser privacy settings
+- If a custom domain is added later, canonical and social metadata URLs should be updated
+- The admin does not upload media; files under `assets/projects/[slug]/` stay manual by design
 - Save locally rewrites `data/projects.js` into the editor's normalized object formatting
-- Image diagnostics reflect the working list plus the current form draft, so half-finished edits can briefly report expected warnings
-- The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before replacing any hand-picked thumbnail
+- Image diagnostics focus on image media and do not validate remote video/audio availability
+- The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before use
 
-## Manual tests run in this update
+## Manual Tests Run In This Update
 
-1. Confirmed admin server responds at `http://127.0.0.1:8787/`
-2. Confirmed preview server responds at `http://127.0.0.1:8080/`
-3. Confirmed preview server returns 404 for `/tools/admin/`
-4. Ran JavaScript syntax checks for admin, crop helper, project-data helper, and public script
-5. Validated existing `data/projects.js` against the updated project schema
-6. Loaded the admin in the in-app browser and checked for console errors
-7. Verified the tabbed desktop layout visually
-8. Verified the Images tab large preview, thumbnail crop preview, canvas preview, and diagnostics
-9. Tested the Subject center preset and confirmed it updates `thumbnailPosition` and `thumbnailZoom`
-10. Verified light mode colors and toggled back to dark mode
-11. Verified the footer `::` launcher targets localhost only, stays outside the footer link list, and `_config.yml` still excludes `tools/`
-12. Verified local mode keeps Save and Publish available on `127.0.0.1`
-13. Verified simulated public mode disables Save, Publish, backup restore, image scanning, and dimension detection while keeping in-memory editing and JSON export available
+1. Pulled and confirmed the local checkout was aligned before editing
+2. Inspected the portfolio structure, project data, public renderer, local admin, server, and documentation
+3. Inspected the public `Programming for Visual Artists` course repository and course page content for factual grounding
+4. Ran JavaScript syntax checks for `script.js`, `tools/admin/admin.js`, `tools/admin/project-data.js`, and `tools/admin/server.js`
+5. Validated `data/projects.js` through the updated local admin schema; 11 projects passed validation
+6. Confirmed the tracked-file trace scan no longer returns requested trace terms
+7. Started the local preview server and confirmed the public page responds at `http://127.0.0.1:8080/`
+8. Confirmed the preview server still returns 404 for `/tools/admin/`
+9. Checked the public preview in the browser: 11 project cards render, the first project is `Programming for Visual Artists`, and the footer launcher still points only to localhost
+10. Opened the first project modal and confirmed the new teaching project renders image media and links
+11. Opened `BQG`, selected the video gallery item, and confirmed the YouTube embed renders in the mixed-media modal
+12. Started the local admin server and confirmed the editor loads 11 projects with Save and Publish enabled in localhost mode
+13. Checked the Images tab media controls and confirmed Add video creates a video row with YouTube provider selected
+14. Re-tested simulated public/read-only mode and confirmed it loads static project data while Save and Publish remain disabled
+15. Checked a mobile-width public preview: single-column project cards, stacked footer columns, no horizontal overflow, and the discreet local editor control stays bottom-right
 
-## Notes for future chats
+## Notes For Future Chats
 
-- Keep the site compact and direct
-- Avoid reintroducing filler copy or decorative UI systems
+- Keep the site compact, direct, and visually restrained
+- Preserve the artistic-research tone without adding inflated artist-statement language
 - Prefer editing `data/projects.js` for content changes and `styles.css` for layout changes
-- Keep the admin local-only and avoid adding secrets, remote APIs, cloud uploads, analytics, or arbitrary file writes
-- Preserve the write restriction: only `data/projects.js`, `data/projects.backup.js`, and manual edits to `PROJECT_STATUS.md`
-- Keep image editing non-destructive unless an explicit future task adds a carefully scoped export workflow
-- Keep this file updated after meaningful design or deployment work
+- Keep the admin local-only and avoid secrets, remote write APIs, cloud uploads, analytics, or arbitrary file writes
+- Keep image editing non-destructive unless a future task explicitly scopes a safe export-only workflow
+- Keep this file updated after meaningful design, content, admin, or deployment work

@@ -1,10 +1,8 @@
 # Local Portfolio Editor
 
-This editor is local only.
+This editor is local only. It is not a public CMS and it is excluded from GitHub Pages.
 
-It is not a public CMS and it is not deployed on GitHub Pages.
-
-## Start the editor
+## Start
 
 From the repository root:
 
@@ -12,13 +10,13 @@ From the repository root:
 npm run admin
 ```
 
-Then open:
+Open:
 
 ```text
 http://127.0.0.1:8787/
 ```
 
-## Preview the public site locally
+## Preview
 
 In another terminal:
 
@@ -26,75 +24,128 @@ In another terminal:
 npm run preview
 ```
 
-Then open:
+Open:
 
 ```text
 http://127.0.0.1:8080/
 ```
 
-The preview server blocks `tools/admin/` so it behaves more like the public GitHub Pages site.
+The preview server blocks `tools/admin/`.
 
-## Public/read-only hardening
+## Public / Read-Only Mode
 
-The editor shows a `LOCAL EDITOR ONLY` banner.
+The editor shows:
 
+```text
+LOCAL EDITOR ONLY
 Changes require local git access and repository write permissions.
+```
 
 Cloning or opening this editor does not grant publishing access.
 
-If the editor is ever opened from a public/static site, it enters public read-only mode:
+If the editor is opened from a public/static site:
 
-- editing the in-memory project draft is allowed
+- in-memory editing is allowed
 - previewing and copying/downloading generated project data is allowed
-- `Save locally`, `Publish`, backup restore, image library scanning, and dimension detection are blocked
+- Save locally is blocked
+- Publish is blocked
+- backup restore is blocked
+- image scanning is blocked
+- dimension detection is blocked
+- local API and filesystem access are blocked
 - the UI shows `Publishing disabled on public site`
 
-Write actions are enabled only on localhost, or with explicit developer mode via `?admin-dev=1` for controlled local/testing setups. Even then, publish still requires a compatible local API, git authentication, and repository write access.
+Write actions require localhost, or explicit developer mode with `?admin-dev=1` for controlled local testing.
 
-## What the editor does
+## Tabs
 
-- loads existing projects from `data/projects.js`
-- lets you edit existing projects
-- lets you create new projects
-- lets you duplicate projects
-- lets you reorder projects
-- separates editing into Projects, Content, Images, Preview, and Publish / Safety tabs
-- previews each image entry with the same square crop logic used by the public thumbnails
-- browses local images inside `assets/projects/`
-- detects width and height from local image files
-- edits non-destructive thumbnail crop metadata with pan and zoom controls
-- downloads a generated cropped-thumbnail PNG without saving it into the repo
-- runs image diagnostics for missing files, unused files, invalid paths, missing alt text, and missing metadata
-- supports dark and light UI themes; the preference is stored only in `localStorage`
-- saves changes locally back into `data/projects.js`
-- can publish `data/projects.js` and `PROJECT_STATUS.md` using local git
+The editor is organized into:
 
-## Save locally
+- Projects
+- Content
+- Images
+- Preview
+- Publish / Safety
 
-`Save locally` writes the current working project list into:
+The sticky action bar provides Save locally, Preview site, Publish, Reload, Undo save, and the dark/light theme toggle.
+
+## Mixed Media
+
+The Images tab edits the project `media` array. It can add:
+
+- image
+- video
+- audio
+
+Fields include:
+
+- type
+- provider
+- source
+- alt text for images
+- caption
+- thumbnail
+- width and height for images
+
+Video providers:
+
+- YouTube
+- Vimeo
+- local file
+- direct URL
+
+Audio providers:
+
+- local file
+- SoundCloud
+- direct URL
+
+Media order is editable. The first image media item is used for the public grid thumbnail.
+
+## Thumbnail Cropping
+
+Thumbnail editing is non-destructive metadata editing.
+
+The editor stores:
+
+```js
+thumbnailPosition
+thumbnailZoom
+```
+
+It provides:
+
+- large preview
+- square crop preview
+- pan X / pan Y controls
+- zoom control
+- crop presets
+- canvas export preview
+- Download cropped thumbnail
+
+The download tool creates a new PNG download only. It does not overwrite, delete, upload, or auto-save image files.
+
+## Save And Restore
+
+`Save locally` writes:
 
 ```text
 data/projects.js
 ```
 
-Before writing, it overwrites:
+Before writing, it refreshes:
 
 ```text
 data/projects.backup.js
 ```
 
-No other content file is modified by the editor.
-
-## Undo and restore
-
-- `Undo last save` restores `data/projects.backup.js` over `data/projects.js`
-- `Restore backup` performs the same recovery step on purpose when you want to return to the latest backup again
+`Undo last save` and `Restore backup` copy the backup over `data/projects.js`.
 
 The backup file is local-only and ignored by git.
 
 ## Publish
 
-`Publish` runs local git commands from this repository:
+`Publish` runs:
 
 ```bash
 git add data/projects.js PROJECT_STATUS.md
@@ -102,47 +153,16 @@ git commit -m "Update portfolio projects"
 git push
 ```
 
-The editor shows the git output directly in the UI.
+The editor shows the git output directly in the UI and asks for confirmation before publishing.
 
-Before publishing, the editor shows an added / modified / deleted summary and asks for a final confirmation.
+Publish only works on computers where git is authenticated with write access to this repository.
 
-If the portfolio would become empty:
-
-- saving requires typing `DELETE ALL PROJECTS`
-- publishing requires typing `PUBLISH EMPTY PORTFOLIO`
-
-Cloning this repo does not give anyone permission to publish. Publish only works on computers where Git is authenticated with write access to this repository.
-
-## Images
-
-Image files are still manual.
-
-Add them yourself under:
-
-```text
-assets/projects/[slug]/
-```
-
-Then:
-
-1. use the image browser in the editor
-2. select the image path
-3. run `Detect dimensions`
-4. add alt text
-5. use the Images tab to adjust `thumbnailPosition` and `thumbnailZoom`
-6. review the square preview and canvas export preview
-7. optionally download a cropped-thumbnail PNG and place it manually under `assets/projects/[slug]/`
-8. save locally
-
-Original images are never overwritten or deleted by the editor.
-
-## Security note
+## Safety
 
 - localhost only
 - no passwords
 - no tokens
-- no GitHub API
-- no external services
+- no remote services
 - no analytics
 - no arbitrary file writes
 - no destructive image editing by default
