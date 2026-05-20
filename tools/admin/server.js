@@ -4,6 +4,7 @@ const path = require("node:path");
 const { promisify } = require("node:util");
 const { execFile } = require("node:child_process");
 const { parseProjectsModule, serializeProjectsModule, validateProjects } = require("./project-data");
+const { parseSiteModule, serializeSiteModule, validateSite } = require("./site-data");
 const { detectImageSize, listProjectImages, normalizeAssetPath, resolveProjectAssetPath } = require("./image-utils");
 
 const execFileAsync = promisify(execFile);
@@ -16,7 +17,17 @@ const repoRoot = path.resolve(__dirname, "..", "..");
 const adminRoot = path.join(repoRoot, "tools", "admin");
 const dataPath = path.join(repoRoot, "data", "projects.js");
 const backupPath = path.join(repoRoot, "data", "projects.backup.js");
+const sitePath = path.join(repoRoot, "data", "site.js");
+const siteBackupPath = path.join(repoRoot, "data", "site.backup.js");
 const assetsRoot = path.join(repoRoot, "assets");
+const publishPaths = [
+  "data/projects.js",
+  "data/site.js",
+  "PROJECT_STATUS.md",
+  "assets/projects/",
+  "README.md",
+  "tools/admin/README.md"
+];
 
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
@@ -79,24 +90,57 @@ const readProjects = async () => {
   };
 };
 
+const readSite = async () => {
+  const source = await fs.readFile(sitePath, "utf8");
+  const parsed = parseSiteModule(source);
+  return parsed.SITE || {};
+};
+
 const backupExists = async () => {
-  try {
-    await fs.access(backupPath);
-    return true;
-  } catch {
-    return false;
-  }
+  const exists = await Promise.all(
+    [backupPath, siteBackupPath].map(async (filePath) => {
+      try {
+        await fs.access(filePath);
+        return true;
+      } catch {
+        return false;
+      }
+    })
+  );
+  return exists.some(Boolean);
 };
 
 const getScopedGitStatus = async () => {
   try {
-    const { stdout } = await execFileAsync("git", ["status", "--short", "--", "data/projects.js", "PROJECT_STATUS.md"], {
+    const { stdout } = await execFileAsync("git", ["status", "--short", "--", ...publishPaths], {
       cwd: repoRoot
     });
     return stdout.trim().split("\n").filter(Boolean);
   } catch (error) {
     const fallback = `${error.stdout || ""}\n${error.stderr || error.message}`.trim();
     return fallback ? [fallback] : [];
+  }
+};
+
+const runCommand = async (command, args) => {
+  try {
+    const { stdout, stderr } = await execFileAsync(command, args, { cwd: repoRoot });
+    return {
+      ok: true,
+      output: [`$ ${command} ${args.join(" ")}`, stdout.trim(), stderr.trim()].filter(Boolean).join("\n")
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      code: error.code,
+      output: [
+        `$ ${command} ${args.join(" ")}`,
+        (error.stdout || "").trim(),
+        (error.stderr || error.message || "").trim()
+      ]
+        .filter(Boolean)
+        .join("\n")
+    };
   }
 };
 
@@ -123,11 +167,13 @@ const requireEmptyPortfolioConfirmation = (projects, confirmation, phrase) =>
 
 const handleProjects = async (response) => {
   const payload = await readProjects();
+  const site = await readSite();
   const gitStatus = await getScopedGitStatus();
 
   sendJson(response, 200, {
     filters: payload.filters,
     projects: payload.projects,
+    site,
     gitStatus,
     previewUrl: "http://127.0.0.1:8080/",
     backupExists: await backupExists()
@@ -171,11 +217,12 @@ const handleImageDimensions = async (request, response) => {
 const handleSave = async (request, response) => {
   const body = await readJsonBody(request);
   const validation = validateProjects(body.projects);
+  const siteValidation = validateSite(body.site);
 
-  if (!validation.valid) {
+  if (!validation.valid || !siteValidation.valid) {
     sendJson(response, 400, {
       ok: false,
-      errors: validation.errors
+      errors: [...validation.errors, ...siteValidation.errors]
     });
     return;
   }
@@ -189,11 +236,17 @@ const handleSave = async (request, response) => {
   }
 
   await fs.copyFile(dataPath, backupPath);
+  try {
+    await fs.copyFile(sitePath, siteBackupPath);
+  } catch {
+    await fs.writeFile(siteBackupPath, serializeSiteModule(siteValidation.site), "utf8");
+  }
   await fs.writeFile(dataPath, serializeProjectsModule(validation.projects), "utf8");
+  await fs.writeFile(sitePath, serializeSiteModule(siteValidation.site), "utf8");
 
   sendJson(response, 200, {
     ok: true,
-    message: "Saved locally to data/projects.js and refreshed data/projects.backup.js.",
+    message: "Saved locally to data/projects.js and data/site.js, with backups refreshed.",
     gitStatus: await getScopedGitStatus(),
     backupExists: true
   });
@@ -211,11 +264,17 @@ const handleRestoreBackup = async (request, response) => {
     return;
   }
 
-  await fs.copyFile(backupPath, dataPath);
+  try {
+    await fs.copyFile(backupPath, dataPath);
+  } catch {}
+
+  try {
+    await fs.copyFile(siteBackupPath, sitePath);
+  } catch {}
 
   sendJson(response, 200, {
     ok: true,
-    message: `${modeLabel} completed. data/projects.js was restored from data/projects.backup.js.`,
+    message: `${modeLabel} completed. Project and site data were restored from available backups.`,
     gitStatus: await getScopedGitStatus(),
     backupExists: true
   });
@@ -235,14 +294,25 @@ const handlePublish = async (request, response) => {
 
   const steps = [];
 
-  const add = await runGit(["add", "data/projects.js", "PROJECT_STATUS.md"]);
+  const check = await runCommand("npm", ["run", "check"]);
+  steps.push(check.output);
+  if (!check.ok) {
+    sendJson(response, 400, {
+      ok: false,
+      message: "Portfolio check failed. Nothing was committed or pushed.",
+      output: steps.join("\n\n")
+    });
+    return;
+  }
+
+  const add = await runGit(["add", ...publishPaths]);
   steps.push(add.output);
   if (!add.ok) {
     sendJson(response, 500, { ok: false, message: "git add failed.", output: steps.join("\n\n") });
     return;
   }
 
-  const stagedCheck = await runGit(["diff", "--cached", "--name-only", "--", "data/projects.js", "PROJECT_STATUS.md"]);
+  const stagedCheck = await runGit(["diff", "--cached", "--name-only", "--", ...publishPaths]);
   steps.push(stagedCheck.output);
   if (!stagedCheck.ok) {
     sendJson(response, 500, { ok: false, message: "Could not inspect staged changes.", output: steps.join("\n\n") });
@@ -252,13 +322,13 @@ const handlePublish = async (request, response) => {
   if (!stagedCheck.output.split("\n").some((line) => line.trim() && !line.startsWith("$ git"))) {
     sendJson(response, 409, {
       ok: false,
-      message: "Nothing to publish for data/projects.js or PROJECT_STATUS.md.",
+      message: "Nothing to publish for the approved portfolio files.",
       output: steps.join("\n\n")
     });
     return;
   }
 
-  const commit = await runGit(["commit", "-m", "Update portfolio projects"]);
+  const commit = await runGit(["commit", "-m", "Update portfolio"]);
   steps.push(commit.output);
   if (!commit.ok) {
     sendJson(response, 500, { ok: false, message: "git commit failed.", output: steps.join("\n\n") });
@@ -274,7 +344,7 @@ const handlePublish = async (request, response) => {
 
   sendJson(response, 200, {
     ok: true,
-    message: "Published data/projects.js and PROJECT_STATUS.md.",
+    message: "Published approved portfolio files.",
     output: steps.join("\n\n"),
     gitStatus: await getScopedGitStatus()
   });
@@ -332,6 +402,11 @@ const handleAdminRequest = async (request, response, url) => {
 
   if (request.method === "GET" && url.pathname === "/data/projects.js") {
     await serveFile(response, dataPath);
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/data/site.js") {
+    await serveFile(response, sitePath);
     return;
   }
 

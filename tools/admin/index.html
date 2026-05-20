@@ -76,6 +76,7 @@
         <section class="admin-main">
           <nav class="tab-list" aria-label="Editor sections">
             <button type="button" class="tab-button is-active" data-tab-target="projects" aria-selected="true">Projects</button>
+            <button type="button" class="tab-button" data-tab-target="site" aria-selected="false">Site</button>
             <button type="button" class="tab-button" data-tab-target="content" aria-selected="false">Content</button>
             <button type="button" class="tab-button" data-tab-target="images" aria-selected="false">Images</button>
             <button type="button" class="tab-button" data-tab-target="preview" aria-selected="false">Preview</button>
@@ -101,6 +102,13 @@
                   <label class="field">
                     <span class="field-label">Year</span>
                     <input id="year" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field checkbox-field">
+                    <span class="field-label">Publication</span>
+                    <span class="inline-checkbox">
+                      <input id="draft" type="checkbox">
+                      Draft project
+                    </span>
                   </label>
                   <label class="field">
                     <span class="field-label">Project type</span>
@@ -134,6 +142,105 @@
                     <span class="field-label">Tags, comma separated</span>
                     <input id="tags" class="text-input" type="text" placeholder="podcast, community, documentation">
                   </label>
+                </div>
+              </div>
+            </section>
+
+            <section id="tab-site" class="tab-panel" data-tab-panel="site" hidden>
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Site metadata</h2>
+                  <p class="panel-meta">Text only; layout stays in code</p>
+                </div>
+                <div class="field-grid">
+                  <label class="field">
+                    <span class="field-label">Document title</span>
+                    <input id="site-title" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Canonical URL</span>
+                    <input id="site-canonical-url" class="text-input" type="url" autocomplete="off">
+                  </label>
+                  <label class="field field-span-2">
+                    <span class="field-label">Meta description</span>
+                    <textarea id="site-description" class="text-area" rows="2"></textarea>
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Open Graph title</span>
+                    <input id="site-og-title" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Social preview image</span>
+                    <input id="site-social-image" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field field-span-2">
+                    <span class="field-label">Open Graph description</span>
+                    <textarea id="site-og-description" class="text-area" rows="2"></textarea>
+                  </label>
+                  <label class="field field-span-2">
+                    <span class="field-label">Social preview image alt</span>
+                    <input id="site-social-image-alt" class="text-input" type="text" autocomplete="off">
+                  </label>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Header</h2>
+                </div>
+                <div class="field-grid">
+                  <label class="field">
+                    <span class="field-label">Name</span>
+                    <input id="site-header-name" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Mark / smiley</span>
+                    <input id="site-header-mark" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Contact label</span>
+                    <input id="site-contact-label" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Contact email</span>
+                    <input id="site-contact-email" class="text-input" type="email" autocomplete="off">
+                  </label>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-heading">
+                  <h2>Footer</h2>
+                </div>
+                <div class="field-grid">
+                  <label class="field">
+                    <span class="field-label">About title</span>
+                    <input id="site-about-title" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Location</span>
+                    <input id="site-location" class="text-input" type="text" autocomplete="off">
+                  </label>
+                  <label class="field field-span-2">
+                    <span class="field-label">About text lines</span>
+                    <textarea id="site-about-lines" class="text-area" rows="5"></textarea>
+                  </label>
+                </div>
+
+                <div class="repeatable-section site-link-section">
+                  <div class="repeatable-heading">
+                    <span class="field-label">Footer social links</span>
+                    <button id="add-site-social-link-button" type="button">Add social link</button>
+                  </div>
+                  <div id="site-social-link-list" class="repeatable-list"></div>
+                </div>
+
+                <div class="repeatable-section site-link-section">
+                  <div class="repeatable-heading">
+                    <span class="field-label">Footer role links</span>
+                    <button id="add-site-role-link-button" type="button">Add role link</button>
+                  </div>
+                  <div id="site-role-link-list" class="repeatable-list"></div>
                 </div>
               </div>
             </section>
@@ -304,7 +411,7 @@
               <div class="safety-grid">
                 <div class="safety-note">
                   <h3>Local boundaries</h3>
-                  <p>This admin stays on localhost, writes only project data plus the backup, and never edits original image files.</p>
+                  <p>This admin stays on localhost, writes only project/site data plus backups, and never edits original image files.</p>
                 </div>
                 <div class="safety-note">
                   <h3>Publish access</h3>
@@ -312,7 +419,7 @@
                 </div>
                 <div class="safety-note">
                   <h3>Backups</h3>
-                  <p>Save locally refreshes <code>data/projects.backup.js</code> before rewriting <code>data/projects.js</code>.</p>
+                  <p>Save locally refreshes backups before rewriting <code>data/projects.js</code> and <code>data/site.js</code>.</p>
                 </div>
               </div>
               <div class="button-row safety-actions">
@@ -323,7 +430,7 @@
             <section class="panel">
               <div class="panel-heading">
                 <h2>Git output</h2>
-                <p class="panel-meta">Publish stages only <code>data/projects.js</code> and <code>PROJECT_STATUS.md</code>.</p>
+                <p class="panel-meta">Publish runs <code>npm run check</code>, then stages approved portfolio files only.</p>
               </div>
               <pre id="git-output" class="preview-box preview-box--git">Waiting for save or publish.</pre>
             </section>

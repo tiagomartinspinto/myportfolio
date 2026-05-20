@@ -1,4 +1,5 @@
 import { PROJECTS, PROJECT_DISPLAY_FILTERS } from "./data/projects.js";
+import { SITE } from "./data/site.js";
 
 const state = {
   activeFilter: "all",
@@ -24,6 +25,19 @@ const elements = {
   dialogLinks: document.querySelector("#project-links")
 };
 
+const shellElements = {
+  brand: document.querySelector("#site-brand"),
+  mark: document.querySelector("#site-mark"),
+  contact: document.querySelector("#site-contact"),
+  footerSocialLinks: document.querySelector("#footer-social-links"),
+  footerAboutTitle: document.querySelector("#footer-about-title"),
+  footerAboutText: document.querySelector("#footer-about-text"),
+  footerLocation: document.querySelector("#footer-location"),
+  footerRoleLinks: document.querySelector("#footer-role-links")
+};
+
+const publishedProjects = PROJECTS.filter((project) => project.draft !== true);
+
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const FILTER_LABELS = {
@@ -43,7 +57,80 @@ const matchesFilter = (project, filter) =>
   filter === "all" || project.categories.includes(filter);
 
 const getVisibleProjects = () =>
-  PROJECTS.filter((project) => matchesFilter(project, state.activeFilter));
+  publishedProjects.filter((project) => matchesFilter(project, state.activeFilter));
+
+const isExternalUrl = (value) => /^https?:\/\//i.test(value);
+
+const absoluteUrl = (value) => {
+  if (!value) {
+    return "";
+  }
+
+  if (isExternalUrl(value)) {
+    return value;
+  }
+
+  return new URL(value, SITE.canonicalUrl).href;
+};
+
+const setMetaContent = (selector, value) => {
+  const element = document.querySelector(selector);
+  if (element && value) {
+    element.setAttribute("content", value);
+  }
+};
+
+const renderLinkList = (container, links = []) => {
+  const fragment = document.createDocumentFragment();
+
+  links.forEach((link) => {
+    const item = document.createElement("li");
+    const anchor = document.createElement("a");
+    anchor.href = link.url;
+    anchor.textContent = link.label;
+    if (!link.url.startsWith("mailto:")) {
+      anchor.target = "_blank";
+      anchor.rel = "noreferrer";
+    }
+    item.append(anchor);
+    fragment.append(item);
+  });
+
+  container.replaceChildren(fragment);
+};
+
+const renderSiteShell = () => {
+  document.title = SITE.title;
+  setMetaContent("meta[name='description']", SITE.description);
+  setMetaContent("meta[property='og:title']", SITE.ogTitle);
+  setMetaContent("meta[property='og:description']", SITE.ogDescription);
+  setMetaContent("meta[property='og:url']", SITE.canonicalUrl);
+  setMetaContent("meta[property='og:image']", absoluteUrl(SITE.socialImage));
+  setMetaContent("meta[property='og:image:alt']", SITE.socialImageAlt);
+  setMetaContent("meta[name='twitter:title']", SITE.ogTitle);
+  setMetaContent("meta[name='twitter:description']", SITE.ogDescription);
+  setMetaContent("meta[name='twitter:image']", absoluteUrl(SITE.socialImage));
+  setMetaContent("meta[name='twitter:image:alt']", SITE.socialImageAlt);
+  document.querySelector("link[rel='canonical']")?.setAttribute("href", SITE.canonicalUrl);
+
+  shellElements.brand.textContent = SITE.header.name;
+  shellElements.mark.textContent = SITE.header.mark;
+  shellElements.contact.textContent = SITE.header.contactLabel;
+  shellElements.contact.href = `mailto:${SITE.header.contactEmail}`;
+  shellElements.footerAboutTitle.textContent = SITE.footer.aboutTitle;
+  shellElements.footerAboutText.replaceChildren(
+    ...SITE.footer.aboutLines.flatMap((line, index) => {
+      const nodes = [document.createTextNode(line)];
+      if (index < SITE.footer.aboutLines.length - 1) {
+        nodes.push(document.createElement("br"));
+      }
+      return nodes;
+    })
+  );
+  shellElements.footerLocation.textContent = SITE.footer.location;
+  renderLinkList(shellElements.footerSocialLinks, SITE.footer.socialLinks);
+  renderLinkList(shellElements.footerRoleLinks, SITE.footer.roleLinks);
+};
 
 const normalizeMediaItem = (item) => {
   if (!item || typeof item !== "object") {
@@ -491,5 +578,6 @@ elements.dialog.addEventListener("close", () => {
   }
 });
 
+renderSiteShell();
 renderFilters();
 setFilter("all");

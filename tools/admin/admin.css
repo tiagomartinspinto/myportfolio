@@ -426,6 +426,24 @@ select:focus {
   text-transform: none;
 }
 
+.checkbox-field {
+  align-content: end;
+}
+
+.inline-checkbox {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  gap: 8px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.site-link-section {
+  margin-top: 14px;
+}
+
 .project-list {
   display: grid;
   gap: 8px;
