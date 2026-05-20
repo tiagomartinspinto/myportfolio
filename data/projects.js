@@ -46,11 +46,27 @@ export const PROJECTS = [
     media: [
       {
         type: "image",
-        src: "assets/projects/programming-for-visual-artists/site-preview.svg",
-        alt: "Programming for Visual Artists course preview with dark interface, grid, and course title",
+        src: "assets/projects/programming-for-visual-artists/site-preview.png",
+        alt: "Programming for Visual Artists course website landing page",
         width: 1200,
         height: 630,
-        caption: "Public course archive for Aalto University creative coding teaching."
+        caption: "Current public course archive landing page."
+      },
+      {
+        type: "image",
+        src: "assets/projects/programming-for-visual-artists/course-materials-2025-2026.png",
+        alt: "Programming for Visual Artists 2025-2026 course materials page",
+        width: 1200,
+        height: 630,
+        caption: "Course materials view with sessions, Lab, slides, and project prompts."
+      },
+      {
+        type: "image",
+        src: "assets/projects/programming-for-visual-artists/particles-follow-sketch.png",
+        alt: "Programming for Visual Artists particles follow sketch page",
+        width: 1200,
+        height: 630,
+        caption: "Example p5.js sketch page from the 2025-2026 course archive."
       }
     ],
     thumbnailPosition: "50% 50%"
