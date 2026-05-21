@@ -32,6 +32,44 @@ http://127.0.0.1:8080/
 
 The preview server blocks `tools/admin/`.
 
+## Easy Launcher
+
+Use the launchers when you want admin and preview started together.
+
+Windows:
+
+```text
+Launch Portfolio Editor.bat
+```
+
+Double-click the `.bat` file at the repository root. It runs the PowerShell launcher, starts `npm run admin` and `npm run preview` in visible terminal windows, then opens:
+
+```text
+http://127.0.0.1:8787/
+http://127.0.0.1:8080/
+```
+
+macOS:
+
+```text
+tools/launch-editor.command
+```
+
+Double-click the `.command` file. If needed, make it executable once from the repository root:
+
+```bash
+chmod +x tools/launch-editor.command
+```
+
+Manual fallback:
+
+```bash
+npm run admin
+npm run preview
+```
+
+The public `::` footer link cannot start the local server. It only opens the local editor when `npm run admin` or the launcher is already running. This boundary is intentional for security.
+
 ## Check
 
 Run:

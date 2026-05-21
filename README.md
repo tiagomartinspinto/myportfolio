@@ -16,6 +16,39 @@ npm run preview
 npm run check
 ```
 
+## Easy Launcher
+
+For everyday editing, use the local launchers instead of typing the commands manually.
+
+Windows:
+
+```text
+Launch Portfolio Editor.bat
+```
+
+Double-click the `.bat` file at the repository root. It starts the admin server, starts the preview server, opens the admin at `http://127.0.0.1:8787/`, and also opens the preview at `http://127.0.0.1:8080/`. The server terminal windows stay open so logs and errors remain visible.
+
+macOS:
+
+```text
+tools/launch-editor.command
+```
+
+Double-click the `.command` file. If macOS refuses to open it, run this once from the repository root:
+
+```bash
+chmod +x tools/launch-editor.command
+```
+
+Manual fallback:
+
+```bash
+npm run admin
+npm run preview
+```
+
+The public `::` footer link cannot start the local server. It only opens `http://127.0.0.1:8787/` if the launcher or `npm run admin` is already running. This is intentional: the public portfolio cannot and should not start local scripts.
+
 ## Stack
 
 - HTML
