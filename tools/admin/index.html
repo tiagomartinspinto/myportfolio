@@ -27,6 +27,7 @@
         </div>
         <div class="action-bar__buttons">
           <button id="save-button" type="button" class="primary-button">Save locally</button>
+          <button id="save-preview-button" type="button">Save + Preview</button>
           <a id="preview-link" class="button-link" href="http://127.0.0.1:8080/" target="_blank" rel="noreferrer">Preview site</a>
           <button id="publish-button" type="button">Publish</button>
           <button id="reload-button" type="button">Reload</button>
@@ -60,6 +61,9 @@
               <button id="duplicate-project-button" type="button">Duplicate project</button>
               <button id="apply-project-button" type="button" class="primary-button">Apply changes</button>
               <button id="reset-form-button" type="button">Reset form</button>
+              <button id="move-project-up-button" type="button">Move project up</button>
+              <button id="move-project-down-button" type="button">Move project down</button>
+              <button id="move-project-top-button" type="button">Move project to top</button>
               <button id="delete-project-button" type="button" class="danger-button">Delete project</button>
             </div>
           </section>
@@ -423,6 +427,7 @@
                 </div>
               </div>
               <div class="button-row safety-actions">
+                <button id="run-check-button" type="button">Run check</button>
                 <button id="restore-backup-button" type="button">Restore backup</button>
               </div>
             </div>
@@ -476,6 +481,7 @@
           <div class="image-entry__crop-thumb">
             <img data-image-crop-preview alt="">
           </div>
+          <span class="image-entry__badge" data-media-badge>image</span>
           <p class="image-entry__warning" data-image-warning></p>
           <p class="image-entry__meta" data-image-detected-meta></p>
         </div>

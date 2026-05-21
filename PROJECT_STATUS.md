@@ -4,6 +4,19 @@
 
 Date: 2026-05-21
 
+- Added unsaved-change warnings for project switching, reload, browser tab close, and publish when the current form, working project list, or site text has unapplied/unsaved changes
+- Added a sticky action-bar `Save + Preview` button that applies the current form state, saves locally, then opens or refreshes `http://127.0.0.1:8080/`
+- Added a Publish / Safety `Run check` button that runs `npm run check` through the local admin server without committing or pushing
+- Hardened the local server check command to run the same validation script as `npm run check` without relying on fragile Windows npm shims
+- Exported the validation runner from `tools/admin/check.js` so the admin can run checks in-process while the command-line `npm run check` behavior stays intact
+- Improved Save, Run check, Restore backup, and Publish failures so the status area shows a short readable summary while full technical output stays in Git output
+- Added selected-project order controls for moving a project up, down, or directly to the top
+- Added small media-row badges for image, YouTube, Vimeo, local video, SoundCloud, audio, and URL entries
+- Added media-row warnings for the first media item/main thumbnail and video/audio entries without explicit thumbnails
+- Made the admin action bar static on very small screens so the expanded button stack does not cover the tab controls
+- Kept video/audio thumbnail behavior explicit: YouTube can derive from its own video ID, while Vimeo/local/direct video and audio without thumbnails show neutral placeholders
+- Documented the final admin usability polish in `README.md` and `tools/admin/README.md`
+- Re-ran `npm run check`; validation passes with two expected YouTube-derived thumbnail warnings
 - Refined `data/site.js` metadata so the browser title returns to `Tiago Martins Pinto - Art, Technology, Education`
 - Removed repeated Helsinki/Aalto/teaching/research wording from the site description and footer about text
 - Kept Helsinki only in the footer location line
@@ -45,9 +58,14 @@ Date: 2026-05-21
 
 ## Files Changed In This Update
 
+- `README.md`
 - `PROJECT_STATUS.md`
-- `index.html`
-- `styles.css`
+- `tools/admin/README.md`
+- `tools/admin/admin.css`
+- `tools/admin/admin.js`
+- `tools/admin/check.js`
+- `tools/admin/index.html`
+- `tools/admin/server.js`
 
 ## Current Structure
 
@@ -82,6 +100,9 @@ Date: 2026-05-21
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
 - Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
+- The admin warns before losing unapplied/unsaved form, project-list, or site-text changes
+- Save + Preview saves local data and opens or refreshes the local preview server at `http://127.0.0.1:8080/`
+- Publish / Safety can run `npm run check` without committing or pushing
 - Save locally refreshes project and site backups before rewriting `data/projects.js` and `data/site.js`
 - Publish runs `npm run check` first, then local git commands, and depends on this computer already having repository write access
 - Image crop editing remains metadata-only; original image files are not changed
@@ -115,19 +136,15 @@ Date: 2026-05-21
 
 ## Manual Tests Run In This Update
 
-1. Confirmed YouTube video media without an explicit thumbnail uses a YouTube-derived `img.youtube.com` thumbnail
-2. Confirmed a temporary Vimeo video without a thumbnail shows the neutral `video` placeholder
-3. Confirmed a temporary local video without a thumbnail shows the neutral `video` placeholder
-4. Confirmed a temporary video with an explicit thumbnail uses only that thumbnail path
-5. Confirmed no video borrows another project image or later gallery image
-6. Confirmed the `⤢` larger-image symbol is discreet by default and appears on hover/focus
-7. Confirmed project dialog and image lightbox close buttons keep their aria labels while showing `×`
-8. Confirmed close controls share the 28px centered symbol styling
-9. Confirmed the page loads in local preview without console errors
-10. Ran `node --check script.js`
-11. Ran `node --check tools/admin/check.js`
-12. Ran `git diff --check`
-13. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+1. Ran `node --check tools/admin/admin.js`
+2. Ran `node --check tools/admin/server.js`
+3. Ran `node --check tools/admin/check.js`
+4. Confirmed in the local admin UI that Save + Preview, Run check, and selected-project order controls render and are enabled/disabled appropriately
+5. Confirmed in the local admin UI that media rows show type badges and the first media item warning
+6. Confirmed the small-screen admin action bar no longer covers the tab controls
+7. Confirmed the Publish / Safety `Run check` button completes successfully and writes full output to Git output
+8. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+9. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
 
 ## Notes For Future Chats
 

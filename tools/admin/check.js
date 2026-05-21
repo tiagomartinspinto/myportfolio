@@ -12,8 +12,8 @@ const VIDEO_PROVIDERS = new Set(["youtube", "vimeo", "file", "url"]);
 const AUDIO_PROVIDERS = new Set(["file", "soundcloud", "url"]);
 const MEDIA_TYPES = new Set(["image", "video", "audio"]);
 
-const errors = [];
-const warnings = [];
+let errors = [];
+let warnings = [];
 
 const addError = (message) => {
   errors.push(message);
@@ -251,7 +251,21 @@ const validateSiteAssets = (site) => {
   validateLinks(site.footer?.roleLinks || [], "SITE.footer.roleLinks");
 };
 
-const main = () => {
+const formatCheckOutput = (result) => {
+  if (!result.ok) {
+    return ["Portfolio check failed:", "", ...result.errors.map((error) => `- ${error}`)].join("\n");
+  }
+
+  const lines = [result.summary];
+  if (result.warnings.length) {
+    lines.push("", "Portfolio check warnings:", "", ...result.warnings.map((warning) => `- ${warning}`));
+  }
+  return lines.join("\n");
+};
+
+const runCheck = () => {
+  errors = [];
+  warnings = [];
   let projects;
 
   try {
@@ -282,22 +296,48 @@ const main = () => {
   }
 
   if (errors.length) {
-    console.error("Portfolio check failed:\n");
-    errors.forEach((error) => console.error(`- ${error}`));
-    process.exit(1);
-  }
-
-  if (warnings.length) {
-    console.warn("Portfolio check warnings:\n");
-    warnings.forEach((warning) => console.warn(`- ${warning}`));
-    console.warn("");
+    const result = {
+      ok: false,
+      errors: [...errors],
+      warnings: [...warnings],
+      summary: "",
+      output: ""
+    };
+    result.output = formatCheckOutput(result);
+    return result;
   }
 
   const draftCount = Array.isArray(projects) ? projects.filter((project) => project.draft === true).length : 0;
   const projectCount = Array.isArray(projects) ? projects.length : 0;
-  console.log(
-    `Portfolio check passed: ${projectCount} projects, ${projectCount - draftCount} published, ${draftCount} draft.`
-  );
+  const result = {
+    ok: true,
+    errors: [],
+    warnings: [...warnings],
+    summary: `Portfolio check passed: ${projectCount} projects, ${projectCount - draftCount} published, ${draftCount} draft.`,
+    output: ""
+  };
+  result.output = formatCheckOutput(result);
+  return result;
 };
 
-main();
+const main = () => {
+  const result = runCheck();
+  if (!result.ok) {
+    console.error(result.output);
+    process.exit(1);
+  }
+
+  if (result.warnings.length) {
+    console.warn("Portfolio check warnings:\n");
+    result.warnings.forEach((warning) => console.warn(`- ${warning}`));
+    console.warn("");
+  }
+
+  console.log(result.summary);
+};
+
+if (require.main === module) {
+  main();
+}
+
+module.exports = { runCheck };

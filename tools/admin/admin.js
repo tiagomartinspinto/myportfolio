@@ -39,6 +39,7 @@ const state = {
   nextImageRowId: 1,
   cropRenderToken: 0,
   theme: "dark",
+  previewWindow: null,
   runtime
 };
 
@@ -54,11 +55,16 @@ const elements = {
   undoSaveButton: document.querySelector("#undo-save-button"),
   restoreBackupButton: document.querySelector("#restore-backup-button"),
   saveButton: document.querySelector("#save-button"),
+  savePreviewButton: document.querySelector("#save-preview-button"),
+  runCheckButton: document.querySelector("#run-check-button"),
   publishButton: document.querySelector("#publish-button"),
   themeToggleButton: document.querySelector("#theme-toggle-button"),
   newProjectButton: document.querySelector("#new-project-button"),
   duplicateProjectButton: document.querySelector("#duplicate-project-button"),
   applyProjectButton: document.querySelector("#apply-project-button"),
+  moveProjectUpButton: document.querySelector("#move-project-up-button"),
+  moveProjectDownButton: document.querySelector("#move-project-down-button"),
+  moveProjectTopButton: document.querySelector("#move-project-top-button"),
   deleteProjectButton: document.querySelector("#delete-project-button"),
   resetFormButton: document.querySelector("#reset-form-button"),
   projectCount: document.querySelector("#project-count"),
@@ -183,6 +189,8 @@ const normalizeAssetPath = (value) => String(value || "").trim().replace(/\\/g, 
 
 const isValidAssetPath = (value) => normalizeAssetPath(value).startsWith("assets/projects/");
 
+const isRemoteUrl = (value) => /^https?:\/\//i.test(String(value || "").trim());
+
 const mediaItemsForProject = (project = {}) => {
   if (Array.isArray(project.media) && project.media.length) {
     return project.media.map((item) => ({
@@ -220,6 +228,17 @@ const setStatus = (message) => {
 
 const setGitOutput = (value) => {
   elements.gitOutput.textContent = value || "No git output yet.";
+};
+
+const errorSummary = (error, fallback = "Action failed.") =>
+  error?.payload?.message || error?.message || fallback;
+
+const errorDetails = (error) =>
+  error?.payload?.output || error?.payload?.errors?.join("\n") || error?.payload?.message || error?.message || "";
+
+const reportActionError = (actionLabel, error) => {
+  setStatus(`${actionLabel} failed: ${errorSummary(error)}`);
+  setGitOutput(errorDetails(error));
 };
 
 const publicDisabledMessage = () => "Publishing disabled on public site.";
@@ -270,8 +289,12 @@ const updateBackupButtons = () => {
 const updateLocalActionButtons = () => {
   const disabled = !state.runtime.canUseLocalApi;
   elements.saveButton.disabled = disabled;
+  elements.savePreviewButton.disabled = disabled;
+  elements.runCheckButton.disabled = disabled;
   elements.publishButton.disabled = disabled;
   elements.saveButton.title = disabled ? "Save locally is disabled on public site." : "";
+  elements.savePreviewButton.title = disabled ? "Save + Preview is disabled on public site." : "";
+  elements.runCheckButton.title = disabled ? "Run check is disabled on public site." : "";
   elements.publishButton.title = disabled ? "Publishing disabled on public site." : "";
   elements.imageFolderSelect.disabled = disabled;
   updateBackupButtons();
@@ -914,17 +937,32 @@ const isDirty = () => JSON.stringify(buildProjectFromForm()) !== state.loadedSna
 
 const isSiteDirty = () => JSON.stringify(buildSiteFromForm()) !== state.savedSiteSnapshot;
 
+const isWorkingListDirty = () => JSON.stringify(state.projects) !== state.savedProjectsSnapshot;
+
+const dirtyChangeLabels = () =>
+  !state.loadedSnapshot && !state.savedProjectsSnapshot && !state.savedSiteSnapshot
+    ? []
+    : [
+        isDirty() ? "current project form has unapplied changes" : "",
+        isWorkingListDirty() ? "project list has unsaved changes" : "",
+        isSiteDirty() ? "site text has unsaved changes" : ""
+      ].filter(Boolean);
+
+const hasUnsavedChanges = () => dirtyChangeLabels().length > 0;
+
+const unsavedChangesMessage = (intro) => `${intro}\n\n${dirtyChangeLabels().join("\n")}`;
+
 const confirmDiscardIfDirty = () => {
-  if (!isDirty() && !isSiteDirty()) {
+  if (!hasUnsavedChanges()) {
     return true;
   }
 
-  return window.confirm("Discard unsaved form changes?");
+  return window.confirm(unsavedChangesMessage("You have unapplied or unsaved changes. Continue and discard the current form view?"));
 };
 
 const updateMode = () => {
   const dirty = isDirty();
-  const workingListDirty = JSON.stringify(state.projects) !== state.savedProjectsSnapshot;
+  const workingListDirty = isWorkingListDirty();
   const siteDirty = isSiteDirty();
   const dirtyLabels = [
     workingListDirty ? "project list not saved" : "",
@@ -947,10 +985,83 @@ const updateMode = () => {
 
   const current = buildProjectFromForm();
   elements.duplicateProjectButton.disabled = !current.slug || !current.title;
+  elements.moveProjectUpButton.disabled = state.selectedIndex === null || state.selectedIndex <= 0;
+  elements.moveProjectDownButton.disabled =
+    state.selectedIndex === null || state.selectedIndex >= state.projects.length - 1;
+  elements.moveProjectTopButton.disabled = state.selectedIndex === null || state.selectedIndex <= 0;
+};
+
+const mediaBadgeLabel = (type, provider) => {
+  if (type === "image") {
+    return "image";
+  }
+
+  if (type === "video") {
+    if (provider === "youtube") {
+      return "YouTube";
+    }
+    if (provider === "vimeo") {
+      return "Vimeo";
+    }
+    if (provider === "file") {
+      return "local video";
+    }
+    if (provider === "url") {
+      return "URL";
+    }
+    return "video";
+  }
+
+  if (type === "audio") {
+    if (provider === "soundcloud") {
+      return "SoundCloud";
+    }
+    if (provider === "url") {
+      return "URL";
+    }
+    return "audio";
+  }
+
+  return "URL";
+};
+
+const mediaThumbnailWarning = (type, provider, thumbnail) => {
+  if (thumbnail || type === "image") {
+    return "";
+  }
+
+  if (type === "video" && provider === "youtube") {
+    return "No explicit thumbnail: public site uses a YouTube-derived thumbnail.";
+  }
+
+  if (type === "video") {
+    return "No explicit thumbnail: public site shows a neutral video placeholder.";
+  }
+
+  if (type === "audio") {
+    return "No explicit thumbnail: public site shows a neutral audio placeholder.";
+  }
+
+  return "";
+};
+
+const mediaRowWarnings = (row, type, provider, thumbnail) => {
+  const warnings = [];
+  if (getImageRows()[0] === row) {
+    warnings.push("First media item = main thumbnail.");
+  }
+
+  const thumbnailWarning = mediaThumbnailWarning(type, provider, thumbnail);
+  if (thumbnailWarning) {
+    warnings.push(thumbnailWarning);
+  }
+
+  return warnings;
 };
 
 const updateImageRowPreview = (row) => {
   const typeInput = row.querySelector("[data-field='type']");
+  const providerInput = row.querySelector("[data-field='provider']");
   const srcInput = row.querySelector("[data-field='src']");
   const widthInput = row.querySelector("[data-field='width']");
   const heightInput = row.querySelector("[data-field='height']");
@@ -959,17 +1070,21 @@ const updateImageRowPreview = (row) => {
   const thumbnailInput = row.querySelector("[data-field='thumbnail']");
   const previewImage = row.querySelector("[data-image-preview]");
   const cropPreviewImage = row.querySelector("[data-image-crop-preview]");
+  const badge = row.querySelector("[data-media-badge]");
   const warning = row.querySelector("[data-image-warning]");
   const meta = row.querySelector("[data-image-detected-meta]");
   const openButton = row.querySelector("[data-image-action='open-image']");
   const thumbnailPosition = getThumbnailPositionValue();
   const thumbnailZoom = getThumbnailZoomValue();
   const type = typeInput.value || "image";
+  const provider = providerInput.value || "";
   const rawSource = srcInput.value.trim();
   const src = type === "image" ? normalizeAssetPath(rawSource) : rawSource;
   const thumbnail = normalizeAssetPath(thumbnailInput.value);
+  const warnings = mediaRowWarnings(row, type, provider, thumbnail);
   const file = getImageLibraryFile(src);
-  const thumbnailFile = getImageLibraryFile(thumbnail);
+  const thumbnailIsRemote = isRemoteUrl(thumbnail);
+  const thumbnailFile = thumbnailIsRemote ? null : getImageLibraryFile(thumbnail);
   const metadataWidth = widthInput.value.trim();
   const metadataHeight = heightInput.value.trim();
   const metadataText = metadataWidth && metadataHeight ? `${metadataWidth} x ${metadataHeight}` : "missing metadata";
@@ -980,18 +1095,19 @@ const updateImageRowPreview = (row) => {
   cropPreviewImage.style.setProperty("--thumb-zoom", String(thumbnailZoom));
   previewImage.alt = altInput.value.trim() || "Image preview";
   cropPreviewImage.alt = altInput.value.trim() || "Thumbnail crop preview";
+  badge.textContent = mediaBadgeLabel(type, provider);
 
   if (!src) {
     previewImage.removeAttribute("src");
     cropPreviewImage.removeAttribute("src");
-    warning.textContent = "No media source selected";
+    warning.textContent = [...warnings, "No media source selected"].join("\n");
     meta.textContent = `Type: ${type}\nSource: -\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
   }
 
   if (type !== "image") {
-    const previewSource = thumbnailFile ? assetUrlForSrc(thumbnailFile.src) : "";
+    const previewSource = thumbnailIsRemote ? thumbnail : thumbnailFile ? assetUrlForSrc(thumbnailFile.src) : "";
     if (previewSource) {
       previewImage.src = previewSource;
       cropPreviewImage.src = previewSource;
@@ -999,9 +1115,13 @@ const updateImageRowPreview = (row) => {
       previewImage.removeAttribute("src");
       cropPreviewImage.removeAttribute("src");
     }
-    warning.textContent = thumbnail && !thumbnailFile ? "Thumbnail file not found. Check the path or leave it blank." : "";
+    if (thumbnail && !thumbnailFile && !thumbnailIsRemote) {
+      warnings.push("Thumbnail file not found. Check the path or leave it blank.");
+    }
+    warning.textContent = warnings.join("\n");
     meta.textContent = [
       `Type: ${type}`,
+      `Provider: ${provider || "-"}`,
       `Source: ${src}`,
       `Caption: ${captionInput.value.trim() || "-"}`,
       `Thumbnail: ${thumbnail || "-"}`
@@ -1013,7 +1133,7 @@ const updateImageRowPreview = (row) => {
   if (!isValidAssetPath(src)) {
     previewImage.removeAttribute("src");
     cropPreviewImage.removeAttribute("src");
-    warning.textContent = "Invalid path. Use assets/projects/...";
+    warning.textContent = [...warnings, "Invalid path. Use assets/projects/..."].join("\n");
     meta.textContent = `Type: image\nPath: ${src}\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
@@ -1022,7 +1142,7 @@ const updateImageRowPreview = (row) => {
   if (!file) {
     previewImage.removeAttribute("src");
     cropPreviewImage.removeAttribute("src");
-    warning.textContent = "Missing file. Check the path or add the image under assets/projects/[slug]/.";
+    warning.textContent = [...warnings, "Missing file. Check the path or add the image under assets/projects/[slug]/."].join("\n");
     meta.textContent = `Type: image\nPath: ${src}\nMetadata: ${metadataText}`;
     openButton.disabled = true;
     return;
@@ -1030,7 +1150,7 @@ const updateImageRowPreview = (row) => {
 
   previewImage.src = assetUrlForSrc(file.src);
   cropPreviewImage.src = assetUrlForSrc(file.src);
-  warning.textContent = "";
+  warning.textContent = warnings.join("\n");
   meta.textContent = `Type: image\nPath: ${src}\nMetadata: ${metadataText}\nFile: ${fileText}\nCrop: ${thumbnailPosition}, ${thumbnailZoom.toFixed(2)}x`;
   openButton.disabled = false;
 };
@@ -1449,6 +1569,52 @@ const moveProject = (index, delta) => {
   setStatus("Project order updated locally.");
 };
 
+const moveProjectToTop = (index) => {
+  if (index <= 0 || index >= state.projects.length) {
+    return;
+  }
+
+  const [project] = state.projects.splice(index, 1);
+  state.projects.unshift(project);
+
+  if (state.selectedIndex === index) {
+    state.selectedIndex = 0;
+  } else if (state.selectedIndex !== null && state.selectedIndex < index) {
+    state.selectedIndex += 1;
+  }
+
+  renderProjectList();
+  renderImageDiagnostics();
+  updateMode();
+  setStatus("Project moved to the top locally.");
+};
+
+const moveSelectedProject = (delta) => {
+  if (state.selectedIndex === null) {
+    setStatus("Load an existing project first.");
+    return;
+  }
+
+  if (!persistCurrentFormIfNeeded()) {
+    return;
+  }
+
+  moveProject(state.selectedIndex, delta);
+};
+
+const moveSelectedProjectToTop = () => {
+  if (state.selectedIndex === null) {
+    setStatus("Load an existing project first.");
+    return;
+  }
+
+  if (!persistCurrentFormIfNeeded()) {
+    return;
+  }
+
+  moveProjectToTop(state.selectedIndex);
+};
+
 const deleteCurrentProject = () => {
   if (state.selectedIndex === null) {
     setStatus("Load an existing project first.");
@@ -1758,6 +1924,7 @@ const saveLocally = async ({ skipConfirm = false, emptyConfirmationOverride = nu
 
   try {
     elements.saveButton.disabled = true;
+    elements.savePreviewButton.disabled = true;
     const payload = await apiRequest("/api/save", {
       method: "POST",
       headers: {
@@ -1779,12 +1946,62 @@ const saveLocally = async ({ skipConfirm = false, emptyConfirmationOverride = nu
     updateMode();
     return true;
   } catch (error) {
-    const details = error.payload?.errors?.join("\n") || error.payload?.message || error.message;
-    setStatus(error.message);
-    setGitOutput(details);
+    reportActionError("Save locally", error);
     return false;
   } finally {
     elements.saveButton.disabled = false;
+    elements.savePreviewButton.disabled = false;
+    updateLocalActionButtons();
+  }
+};
+
+const saveAndPreview = async () => {
+  if (blockLocalApiAction("Save + Preview")) {
+    updateLocalActionButtons();
+    return;
+  }
+
+  const previewWindow = window.open("about:blank", "portfolio-preview");
+  const saved = await saveLocally({ skipConfirm: true });
+  if (!saved) {
+    if (previewWindow && !previewWindow.closed) {
+      previewWindow.close();
+    }
+    return;
+  }
+
+  const previewUrl = "http://127.0.0.1:8080/";
+  if (previewWindow) {
+    previewWindow.location.href = previewUrl;
+    previewWindow.focus();
+    state.previewWindow = previewWindow;
+  } else if (state.previewWindow && !state.previewWindow.closed) {
+    state.previewWindow.location.href = previewUrl;
+    state.previewWindow.focus();
+  } else {
+    state.previewWindow = window.open(previewUrl, "portfolio-preview");
+  }
+
+  setStatus("Saved locally and opened preview.");
+};
+
+const runPortfolioCheck = async () => {
+  if (blockLocalApiAction("Run check")) {
+    updateLocalActionButtons();
+    return;
+  }
+
+  try {
+    elements.runCheckButton.disabled = true;
+    setStatus("Running npm run check...");
+    setGitOutput("Running npm run check...");
+    const payload = await apiRequest("/api/check", { method: "POST" });
+    setStatus(payload.message || "Portfolio check passed.");
+    setGitOutput(payload.output);
+  } catch (error) {
+    reportActionError("Run check", error);
+  } finally {
+    elements.runCheckButton.disabled = false;
     updateLocalActionButtons();
   }
 };
@@ -1820,14 +2037,23 @@ const restoreBackup = async (mode) => {
     setStatus(payload.message);
     setGitOutput(payload.gitStatus?.join("\n") || "Backup restored.");
   } catch (error) {
-    setStatus(error.message);
-    setGitOutput(error.payload?.message || error.message);
+    reportActionError(mode === "undo" ? "Undo save" : "Restore backup", error);
   }
 };
 
 const publishChanges = async () => {
   if (blockLocalApiAction("Publish")) {
     updateLocalActionButtons();
+    return;
+  }
+
+  if (
+    hasUnsavedChanges() &&
+    !window.confirm(
+      unsavedChangesMessage("Publish with these unapplied or unsaved changes? The editor will apply and save them before publishing.")
+    )
+  ) {
+    setStatus("Publish cancelled.");
     return;
   }
 
@@ -1858,7 +2084,7 @@ const publishChanges = async () => {
     return;
   }
 
-  if (JSON.stringify(state.projects) !== state.savedProjectsSnapshot || isSiteDirty()) {
+  if (isWorkingListDirty() || isSiteDirty()) {
     const saved = await saveLocally({ skipConfirm: true, emptyConfirmationOverride: emptyConfirmation });
     if (!saved) {
       return;
@@ -1885,8 +2111,7 @@ const publishChanges = async () => {
     setGitOutput(payload.output);
     updateMode();
   } catch (error) {
-    setStatus(error.message);
-    setGitOutput(error.payload?.output || error.payload?.message || error.message);
+    reportActionError("Publish", error);
   } finally {
     elements.publishButton.disabled = false;
     updateLocalActionButtons();
@@ -1931,7 +2156,12 @@ const bindEvents = () => {
   elements.deleteProjectButton.addEventListener("click", deleteCurrentProject);
   elements.resetFormButton.addEventListener("click", resetForm);
   elements.saveButton.addEventListener("click", () => saveLocally());
+  elements.savePreviewButton.addEventListener("click", saveAndPreview);
+  elements.runCheckButton.addEventListener("click", runPortfolioCheck);
   elements.publishButton.addEventListener("click", publishChanges);
+  elements.moveProjectUpButton.addEventListener("click", () => moveSelectedProject(-1));
+  elements.moveProjectDownButton.addEventListener("click", () => moveSelectedProject(1));
+  elements.moveProjectTopButton.addEventListener("click", moveSelectedProjectToTop);
   elements.copyCurrentButton.addEventListener("click", copyCurrentObject);
   elements.downloadCurrentButton.addEventListener("click", downloadCurrentObject);
   [elements.thumbnailPanX, elements.thumbnailPanY, elements.thumbnailZoomRange].forEach((input) => {
@@ -1992,6 +2222,15 @@ const bindEvents = () => {
       elements.thumbnailZoom.value = button.dataset.thumbnailZoom === "1" ? "" : button.dataset.thumbnailZoom;
       refreshPreview();
     });
+  });
+
+  window.addEventListener("beforeunload", (event) => {
+    if (!hasUnsavedChanges()) {
+      return;
+    }
+
+    event.preventDefault();
+    event.returnValue = "";
   });
 };
 
