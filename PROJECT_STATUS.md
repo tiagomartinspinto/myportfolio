@@ -16,6 +16,11 @@ Date: 2026-05-21
 - Reset visible project count when filters change
 - Kept draft projects hidden from the public grid and filters
 - Preserved the compact centered grid and local admin workflow
+- Added discreet CV and ORCID links to the left footer link column
+- Added a `title="Load more projects"` tooltip to the `+` load-more button while keeping its aria label
+- Added an explicit very-small-phone grid breakpoint at `480px`
+- Added explicit reduced-motion rules for the loading mark and thumbnail fade
+- Re-ran `npm run check`; validation passes
 
 ## Files Changed In This Update
 
@@ -50,7 +55,7 @@ Date: 2026-05-21
 - The project grid centers wrapped rows, supports a more compact four-column desktop layout, and becomes a single column on small screens
 - The public grid initially shows a smaller set of projects and reveals more through a small centered `+` button
 - The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
-- The footer has three areas: links on the left, about text centered, and Helsinki / Aalto role links on the right
+- The footer has three areas: GitHub / LinkedIn / CV / ORCID links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
 - Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
@@ -96,6 +101,11 @@ Date: 2026-05-21
 10. Confirmed filtering resets visible project count and hides the load-more button when the active filter has fewer projects than the initial count
 11. Confirmed draft projects remain hidden publicly
 12. Confirmed thumbnails use the loaded-image class for fade-in behavior
+13. Confirmed the footer data now includes GitHub, LinkedIn, CV, and ORCID in the left column
+14. Confirmed the load-more button keeps `aria-label="Load more projects"` and now has `title="Load more projects"`
+15. Confirmed the CSS includes a `480px` single-column project-card breakpoint
+16. Confirmed reduced-motion CSS explicitly disables the loading animation and thumbnail image transition
+17. Re-ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
 
 ## Notes For Future Chats
 

@@ -21,6 +21,14 @@ export const SITE = {
       {
         label: "LinkedIn",
         url: "https://www.linkedin.com/in/ptiagomp/"
+      },
+      {
+        label: "CV",
+        url: "https://drive.proton.me/urls/ATSGMYVFFW#g2r7VYHQwF9b"
+      },
+      {
+        label: "ORCID",
+        url: "https://orcid.org/0000-0002-0731-8420"
       }
     ],
     aboutTitle: "About Me",
