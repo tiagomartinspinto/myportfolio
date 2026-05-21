@@ -435,9 +435,10 @@ const renderProjects = () => {
   const projectsToRender = visibleProjects.slice(0, state.visibleCount);
   const fragment = document.createDocumentFragment();
 
-  projectsToRender.forEach((project) => {
+  projectsToRender.forEach((project, index) => {
     const card = document.createElement("article");
     card.className = "project-card";
+    card.style.setProperty("--card-index", String(index));
 
     const button = document.createElement("button");
     button.type = "button";
@@ -761,3 +762,14 @@ renderSiteShell();
 renderFilters();
 resetVisibleCount();
 setFilter("all");
+
+const markPageReady = () => {
+  document.body.classList.remove("is-building");
+  document.body.classList.add("is-ready");
+};
+
+if (reducedMotionQuery.matches) {
+  markPageReady();
+} else {
+  window.requestAnimationFrame(markPageReady);
+}

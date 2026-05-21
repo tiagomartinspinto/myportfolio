@@ -4,6 +4,14 @@
 
 Date: 2026-05-21
 
+- Added a subtle Processing-inspired canvas background with low-opacity moving particles and thin connection lines
+- Kept the background lightweight, monochrome, pointer-events-free, fixed behind the portfolio content, and easy to tune through constants in `background.js`
+- Added reduced-motion handling so the background renders as a static frame instead of animating when motion is reduced
+- Added document visibility handling so the particle animation pauses when the page is hidden
+- Added a gentle page build-in: header, filters, project cards, and footer appear quickly without a splash screen
+- Added staggered project-card entrance timing based on card index while preserving the compact project grid and existing loading mark
+- Ensured dialogs and the image lightbox stay layered above the background canvas
+- Re-ran `node --check script.js`, `node --check background.js`, `npm run check`, and `git diff --check`; validation passes with the same two expected YouTube-derived thumbnail warnings
 - Added unsaved-change warnings for project switching, reload, browser tab close, and publish when the current form, working project list, or site text has unapplied/unsaved changes
 - Added a sticky action-bar `Save + Preview` button that applies the current form state, saves locally, then opens or refreshes `http://127.0.0.1:8080/`
 - Added a Publish / Safety `Run check` button that runs `npm run check` through the local admin server without committing or pushing
@@ -58,14 +66,11 @@ Date: 2026-05-21
 
 ## Files Changed In This Update
 
-- `README.md`
+- `index.html`
 - `PROJECT_STATUS.md`
-- `tools/admin/README.md`
-- `tools/admin/admin.css`
-- `tools/admin/admin.js`
-- `tools/admin/check.js`
-- `tools/admin/index.html`
-- `tools/admin/server.js`
+- `background.js`
+- `script.js`
+- `styles.css`
 
 ## Current Structure
 
@@ -88,6 +93,9 @@ Date: 2026-05-21
 - Draft projects are supported locally and hidden publicly
 - Project galleries support `media` items while still reading old `images` data if encountered
 - The public project grid uses the first media item plus `thumbnailPosition` and `thumbnailZoom`; first-media YouTube videos without explicit thumbnails use their own YouTube-derived thumbnail
+- The public page now includes a fixed Processing-inspired canvas background behind the content
+- The background uses low particle counts, muted grey particles/lines, capped device pixel ratio, page-visibility pausing, and reduced-motion static rendering
+- The public shell now has a quick build-in sequence for header, filters, project cards, and footer
 - Public grid thumbnails render in black-and-white by default and return to color on hover or keyboard focus
 - Video/audio media never borrow project images; YouTube can derive a thumbnail from the video ID, while Vimeo/local/direct video and audio without thumbnails render neutral type placeholders
 - Video and audio media can appear in the gallery modal
@@ -130,21 +138,24 @@ Date: 2026-05-21
 - Image diagnostics focus on image media and do not validate remote video/audio availability
 - The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before use
 - The loading mark can be very brief on fast connections because project data is local and renders immediately
+- The particle background is intentionally faint; tune the constants in `background.js` if it needs to become more or less visible
 - External video/audio embeds may still have provider-specific aspect-ratio or privacy behavior, even though the modal frame is stable
 - Vimeo/local/direct video and audio items without explicit thumbnails intentionally show neutral placeholders; add a local thumbnail path when a visual preview is desired
 - YouTube-derived thumbnails are remote `img.youtube.com` images and depend on that public thumbnail endpoint being reachable
 
 ## Manual Tests Run In This Update
 
-1. Ran `node --check tools/admin/admin.js`
-2. Ran `node --check tools/admin/server.js`
-3. Ran `node --check tools/admin/check.js`
-4. Confirmed in the local admin UI that Save + Preview, Run check, and selected-project order controls render and are enabled/disabled appropriately
-5. Confirmed in the local admin UI that media rows show type badges and the first media item warning
-6. Confirmed the small-screen admin action bar no longer covers the tab controls
-7. Confirmed the Publish / Safety `Run check` button completes successfully and writes full output to Git output
-8. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-9. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+1. Ran `node --check script.js`
+2. Ran `node --check background.js`
+3. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+4. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+5. Ran `git diff --check`
+6. Opened the local preview at `http://127.0.0.1:8080/index.html` in the in-app browser and confirmed the background canvas exists behind the content
+7. Confirmed the page reaches `is-ready` and the initial mobile-width project count is 6
+8. Confirmed the `+` project control reveals 3 more projects at mobile width and filters reset the visible count
+9. Confirmed project modals open and Escape closes them
+10. Confirmed the image lightbox opens above the modal/background and Escape closes it
+11. Confirmed the canvas has `pointer-events: none`, fixed positioning, and a lower z-index than the modal and lightbox
 
 ## Notes For Future Chats
 

@@ -32,6 +32,37 @@ body {
   line-height: 1.45;
 }
 
+body::before {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.025), transparent 38%);
+  content: "";
+  pointer-events: none;
+}
+
+.processing-background {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 800ms ease;
+}
+
+.is-ready .processing-background {
+  opacity: 1;
+}
+
+.site-header,
+.site-main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -79,6 +110,31 @@ ul {
 
 .site-header {
   border-bottom: 1px solid var(--border);
+}
+
+.site-header,
+.filters,
+.site-footer {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease;
+}
+
+.is-building .site-header,
+.is-building .filters,
+.is-building .site-footer {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.is-ready .filters {
+  transition-delay: 120ms;
+}
+
+.is-ready .site-footer {
+  transition-delay: 420ms;
 }
 
 .site-header__inner {
@@ -208,6 +264,20 @@ ul {
   flex: 0 1 calc((100% - 42px) / 4);
   min-width: 220px;
   max-width: 286px;
+  animation: project-card-build 420ms ease both;
+  animation-delay: calc(var(--card-index, 0) * 42ms + 180ms);
+}
+
+@keyframes project-card-build {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .project-card__button {
@@ -414,6 +484,7 @@ ul {
   border: 1px solid var(--border-strong);
   background: #0d0d0d;
   color: var(--text);
+  z-index: 3;
 }
 
 .project-dialog::backdrop {
@@ -615,6 +686,7 @@ ul {
   border: 0;
   background: rgba(0, 0, 0, 0.92);
   color: var(--text);
+  z-index: 4;
 }
 
 .image-lightbox::backdrop {
@@ -856,6 +928,22 @@ ul {
 
   .project-loading {
     animation: none;
+  }
+
+  .processing-background,
+  .is-ready .processing-background {
+    opacity: 0.55;
+    transition: none;
+  }
+
+  .site-header,
+  .filters,
+  .site-footer,
+  .project-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .project-card__image img {
