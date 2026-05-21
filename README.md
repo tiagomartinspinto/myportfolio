@@ -8,6 +8,14 @@ https://tiagomartinspinto.github.io/myportfolio/
 
 The site presents an artistic-research practice across art, technology, education, creative coding, exhibitions, participatory work, and media systems. Project content lives in local data files and project media lives in the repository.
 
+## Quick Start
+
+```bash
+npm run admin
+npm run preview
+npm run check
+```
+
 ## Stack
 
 - HTML
