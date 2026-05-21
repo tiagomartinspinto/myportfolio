@@ -697,9 +697,24 @@ ul {
   }
 }
 
+@media (max-width: 480px) {
+  .project-card {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .project-loading {
+    animation: none;
+  }
+
+  .project-card__image img {
+    transition: none;
   }
 
   *,
