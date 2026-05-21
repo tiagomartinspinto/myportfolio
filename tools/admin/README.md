@@ -124,7 +124,7 @@ Fields include:
 - source
 - alt text for images
 - caption
-- thumbnail
+- thumbnail / poster image
 - width and height for images
 
 Video providers:
@@ -140,7 +140,7 @@ Audio providers:
 - SoundCloud
 - direct URL
 
-Media order is editable. The first image media item is used for the public grid thumbnail.
+Media order is editable. The first media item controls the public grid thumbnail. Images use their own image source. Video and audio items use only their own explicit `thumbnail` value; the public site does not borrow another image from the same project.
 
 Examples:
 
@@ -203,7 +203,11 @@ Examples:
 }
 ```
 
-Use YouTube or Vimeo for larger video files when possible. Use local files for small or archival media. Keep repository size reasonable. If video or audio appears first in a project, add a thumbnail.
+Use YouTube or Vimeo for larger video files when possible. Use local files for small or archival media. Keep repository size reasonable. If video or audio appears first in a published project, add a thumbnail; `npm run check` keeps this requirement. Video and audio media without thumbnails still appear in the modal gallery with a neutral `video` or `audio` placeholder, and no thumbnails are auto-generated.
+
+The media row field labelled `Thumbnail / poster image` is used for video/audio gallery thumbnails and local-file video posters. It is never filled automatically.
+
+Gallery thumbnails may crop. The project modal feature image uses a stable contained frame, and image media can be opened in a minimal full-image view from the public site. The larger view is uncropped and can be closed with Esc, the close button, or a backdrop click.
 
 ## Thumbnail Cropping
 
