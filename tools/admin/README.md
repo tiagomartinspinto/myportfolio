@@ -2,7 +2,26 @@
 
 This editor is local only. It is not a public CMS and it is excluded from GitHub Pages.
 
-## Start
+## Quick Launch
+
+From the repository root:
+
+```bash
+npm run launch
+```
+
+This starts the local editor and preview server, waits until both localhost URLs respond, then opens the editor in the default browser:
+
+```text
+http://127.0.0.1:8787/
+http://127.0.0.1:8080/
+```
+
+Press `Ctrl+C` in the launcher terminal to stop both local servers.
+
+The public `::` footer link cannot start local scripts. It only opens the local editor when `npm run launch` or `npm run admin` is already running. This boundary is intentional for security.
+
+## Manual Start
 
 From the repository root:
 
@@ -32,9 +51,9 @@ http://127.0.0.1:8080/
 
 The preview server blocks `tools/admin/`.
 
-## Easy Launcher
+## Optional Wrappers
 
-Use the launchers when you want admin and preview started together.
+The old OS-specific launchers are still available as convenience wrappers, but the real launcher is `npm run launch`.
 
 Windows:
 
@@ -42,12 +61,7 @@ Windows:
 Launch Portfolio Editor.bat
 ```
 
-Double-click the `.bat` file at the repository root. It runs the PowerShell launcher, starts `npm run admin` and `npm run preview` in visible terminal windows, then opens:
-
-```text
-http://127.0.0.1:8787/
-http://127.0.0.1:8080/
-```
+Double-click the `.bat` file at the repository root.
 
 macOS:
 
@@ -60,15 +74,6 @@ Double-click the `.command` file. If needed, make it executable once from the re
 ```bash
 chmod +x tools/launch-editor.command
 ```
-
-Manual fallback:
-
-```bash
-npm run admin
-npm run preview
-```
-
-The public `::` footer link cannot start the local server. It only opens the local editor when `npm run admin` or the launcher is already running. This boundary is intentional for security.
 
 ## Check
 

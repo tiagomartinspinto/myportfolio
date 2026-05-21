@@ -2,6 +2,7 @@
   "name": "myportfolio",
   "private": true,
   "scripts": {
+    "launch": "node tools/launch-editor.js",
     "admin": "node tools/admin/server.js admin",
     "preview": "node tools/admin/server.js preview",
     "check": "node tools/admin/check.js"
