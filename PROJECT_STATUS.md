@@ -27,6 +27,7 @@ Date: 2026-05-21
 - Added a stable contained media frame in the project modal so differently sized images do not resize the window dramatically
 - Kept modal media uncropped with `object-fit: contain`; the black-and-white thumbnail treatment is limited to the main grid
 - Replaced the footer About Me closing lines with the quiet ocean / striped canvas tent memory text
+- Moved the `isFullyExpanded(totalProjects)` helper next to the load-more helpers so expand/collapse calls cannot reference an undefined helper during future edits
 - Re-ran `npm run check`; validation passes
 
 ## Files Changed In This Update
@@ -98,18 +99,20 @@ Date: 2026-05-21
 
 ## Manual Tests Run In This Update
 
-1. Confirmed thumbnails compute black-and-white by default and the hover/focus CSS rule returns them to color
-2. Confirmed the load-more button expands the grid, then switches to a collapse control with `aria-label="Show fewer projects"` and `title="Show fewer projects"`
-3. Confirmed collapse returns the grid to the initial visible project count
-4. Confirmed filtering resets the visible count and load-more/collapse state
-5. Confirmed the project modal title is smaller and calmer on desktop and mobile CSS breakpoints
-6. Confirmed the modal media frame stays stable across differently sized images and keeps media contained rather than cropped
-7. Confirmed the footer About Me text uses the updated ocean / striped canvas tent memory
-8. Confirmed reduced-motion CSS still disables the loading animation and thumbnail transitions
-9. Confirmed the mobile viewport starts with 6 projects and keeps project cards single-column
-10. Ran `node --check script.js`
-11. Ran `git diff --check`
-12. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+1. Confirmed the page loads in local preview without console errors
+2. Confirmed thumbnails compute black-and-white by default and the hover/focus CSS rule returns them to color
+3. Confirmed the `+` load-more button expands the grid, then switches to a `-` collapse control with `aria-label="Show fewer projects"` and `title="Show fewer projects"`
+4. Confirmed the `-` collapse control returns the grid to the initial visible project count
+5. Confirmed filtering resets the visible count and load-more/collapse state
+6. Confirmed the project modal title is smaller and calmer on desktop and mobile CSS breakpoints
+7. Confirmed the modal media frame stays stable across differently sized images and keeps media contained rather than cropped
+8. Confirmed the footer About Me text uses the updated ocean / striped canvas tent memory
+9. Confirmed reduced-motion CSS still disables the loading animation and thumbnail transitions
+10. Confirmed the mobile viewport starts with 6 projects and keeps project cards single-column
+11. Ran `node --check script.js`
+12. Ran `git diff --check`
+13. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+14. Verified the load-more collapse helper is defined before `updateLoadMoreButton()` and `toggleProjectCount()` use it
 
 ## Notes For Future Chats
 

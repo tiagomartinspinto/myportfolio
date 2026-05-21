@@ -71,8 +71,6 @@ const resetVisibleCount = () => {
   state.visibleCount = getInitialProjectCount();
 };
 
-const isFullyExpanded = (totalProjects) => state.visibleCount >= totalProjects;
-
 const isExternalUrl = (value) => /^https?:\/\//i.test(value);
 
 const absoluteUrl = (value) => {
@@ -339,6 +337,8 @@ const markImageLoaded = (image) => {
   image.addEventListener("load", setLoaded, { once: true });
   image.addEventListener("error", setLoaded, { once: true });
 };
+
+const isFullyExpanded = (totalProjects) => state.visibleCount >= totalProjects;
 
 const updateLoadMoreButton = (totalProjects) => {
   const initialCount = getInitialProjectCount();
