@@ -34,16 +34,21 @@ Date: 2026-05-21
 - Added a discreet `larger` image control while keeping full project images contained and uncropped
 - Clarified the local admin media field as `Thumbnail / poster image` with a note that video/audio thumbnails are not auto-generated
 - Updated public and admin documentation for explicit video thumbnails, neutral placeholders, and larger image viewing
+- Refined video thumbnail logic so YouTube videos without explicit thumbnails derive thumbnails only from their own video ID
+- Removed project-image thumbnails from existing YouTube video media entries so they no longer borrow nearby gallery images
+- Allowed first video/audio media items to pass validation without thumbnails; the public site shows YouTube-derived thumbnails or neutral placeholders
+- Added check warnings for video/audio media without explicit thumbnails instead of failing validation
+- Made the full-image lightbox control use a discreet `⤢` symbol that appears on hover/focus and remains faint on touch devices
 - Re-ran `npm run check`; validation passes
 
 ## Files Changed In This Update
 
-- `index.html`
 - `README.md`
 - `PROJECT_STATUS.md`
+- `data/projects.js`
 - `script.js`
 - `styles.css`
-- `tools/admin/admin.css`
+- `tools/admin/check.js`
 - `tools/admin/index.html`
 - `tools/admin/README.md`
 
@@ -67,9 +72,9 @@ Date: 2026-05-21
 - Site-wide metadata and shell text now live in `data/site.js`
 - Draft projects are supported locally and hidden publicly
 - Project galleries support `media` items while still reading old `images` data if encountered
-- The public project grid uses the first media item plus `thumbnailPosition` and `thumbnailZoom` for thumbnail rendering when an image or explicit thumbnail is available
+- The public project grid uses the first media item plus `thumbnailPosition` and `thumbnailZoom`; first-media YouTube videos without explicit thumbnails use their own YouTube-derived thumbnail
 - Public grid thumbnails render in black-and-white by default and return to color on hover or keyboard focus
-- Video/audio media use only their own explicit thumbnail paths; missing thumbnails render neutral type placeholders
+- Video/audio media never borrow project images; YouTube can derive a thumbnail from the video ID, while Vimeo/local/direct video and audio without thumbnails render neutral type placeholders
 - Video and audio media can appear in the gallery modal
 - The project modal uses a stable contained media frame to reduce layout shifts between different image proportions
 - Image media in the project modal can be opened in a minimal larger view without cropping
@@ -108,22 +113,22 @@ Date: 2026-05-21
 - The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before use
 - The loading mark can be very brief on fast connections because project data is local and renders immediately
 - External video/audio embeds may still have provider-specific aspect-ratio or privacy behavior, even though the modal frame is stable
-- Video/audio items without explicit thumbnails intentionally show neutral placeholders; add a local thumbnail path when a visual preview is desired
+- Vimeo/local/direct video and audio items without explicit thumbnails intentionally show neutral placeholders; add a local thumbnail path when a visual preview is desired
+- YouTube-derived thumbnails are remote `img.youtube.com` images and depend on that public thumbnail endpoint being reachable
 
 ## Manual Tests Run In This Update
 
-1. Confirmed a video item without a thumbnail renders a neutral `video` placeholder instead of borrowing a project image
-2. Confirmed a video item with a thumbnail uses that exact thumbnail path
-3. Confirmed no video thumbnail is silently assigned from an unrelated image
-4. Confirmed gallery thumbnail clicks still change the feature media
-5. Confirmed feature image media opens in the larger/full view
-6. Confirmed Esc closes the larger image view
-7. Confirmed clicking the lightbox backdrop closes the larger image view
-8. Confirmed focus returns to the feature image control after closing the larger image view
-9. Confirmed the page loads in local preview without console errors
-10. Ran `node --check script.js`
-11. Ran `git diff --check`
-12. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+1. Confirmed YouTube video media without an explicit thumbnail uses a YouTube-derived `img.youtube.com` thumbnail
+2. Confirmed a temporary Vimeo video without a thumbnail shows the neutral `video` placeholder
+3. Confirmed a temporary local video without a thumbnail shows the neutral `video` placeholder
+4. Confirmed a temporary video with an explicit thumbnail uses only that thumbnail path
+5. Confirmed no video borrows another project image or later gallery image
+6. Confirmed the `⤢` larger-image symbol is discreet by default and appears on hover/focus
+7. Confirmed the page loads in local preview without console errors
+8. Ran `node --check script.js`
+9. Ran `node --check tools/admin/check.js`
+10. Ran `git diff --check`
+11. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
 
 ## Notes For Future Chats
 

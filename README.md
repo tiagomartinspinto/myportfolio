@@ -131,9 +131,9 @@ The public gallery and local editor support mixed project media:
 
 Images should stay local under `assets/projects/[slug]/`. Use YouTube or Vimeo for larger video files when possible, and local files for small or archival media. Keep repository size reasonable.
 
-Video and audio thumbnails are explicit only. The public site never borrows a nearby project image or the first project image as a video/audio thumbnail unless that path is written in the media item's own `thumbnail` field. If a video or audio item has no thumbnail, its gallery thumbnail shows a neutral `video` or `audio` placeholder. If video or audio appears first in a published project, `npm run check` still requires a thumbnail so the main grid has an intentional preview.
+Video and audio thumbnails are never borrowed from another project image or nearby gallery image. Video thumbnails can come only from the media item's own `thumbnail` field, or from the video's own YouTube ID when `provider: "youtube"` has no explicit thumbnail. Vimeo, local-file, and direct-URL videos do not get guessed thumbnails; without an explicit thumbnail they show a neutral `video` placeholder. Audio without an explicit thumbnail shows a neutral `audio` placeholder.
 
-Gallery thumbnails may crop for compact browsing. In the project modal, selected image media is shown inside a stable contained frame, and clicking the feature image or its small `larger` control opens a minimal full-image view. The full view is uncropped and closes with Esc, the close button, or a backdrop click.
+Gallery thumbnails may crop for compact browsing. In the project modal, selected image media is shown inside a stable contained frame, and clicking the feature image or its small `⤢` control opens a minimal full-image view. The full view is uncropped and closes with Esc, the close button, or a backdrop click.
 
 Older `images` arrays are still accepted by the local editor as a compatibility fallback, but new project data should use `media`.
 

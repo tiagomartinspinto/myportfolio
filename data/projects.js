@@ -490,8 +490,7 @@ export const PROJECTS = [
         type: "video",
         provider: "youtube",
         source: "https://youtu.be/vhMKGt1EqvY?si=f3UkkBLKGSVdAuUY",
-        caption: "Project video documentation.",
-        thumbnail: "assets/projects/bqg/bqg-01.jpeg"
+        caption: "Project video documentation."
       }
     ]
   },
@@ -555,8 +554,7 @@ export const PROJECTS = [
         type: "video",
         provider: "youtube",
         source: "https://youtu.be/vhMKGt1EqvY?si=1nF1nbrBvy6TECxa",
-        caption: "Project video documentation.",
-        thumbnail: "assets/projects/sagrada-familia/sagrada-familia-01.jpeg"
+        caption: "Project video documentation."
       }
     ]
   }

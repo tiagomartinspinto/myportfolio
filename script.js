@@ -182,10 +182,19 @@ const getThumbnailSource = (item) => {
   }
 
   if (media.type === "image") {
-    return media.src || media.source;
+    return media.thumbnail || media.src || media.source;
   }
 
-  return media.thumbnail || null;
+  if (media.thumbnail) {
+    return media.thumbnail;
+  }
+
+  if (media.type === "video" && media.provider?.toLowerCase() === "youtube") {
+    const id = getYouTubeId(media.source);
+    return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+  }
+
+  return null;
 };
 
 const getMediaTypeLabel = (item) => {
@@ -414,7 +423,7 @@ const createImageOpenButton = (media, projectTitle, image) => {
 
   const label = document.createElement("span");
   label.className = "project-dialog__larger-label";
-  label.textContent = "larger";
+  label.textContent = "⤢";
 
   button.append(image, label);
   button.addEventListener("click", () => openImageLightbox(media, projectTitle, button));
