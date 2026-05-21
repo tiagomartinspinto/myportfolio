@@ -39,18 +39,15 @@ Date: 2026-05-21
 - Allowed first video/audio media items to pass validation without thumbnails; the public site shows YouTube-derived thumbnails or neutral placeholders
 - Added check warnings for video/audio media without explicit thumbnails instead of failing validation
 - Made the full-image lightbox control use a discreet `⤢` symbol that appears on hover/focus and remains faint on touch devices
+- Replaced visible project dialog and image lightbox `Close` labels with accessible `×` symbol buttons
+- Styled modal close controls as balanced 28px muted symbol buttons with brighter hover/focus states
 - Re-ran `npm run check`; validation passes
 
 ## Files Changed In This Update
 
-- `README.md`
 - `PROJECT_STATUS.md`
-- `data/projects.js`
-- `script.js`
+- `index.html`
 - `styles.css`
-- `tools/admin/check.js`
-- `tools/admin/index.html`
-- `tools/admin/README.md`
 
 ## Current Structure
 
@@ -124,11 +121,13 @@ Date: 2026-05-21
 4. Confirmed a temporary video with an explicit thumbnail uses only that thumbnail path
 5. Confirmed no video borrows another project image or later gallery image
 6. Confirmed the `⤢` larger-image symbol is discreet by default and appears on hover/focus
-7. Confirmed the page loads in local preview without console errors
-8. Ran `node --check script.js`
-9. Ran `node --check tools/admin/check.js`
-10. Ran `git diff --check`
-11. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+7. Confirmed project dialog and image lightbox close buttons keep their aria labels while showing `×`
+8. Confirmed close controls share the 28px centered symbol styling
+9. Confirmed the page loads in local preview without console errors
+10. Ran `node --check script.js`
+11. Ran `node --check tools/admin/check.js`
+12. Ran `git diff --check`
+13. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
 
 ## Notes For Future Chats
 

@@ -151,7 +151,8 @@ ul {
 
 .filters button,
 .text-link,
-.project-dialog__close {
+.project-dialog__close,
+.image-lightbox__close {
   appearance: none;
   -webkit-appearance: none;
   padding: 0;
@@ -428,7 +429,25 @@ ul {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: #0d0d0d;
+  background: transparent;
+}
+
+.project-dialog__close,
+.image-lightbox__close {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.project-dialog__close:hover,
+.project-dialog__close:focus-visible,
+.image-lightbox__close:hover,
+.image-lightbox__close:focus-visible {
+  color: var(--text);
 }
 
 .project-dialog__content {
@@ -607,8 +626,7 @@ ul {
   top: 14px;
   right: 14px;
   z-index: 2;
-  color: var(--muted);
-  background: rgba(0, 0, 0, 0.4);
+  background: transparent;
 }
 
 .image-lightbox__figure {
