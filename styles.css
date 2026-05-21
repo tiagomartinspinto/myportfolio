@@ -503,6 +503,19 @@ ul {
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1.2;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.project-dialog__image-open:hover .project-dialog__larger-label,
+.project-dialog__image-open:focus-visible .project-dialog__larger-label {
+  opacity: 0.72;
+}
+
+@media (hover: none) {
+  .project-dialog__larger-label {
+    opacity: 0.35;
+  }
 }
 
 .project-dialog__feature iframe {

@@ -140,7 +140,14 @@ Audio providers:
 - SoundCloud
 - direct URL
 
-Media order is editable. The first media item controls the public grid thumbnail. Images use their own image source. Video and audio items use only their own explicit `thumbnail` value; the public site does not borrow another image from the same project.
+Media order is editable. The first media item controls the public grid thumbnail. Images use their own image source. Video and audio items never borrow another image from the same project.
+
+Video thumbnails can come only from:
+
+- the media item's own explicit `thumbnail` value
+- the video's own YouTube ID when `provider: "youtube"` has no explicit thumbnail
+
+Vimeo, local-file, and direct-URL videos do not get guessed thumbnails. Without an explicit thumbnail they show a neutral `video` placeholder. Audio without an explicit thumbnail shows a neutral `audio` placeholder.
 
 Examples:
 
@@ -203,9 +210,9 @@ Examples:
 }
 ```
 
-Use YouTube or Vimeo for larger video files when possible. Use local files for small or archival media. Keep repository size reasonable. If video or audio appears first in a published project, add a thumbnail; `npm run check` keeps this requirement. Video and audio media without thumbnails still appear in the modal gallery with a neutral `video` or `audio` placeholder, and no thumbnails are auto-generated.
+Use YouTube or Vimeo for larger video files when possible. Use local files for small or archival media. Keep repository size reasonable. Video and audio media without thumbnails still appear in the public grid or modal gallery with either a YouTube-derived thumbnail or a neutral `video` / `audio` placeholder, and no thumbnails are auto-generated.
 
-The media row field labelled `Thumbnail / poster image` is used for video/audio gallery thumbnails and local-file video posters. It is never filled automatically.
+The media row field labelled `Thumbnail / poster image` is optional. It is used only for that specific video/audio item and local-file video posters. Leave it empty for a neutral placeholder, or for YouTube videos to use a thumbnail from the video itself. It is never filled automatically.
 
 Gallery thumbnails may crop. The project modal feature image uses a stable contained frame, and image media can be opened in a minimal full-image view from the public site. The larger view is uncropped and can be closed with Esc, the close button, or a backdrop click.
 

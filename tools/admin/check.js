@@ -13,9 +13,14 @@ const AUDIO_PROVIDERS = new Set(["file", "soundcloud", "url"]);
 const MEDIA_TYPES = new Set(["image", "video", "audio"]);
 
 const errors = [];
+const warnings = [];
 
 const addError = (message) => {
   errors.push(message);
+};
+
+const addWarning = (message) => {
+  warnings.push(message);
 };
 
 const isPlainObject = (value) => typeof value === "object" && value !== null && !Array.isArray(value);
@@ -122,11 +127,6 @@ const validateProjectMedia = (project, projectIndex) => {
     return;
   }
 
-  const first = media[0];
-  if (!draft && first && first.type !== "image" && !trimString(first.thumbnail)) {
-    addError(`PROJECTS[${projectIndex}] ${project.slug} starts with ${first.type}; add a thumbnail.`);
-  }
-
   media.forEach((item, mediaIndex) => {
     const label = `PROJECTS[${projectIndex}].media[${mediaIndex}]`;
     if (!isPlainObject(item)) {
@@ -182,6 +182,10 @@ const validateProjectMedia = (project, projectIndex) => {
       } else {
         assertLocalAsset(thumbnail, `${context}.thumbnail`, { required: true, allowMissing: draft });
       }
+    } else if (!draft && type === "video" && provider === "youtube") {
+      addWarning(`${context}.thumbnail is empty; the public site will use a YouTube thumbnail derived from the video ID.`);
+    } else if (!draft && (type === "video" || type === "audio")) {
+      addWarning(`${context}.thumbnail is empty; the public site will show a neutral ${type} placeholder.`);
     }
   });
 };
@@ -281,6 +285,12 @@ const main = () => {
     console.error("Portfolio check failed:\n");
     errors.forEach((error) => console.error(`- ${error}`));
     process.exit(1);
+  }
+
+  if (warnings.length) {
+    console.warn("Portfolio check warnings:\n");
+    warnings.forEach((warning) => console.warn(`- ${warning}`));
+    console.warn("");
   }
 
   const draftCount = Array.isArray(projects) ? projects.filter((project) => project.draft === true).length : 0;
