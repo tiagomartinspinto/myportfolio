@@ -2,38 +2,28 @@
 
 ## Latest Update
 
-Date: 2026-05-20
+Date: 2026-05-21
 
-- Added `npm run check` through `tools/admin/check.js` for lightweight validation of project data, site data, media paths, links, local assets, drafts, and approved categories
-- Added `data/site.js` for editable site-wide metadata, header content, contact email, footer links, about text, location text, and role links
-- Updated the public site to render header/footer/site metadata from `SITE` while keeping static SEO fallbacks in `index.html`
-- Added draft project support with `draft: true`; drafts remain editable locally and are hidden from the public project grid and filters
-- Added a Site tab to the local editor for editing `data/site.js`
-- Updated Save locally to write `data/projects.js` and `data/site.js`, with `data/projects.backup.js` and `data/site.backup.js`
-- Updated Publish to run `npm run check` before committing, then stage only approved portfolio paths
-- Kept the local admin localhost-only and avoided tokens, credentials, remote APIs, analytics, databases, or public CMS behavior
-- Made public project thumbnails slightly smaller and more compact, with up to four centered columns on wide screens
-- Improved mobile modal/gallery behavior with a sticky close button, clearer active gallery thumbs, contained media, and easier tap targets
-- Expanded README and local admin documentation with site editing, draft workflow, validation, publish safety, and media examples
+- Refined `data/site.js` metadata so the browser title returns to `Tiago Martins Pinto - Art, Technology, Education`
+- Removed repeated Helsinki/Aalto/teaching/research wording from the site description and footer about text
+- Kept Helsinki only in the footer location line
+- Replaced the footer About Me lines with a quieter practice-oriented text block
+- Added a subtle `::` loading mark before the project grid renders
+- Added gentle thumbnail fade-in once images load while preserving reserved aspect-ratio boxes
+- Added a discreet centered `+` button for loading more projects
+- Set initial public project visibility to 8 projects on desktop and 6 on tablet/mobile
+- Set load-more increments to 4 projects on desktop and 3 on tablet/mobile
+- Reset visible project count when filters change
+- Kept draft projects hidden from the public grid and filters
+- Preserved the compact centered grid and local admin workflow
 
 ## Files Changed In This Update
 
-- `.gitignore`
 - `index.html`
 - `styles.css`
 - `script.js`
-- `package.json`
 - `data/site.js`
-- `README.md`
 - `PROJECT_STATUS.md`
-- `tools/admin/README.md`
-- `tools/admin/admin.css`
-- `tools/admin/admin.js`
-- `tools/admin/check.js`
-- `tools/admin/index.html`
-- `tools/admin/project-data.js`
-- `tools/admin/server.js`
-- `tools/admin/site-data.js`
 
 ## Current Structure
 
@@ -58,6 +48,8 @@ Date: 2026-05-20
 - The public project grid uses the first image media item plus `thumbnailPosition` and `thumbnailZoom` for thumbnail rendering
 - Video and audio media can appear in the gallery modal
 - The project grid centers wrapped rows, supports a more compact four-column desktop layout, and becomes a single column on small screens
+- The public grid initially shows a smaller set of projects and reveals more through a small centered `+` button
+- The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
 - The footer has three areas: links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
@@ -74,6 +66,7 @@ Date: 2026-05-20
 - Verify that `/tools/admin/` is not present on the deployed GitHub Pages site
 - Test one full project edit through the admin: draft toggle, save, undo, restore, preview, and publish
 - Test one full site-text edit through the admin Site tab
+- Check desktop viewport behavior on the deployed site after GitHub Pages updates
 - Add real video or audio entries to more projects when stable public media sources are available
 - Decide whether any generated cropped thumbnails should be manually placed under `assets/projects/[slug]/`
 - Fine-tune thumbnail crop metadata where the new centered grid reveals awkward crops
@@ -87,17 +80,22 @@ Date: 2026-05-20
 - Save locally also rewrites `data/site.js` into the editor's normalized object formatting
 - Image diagnostics focus on image media and do not validate remote video/audio availability
 - The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before use
+- The loading mark can be very brief on fast connections because project data is local and renders immediately
 
 ## Manual Tests Run In This Update
 
 1. Pulled/fetched and confirmed Desktop `main`, `origin/main`, and the temporary worktree were aligned before editing
-2. Inspected the current public renderer, project data, local admin, local server, and documentation
-3. Ran JavaScript syntax checks for `script.js`, `tools/admin/admin.js`, `tools/admin/project-data.js`, `tools/admin/server.js`, `tools/admin/site-data.js`, and `tools/admin/check.js`
-4. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-5. Started the local preview server and confirmed `/`, `/data/site.js`, and a representative project image return successfully
-6. Confirmed the preview server still blocks `/tools/admin/`
-7. Started the local admin server and confirmed `/`, `/data/site.js`, and `/api/projects` return successfully
-8. Confirmed `/api/projects` includes the `site` object for the new Site tab
+2. Ran `node --check script.js`
+3. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+4. Ran `git diff --check`
+5. Started the local preview server and opened the public site in the in-app browser
+6. Confirmed the main page renders the new title, metadata, footer text, and footer location without repeating Helsinki in metadata
+7. Confirmed the loading mark is hidden after the grid renders
+8. Confirmed mobile/tablet-sized initial project count is 6
+9. Confirmed the `+` load-more button is visible when more projects exist and reveals 3 additional projects at the current compact viewport
+10. Confirmed filtering resets visible project count and hides the load-more button when the active filter has fewer projects than the initial count
+11. Confirmed draft projects remain hidden publicly
+12. Confirmed thumbnails use the loaded-image class for fade-in behavior
 
 ## Notes For Future Chats
 

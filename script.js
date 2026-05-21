@@ -4,12 +4,15 @@ import { SITE } from "./data/site.js";
 const state = {
   activeFilter: "all",
   activeProject: null,
-  lastTrigger: null
+  lastTrigger: null,
+  visibleCount: 0
 };
 
 const elements = {
   filterBar: document.querySelector("#project-filters"),
+  loading: document.querySelector("#project-loading"),
   projectGrid: document.querySelector("#project-grid"),
+  loadMoreButton: document.querySelector("#load-more-projects"),
   jumpButtons: Array.from(document.querySelectorAll("[data-filter-jump]")),
   dialog: document.querySelector("#project-dialog"),
   dialogClose: document.querySelector("#project-dialog-close"),
@@ -39,6 +42,7 @@ const shellElements = {
 const publishedProjects = PROJECTS.filter((project) => project.draft !== true);
 
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const compactGridQuery = window.matchMedia("(max-width: 1100px)");
 
 const FILTER_LABELS = {
   all: "All",
@@ -58,6 +62,14 @@ const matchesFilter = (project, filter) =>
 
 const getVisibleProjects = () =>
   publishedProjects.filter((project) => matchesFilter(project, state.activeFilter));
+
+const getInitialProjectCount = () => (compactGridQuery.matches ? 6 : 8);
+
+const getProjectRevealCount = () => (compactGridQuery.matches ? 3 : 4);
+
+const resetVisibleCount = () => {
+  state.visibleCount = getInitialProjectCount();
+};
 
 const isExternalUrl = (value) => /^https?:\/\//i.test(value);
 
@@ -314,11 +326,29 @@ const renderFilters = () => {
   elements.filterBar.replaceChildren(...PROJECT_DISPLAY_FILTERS.map(createFilterButton));
 };
 
+const markImageLoaded = (image) => {
+  const setLoaded = () => image.classList.add("is-loaded");
+
+  if (image.complete && image.naturalWidth > 0) {
+    setLoaded();
+    return;
+  }
+
+  image.addEventListener("load", setLoaded, { once: true });
+  image.addEventListener("error", setLoaded, { once: true });
+};
+
+const updateLoadMoreButton = (totalProjects) => {
+  const hasMore = state.visibleCount < totalProjects;
+  elements.loadMoreButton.hidden = !hasMore;
+};
+
 const renderProjects = () => {
   const visibleProjects = getVisibleProjects();
+  const projectsToRender = visibleProjects.slice(0, state.visibleCount);
   const fragment = document.createDocumentFragment();
 
-  visibleProjects.forEach((project) => {
+  projectsToRender.forEach((project) => {
     const card = document.createElement("article");
     card.className = "project-card";
 
@@ -346,7 +376,8 @@ const renderProjects = () => {
       }
       image.loading = "lazy";
       image.decoding = "async";
-      image.sizes = "(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw";
+      image.sizes = "(max-width: 520px) 100vw, (max-width: 860px) 50vw, (max-width: 1100px) 33vw, 25vw";
+      markImageLoaded(image);
       imageWrap.append(image);
     } else {
       const placeholder = document.createElement("span");
@@ -370,6 +401,8 @@ const renderProjects = () => {
   });
 
   elements.projectGrid.replaceChildren(fragment);
+  elements.loading.hidden = true;
+  updateLoadMoreButton(visibleProjects.length);
 };
 
 const updateFeatureMedia = (item, projectTitle) => {
@@ -532,12 +565,18 @@ const handleDialogKeydown = (event) => {
 
 const setFilter = (filter) => {
   state.activeFilter = filter;
+  resetVisibleCount();
 
   elements.filterBar.querySelectorAll(".filter-pill").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.filter === filter);
     button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
   });
 
+  renderProjects();
+};
+
+const loadMoreProjects = () => {
+  state.visibleCount += getProjectRevealCount();
   renderProjects();
 };
 
@@ -554,6 +593,8 @@ const handleFilterJump = (event) => {
 elements.jumpButtons.forEach((button) => {
   button.addEventListener("click", handleFilterJump);
 });
+
+elements.loadMoreButton.addEventListener("click", loadMoreProjects);
 
 elements.dialogClose.addEventListener("click", closeProject);
 
@@ -580,4 +621,5 @@ elements.dialog.addEventListener("close", () => {
 
 renderSiteShell();
 renderFilters();
+resetVisibleCount();
 setFilter("all");
