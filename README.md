@@ -133,7 +133,7 @@ Images should stay local under `assets/projects/[slug]/`. Use YouTube or Vimeo f
 
 Video and audio thumbnails are never borrowed from another project image or nearby gallery image. Video thumbnails can come only from the media item's own `thumbnail` field, or from the video's own YouTube ID when `provider: "youtube"` has no explicit thumbnail. Vimeo, local-file, and direct-URL videos do not get guessed thumbnails; without an explicit thumbnail they show a neutral `video` placeholder. Audio without an explicit thumbnail shows a neutral `audio` placeholder.
 
-Gallery thumbnails may crop for compact browsing. In the project modal, selected image media is shown inside a stable contained frame, and clicking the feature image or its small `⤢` control opens a minimal full-image view. The full view is uncropped and closes with Esc, the close button, or a backdrop click.
+Gallery thumbnails may crop for compact browsing. In the project modal, selected image media is shown inside a stable contained frame, and clicking the feature image or its small expand control opens a minimal full-image view. The full view is uncropped and closes with Esc, the close button, or a backdrop click.
 
 Older `images` arrays are still accepted by the local editor as a compatibility fallback, but new project data should use `media`.
 
@@ -180,24 +180,28 @@ The editor is organized into tabs:
 - Preview
 - Publish / Safety
 
-The sticky action bar keeps Save locally, Preview site, Publish, Reload, Undo save, and the theme toggle available without showing every tool at once.
+The sticky action bar keeps Save locally, Save + Preview, Preview site, Publish, Reload, Undo save, and the theme toggle available without showing every tool at once. Save + Preview applies the current form state, saves local data, then opens or refreshes `http://127.0.0.1:8080/`.
 
 The editor can:
 
 - load and edit `data/projects.js`
 - load and edit `data/site.js`
 - create, duplicate, delete, and reorder projects
+- move the selected project up, down, or to the top
 - mark projects as drafts
 - add image, video, and audio media entries
 - reorder media and set a media item first
-- preview mixed media metadata in the editor
+- preview mixed media metadata in the editor with small image / YouTube / Vimeo / local video / SoundCloud / audio / URL badges
 - browse local images under `assets/projects/`
 - detect local image dimensions, including SVG viewBox dimensions
 - edit non-destructive thumbnail crop metadata
 - run diagnostics for image paths and metadata
+- run `npm run check` from the Publish / Safety tab without committing or pushing
 - download a generated cropped-thumbnail PNG without saving it into the repo
 - switch between dark and light editor themes
 - save locally and publish through local git
+
+The editor warns before switching projects, reloading, closing the browser tab, or publishing when the current form, project list, or site text has unapplied or unsaved changes.
 
 The Site tab edits only text and links. It does not allow scripts or arbitrary HTML.
 

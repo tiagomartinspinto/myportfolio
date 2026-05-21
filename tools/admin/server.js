@@ -3,6 +3,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 const { promisify } = require("node:util");
 const { execFile } = require("node:child_process");
+const { runCheck } = require("./check");
 const { parseProjectsModule, serializeProjectsModule, validateProjects } = require("./project-data");
 const { parseSiteModule, serializeSiteModule, validateSite } = require("./site-data");
 const { detectImageSize, listProjectImages, normalizeAssetPath, resolveProjectAssetPath } = require("./image-utils");
@@ -122,26 +123,12 @@ const getScopedGitStatus = async () => {
   }
 };
 
-const runCommand = async (command, args) => {
-  try {
-    const { stdout, stderr } = await execFileAsync(command, args, { cwd: repoRoot });
-    return {
-      ok: true,
-      output: [`$ ${command} ${args.join(" ")}`, stdout.trim(), stderr.trim()].filter(Boolean).join("\n")
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      code: error.code,
-      output: [
-        `$ ${command} ${args.join(" ")}`,
-        (error.stdout || "").trim(),
-        (error.stderr || error.message || "").trim()
-      ]
-        .filter(Boolean)
-        .join("\n")
-    };
-  }
+const runPortfolioCheck = () => {
+  const result = runCheck();
+  return {
+    ok: result.ok,
+    output: ["$ npm run check", result.output].filter(Boolean).join("\n\n")
+  };
 };
 
 const runGit = async (args) => {
@@ -280,6 +267,15 @@ const handleRestoreBackup = async (request, response) => {
   });
 };
 
+const handleCheck = async (response) => {
+  const check = await runPortfolioCheck();
+  sendJson(response, check.ok ? 200 : 400, {
+    ok: check.ok,
+    message: check.ok ? "Portfolio check passed." : "Portfolio check failed. Nothing was committed or pushed.",
+    output: check.output
+  });
+};
+
 const handlePublish = async (request, response) => {
   const body = await readJsonBody(request);
   const { projects } = await readProjects();
@@ -294,7 +290,7 @@ const handlePublish = async (request, response) => {
 
   const steps = [];
 
-  const check = await runCommand("npm", ["run", "check"]);
+  const check = await runPortfolioCheck();
   steps.push(check.output);
   if (!check.ok) {
     sendJson(response, 400, {
@@ -392,6 +388,11 @@ const handleAdminRequest = async (request, response, url) => {
 
   if (request.method === "POST" && url.pathname === "/api/restore-backup") {
     await handleRestoreBackup(request, response);
+    return;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/check") {
+    await handleCheck(response);
     return;
   }
 

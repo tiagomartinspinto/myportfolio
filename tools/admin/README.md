@@ -78,7 +78,11 @@ The editor is organized into:
 - Preview
 - Publish / Safety
 
-The sticky action bar provides Save locally, Preview site, Publish, Reload, Undo save, and the dark/light theme toggle.
+The sticky action bar provides Save locally, Save + Preview, Preview site, Publish, Reload, Undo save, and the dark/light theme toggle. Save + Preview applies the current project/site form state, saves local data, then opens or refreshes `http://127.0.0.1:8080/`.
+
+The editor warns before switching projects, reloading, closing the browser tab, or publishing when the current form, project list, or site text has unapplied or unsaved changes.
+
+Selected projects can be moved up, down, or directly to the top from the project controls. These order changes stay local until Save locally is used.
 
 ## Site Content
 
@@ -141,6 +145,8 @@ Audio providers:
 - direct URL
 
 Media order is editable. The first media item controls the public grid thumbnail. Images use their own image source. Video and audio items never borrow another image from the same project.
+
+Each media row shows a small badge for its type/provider: image, YouTube, Vimeo, local video, SoundCloud, audio, or URL. The row also warns when it is the first media item, and when video/audio media has no explicit thumbnail and will use a YouTube-derived thumbnail or neutral placeholder.
 
 Video thumbnails can come only from:
 
@@ -273,6 +279,8 @@ git push
 The editor runs the check before staging. If the check fails, it blocks commit and push and shows the check output in the Git output panel.
 
 The editor shows the git output directly in the UI and asks for confirmation before publishing.
+
+Use `Run check` in Publish / Safety to run `npm run check` without committing or pushing. The short result appears in the status area and the full command output stays in the Git output panel.
 
 Publish only works on computers where git is authenticated with write access to this repository.
 
