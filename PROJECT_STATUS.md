@@ -20,14 +20,20 @@ Date: 2026-05-21
 - Added a `title="Load more projects"` tooltip to the `+` load-more button while keeping its aria label
 - Added an explicit very-small-phone grid breakpoint at `480px`
 - Added explicit reduced-motion rules for the loading mark and thumbnail fade
+- Made main grid thumbnails black-and-white by default, with a subtle return to color on hover and keyboard focus
+- Added collapse behavior to the discreet project-grid control: `+` loads more projects and `-` returns to the initial count
+- Kept the load-more/collapse control accessible with matching aria labels and title text
+- Reduced the project modal title scale for a calmer balance with project media
+- Added a stable contained media frame in the project modal so differently sized images do not resize the window dramatically
+- Kept modal media uncropped with `object-fit: contain`; the black-and-white thumbnail treatment is limited to the main grid
+- Replaced the footer About Me closing lines with the quiet ocean / striped canvas tent memory text
 - Re-ran `npm run check`; validation passes
 
 ## Files Changed In This Update
 
-- `index.html`
-- `styles.css`
-- `script.js`
 - `data/site.js`
+- `script.js`
+- `styles.css`
 - `PROJECT_STATUS.md`
 
 ## Current Structure
@@ -51,9 +57,11 @@ Date: 2026-05-21
 - Draft projects are supported locally and hidden publicly
 - Project galleries support `media` items while still reading old `images` data if encountered
 - The public project grid uses the first image media item plus `thumbnailPosition` and `thumbnailZoom` for thumbnail rendering
+- Public grid thumbnails render in black-and-white by default and return to color on hover or keyboard focus
 - Video and audio media can appear in the gallery modal
+- The project modal uses a stable contained media frame to reduce layout shifts between different image proportions
 - The project grid centers wrapped rows, supports a more compact four-column desktop layout, and becomes a single column on small screens
-- The public grid initially shows a smaller set of projects and reveals more through a small centered `+` button
+- The public grid initially shows a smaller set of projects and expands/collapses through a small centered symbol button
 - The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
 - The footer has three areas: GitHub / LinkedIn / CV / ORCID links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
@@ -86,26 +94,22 @@ Date: 2026-05-21
 - Image diagnostics focus on image media and do not validate remote video/audio availability
 - The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before use
 - The loading mark can be very brief on fast connections because project data is local and renders immediately
+- External video/audio embeds may still have provider-specific aspect-ratio or privacy behavior, even though the modal frame is stable
 
 ## Manual Tests Run In This Update
 
-1. Pulled/fetched and confirmed Desktop `main`, `origin/main`, and the temporary worktree were aligned before editing
-2. Ran `node --check script.js`
-3. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-4. Ran `git diff --check`
-5. Started the local preview server and opened the public site in the in-app browser
-6. Confirmed the main page renders the new title, metadata, footer text, and footer location without repeating Helsinki in metadata
-7. Confirmed the loading mark is hidden after the grid renders
-8. Confirmed mobile/tablet-sized initial project count is 6
-9. Confirmed the `+` load-more button is visible when more projects exist and reveals 3 additional projects at the current compact viewport
-10. Confirmed filtering resets visible project count and hides the load-more button when the active filter has fewer projects than the initial count
-11. Confirmed draft projects remain hidden publicly
-12. Confirmed thumbnails use the loaded-image class for fade-in behavior
-13. Confirmed the footer data now includes GitHub, LinkedIn, CV, and ORCID in the left column
-14. Confirmed the load-more button keeps `aria-label="Load more projects"` and now has `title="Load more projects"`
-15. Confirmed the CSS includes a `480px` single-column project-card breakpoint
-16. Confirmed reduced-motion CSS explicitly disables the loading animation and thumbnail image transition
-17. Re-ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+1. Confirmed thumbnails compute black-and-white by default and the hover/focus CSS rule returns them to color
+2. Confirmed the load-more button expands the grid, then switches to a collapse control with `aria-label="Show fewer projects"` and `title="Show fewer projects"`
+3. Confirmed collapse returns the grid to the initial visible project count
+4. Confirmed filtering resets the visible count and load-more/collapse state
+5. Confirmed the project modal title is smaller and calmer on desktop and mobile CSS breakpoints
+6. Confirmed the modal media frame stays stable across differently sized images and keeps media contained rather than cropped
+7. Confirmed the footer About Me text uses the updated ocean / striped canvas tent memory
+8. Confirmed reduced-motion CSS still disables the loading animation and thumbnail transitions
+9. Confirmed the mobile viewport starts with 6 projects and keeps project cards single-column
+10. Ran `node --check script.js`
+11. Ran `git diff --check`
+12. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
 
 ## Notes For Future Chats
 
