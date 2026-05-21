@@ -1,8 +1,8 @@
 export const SITE = {
-  title: "Tiago Martins Pinto - Art-tech Educator",
-  description: "Portfolio of Tiago Martins Pinto, art educator, researcher, and maker based in Helsinki.",
-  ogTitle: "Tiago Martins Pinto - Art-tech Educator",
-  ogDescription: "Art educator, researcher, and maker based in Helsinki.",
+  title: "Tiago Martins Pinto - Art, Technology, Education",
+  description: "Portfolio of Tiago Martins Pinto, artist, teacher, researcher, and creative technologist.",
+  ogTitle: "Tiago Martins Pinto - Art, Technology, Education",
+  ogDescription: "Artist, teacher, researcher, and creative technologist.",
   socialImage: "assets/projects/eating-together/eating-together-01.jpeg",
   socialImageAlt: "Eating Together workshop table with participants gathered around collective activity",
   canonicalUrl: "https://tiagomartinspinto.github.io/myportfolio/",
@@ -25,11 +25,10 @@ export const SITE = {
     ],
     aboutTitle: "About Me",
     aboutLines: [
-      "Art, technology, and education",
-      "as interconnected practices.",
-      "Teaching creative coding at Aalto,",
-      "researching art education,",
-      "and making in Helsinki."
+      "Art, code, learning,",
+      "and material practice.",
+      "Thinking through tools",
+      "and shared situations."
     ],
     location: "Based in Helsinki, Finland.",
     roleLinks: [
