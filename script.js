@@ -5,6 +5,7 @@ const state = {
   activeFilter: "all",
   activeProject: null,
   lastTrigger: null,
+  lightboxTrigger: null,
   visibleCount: 0
 };
 
@@ -18,6 +19,10 @@ const elements = {
   dialogClose: document.querySelector("#project-dialog-close"),
   featureMedia: document.querySelector("#project-feature-media"),
   gallery: document.querySelector("#project-gallery"),
+  lightbox: document.querySelector("#image-lightbox"),
+  lightboxClose: document.querySelector("#image-lightbox-close"),
+  lightboxImage: document.querySelector("#image-lightbox-image"),
+  lightboxCaption: document.querySelector("#image-lightbox-caption"),
   dialogKicker: document.querySelector("#project-dialog-kicker"),
   dialogTitle: document.querySelector("#project-dialog-title"),
   dialogYear: document.querySelector("#project-year"),
@@ -167,19 +172,32 @@ const getProjectMedia = (project) => {
 
 const getPrimaryVisualMedia = (project) => {
   const media = getProjectMedia(project);
-  return media.find((item) => item.type === "image") || media.find((item) => item.thumbnail) || media[0] || null;
+  return media[0] || null;
 };
 
 const getThumbnailSource = (item) => {
-  if (!item) {
+  const media = normalizeMediaItem(item);
+  if (!media) {
     return null;
   }
 
-  if (item.type === "image") {
-    return item.src || item.source;
+  if (media.type === "image") {
+    return media.src || media.source;
   }
 
-  return item.thumbnail || null;
+  return media.thumbnail || null;
+};
+
+const getMediaTypeLabel = (item) => {
+  const media = normalizeMediaItem(item);
+  return media?.type || "media";
+};
+
+const createMediaPlaceholder = (label) => {
+  const placeholder = document.createElement("span");
+  placeholder.className = "media-placeholder";
+  placeholder.textContent = label;
+  return placeholder;
 };
 
 const getYouTubeId = (source) => {
@@ -352,6 +370,57 @@ const updateLoadMoreButton = (totalProjects) => {
   elements.loadMoreButton.title = expanded ? "Show fewer projects" : "Load more projects";
 };
 
+const closeImageLightbox = ({ restoreFocus = true } = {}) => {
+  if (!restoreFocus) {
+    state.lightboxTrigger = null;
+  }
+
+  if (elements.lightbox.open) {
+    elements.lightbox.close();
+  }
+};
+
+const openImageLightbox = (media, projectTitle, trigger) => {
+  const source = media?.source || media?.src;
+  if (!source) {
+    return;
+  }
+
+  state.lightboxTrigger = trigger || document.activeElement;
+  elements.lightboxImage.src = source;
+  elements.lightboxImage.alt = media.alt || `${projectTitle} image`;
+  if (media.width) {
+    elements.lightboxImage.width = media.width;
+  } else {
+    elements.lightboxImage.removeAttribute("width");
+  }
+  if (media.height) {
+    elements.lightboxImage.height = media.height;
+  } else {
+    elements.lightboxImage.removeAttribute("height");
+  }
+  elements.lightboxCaption.textContent = media.caption || "";
+  elements.lightboxCaption.hidden = !media.caption;
+  elements.lightbox.showModal();
+  elements.lightboxClose.focus();
+};
+
+const createImageOpenButton = (media, projectTitle, image) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "project-dialog__image-open";
+  button.setAttribute("aria-label", "View image larger");
+  button.title = "View image larger";
+
+  const label = document.createElement("span");
+  label.className = "project-dialog__larger-label";
+  label.textContent = "larger";
+
+  button.append(image, label);
+  button.addEventListener("click", () => openImageLightbox(media, projectTitle, button));
+  return button;
+};
+
 const renderProjects = () => {
   const visibleProjects = getVisibleProjects();
   const projectsToRender = visibleProjects.slice(0, state.visibleCount);
@@ -389,10 +458,8 @@ const renderProjects = () => {
       markImageLoaded(image);
       imageWrap.append(image);
     } else {
-      const placeholder = document.createElement("span");
-      placeholder.className = "media-placeholder";
-      placeholder.textContent = project.title;
-      imageWrap.append(placeholder);
+      const placeholderLabel = media?.type && media.type !== "image" ? getMediaTypeLabel(media) : project.title;
+      imageWrap.append(createMediaPlaceholder(placeholderLabel));
     }
 
     const body = document.createElement("div");
@@ -421,7 +488,11 @@ const updateFeatureMedia = (item, projectTitle) => {
   const frame = document.createElement("div");
   frame.className = "project-dialog__media-frame";
   frame.dataset.mediaType = media?.type || "unknown";
-  frame.append(content);
+  if (media?.type === "image" && content instanceof HTMLImageElement) {
+    frame.append(createImageOpenButton(media, projectTitle, content));
+  } else {
+    frame.append(content);
+  }
   elements.featureMedia.replaceChildren(...[frame, caption].filter(Boolean));
 };
 
@@ -442,6 +513,7 @@ const renderGallery = (project) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gallery-thumb";
+    button.dataset.mediaType = item.type || "media";
     button.setAttribute("aria-label", `Show ${item.type || "media"} ${index + 1} for ${project.title}`);
     button.setAttribute("aria-pressed", String(index === 0));
 
@@ -462,7 +534,7 @@ const renderGallery = (project) => {
     } else {
       const label = document.createElement("span");
       label.className = "gallery-thumb__label";
-      label.textContent = item.type || "media";
+      label.textContent = getMediaTypeLabel(item);
       button.append(label);
     }
 
@@ -561,6 +633,7 @@ const openProject = (project, trigger) => {
 };
 
 const closeProject = () => {
+  closeImageLightbox({ restoreFocus: false });
   if (elements.dialog.open) {
     elements.dialog.close();
   }
@@ -640,6 +713,36 @@ elements.dialog.addEventListener("cancel", (event) => {
 elements.dialog.addEventListener("close", () => {
   const trigger = state.lastTrigger;
   state.lastTrigger = null;
+  if (trigger instanceof HTMLElement) {
+    trigger.focus();
+  }
+});
+
+elements.lightboxClose.addEventListener("click", () => closeImageLightbox());
+
+elements.lightbox.addEventListener("click", (event) => {
+  if (event.target === elements.lightbox || event.target.classList.contains("image-lightbox__figure")) {
+    closeImageLightbox();
+  }
+});
+
+elements.lightbox.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  closeImageLightbox();
+});
+
+elements.lightbox.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeImageLightbox();
+  }
+});
+
+elements.lightbox.addEventListener("close", () => {
+  elements.lightboxImage.removeAttribute("src");
+  elements.lightboxCaption.textContent = "";
+  const trigger = state.lightboxTrigger;
+  state.lightboxTrigger = null;
   if (trigger instanceof HTMLElement) {
     trigger.focus();
   }

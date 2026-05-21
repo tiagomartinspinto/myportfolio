@@ -28,14 +28,24 @@ Date: 2026-05-21
 - Kept modal media uncropped with `object-fit: contain`; the black-and-white thumbnail treatment is limited to the main grid
 - Replaced the footer About Me closing lines with the quiet ocean / striped canvas tent memory text
 - Moved the `isFullyExpanded(totalProjects)` helper next to the load-more helpers so expand/collapse calls cannot reference an undefined helper during future edits
+- Changed public thumbnail logic so video/audio media only use their own explicit `thumbnail` field and never borrow another project image
+- Added neutral gallery/grid placeholders for video/audio media without thumbnails
+- Added a minimal image-only lightbox from the project modal feature image, with Esc, backdrop, and close-button dismissal
+- Added a discreet `larger` image control while keeping full project images contained and uncropped
+- Clarified the local admin media field as `Thumbnail / poster image` with a note that video/audio thumbnails are not auto-generated
+- Updated public and admin documentation for explicit video thumbnails, neutral placeholders, and larger image viewing
 - Re-ran `npm run check`; validation passes
 
 ## Files Changed In This Update
 
-- `data/site.js`
+- `index.html`
+- `README.md`
+- `PROJECT_STATUS.md`
 - `script.js`
 - `styles.css`
-- `PROJECT_STATUS.md`
+- `tools/admin/admin.css`
+- `tools/admin/index.html`
+- `tools/admin/README.md`
 
 ## Current Structure
 
@@ -57,10 +67,12 @@ Date: 2026-05-21
 - Site-wide metadata and shell text now live in `data/site.js`
 - Draft projects are supported locally and hidden publicly
 - Project galleries support `media` items while still reading old `images` data if encountered
-- The public project grid uses the first image media item plus `thumbnailPosition` and `thumbnailZoom` for thumbnail rendering
+- The public project grid uses the first media item plus `thumbnailPosition` and `thumbnailZoom` for thumbnail rendering when an image or explicit thumbnail is available
 - Public grid thumbnails render in black-and-white by default and return to color on hover or keyboard focus
+- Video/audio media use only their own explicit thumbnail paths; missing thumbnails render neutral type placeholders
 - Video and audio media can appear in the gallery modal
 - The project modal uses a stable contained media frame to reduce layout shifts between different image proportions
+- Image media in the project modal can be opened in a minimal larger view without cropping
 - The project grid centers wrapped rows, supports a more compact four-column desktop layout, and becomes a single column on small screens
 - The public grid initially shows a smaller set of projects and expands/collapses through a small centered symbol button
 - The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
@@ -96,23 +108,22 @@ Date: 2026-05-21
 - The crop controls simulate thumbnail rendering; exported PNGs should still be visually checked before use
 - The loading mark can be very brief on fast connections because project data is local and renders immediately
 - External video/audio embeds may still have provider-specific aspect-ratio or privacy behavior, even though the modal frame is stable
+- Video/audio items without explicit thumbnails intentionally show neutral placeholders; add a local thumbnail path when a visual preview is desired
 
 ## Manual Tests Run In This Update
 
-1. Confirmed the page loads in local preview without console errors
-2. Confirmed thumbnails compute black-and-white by default and the hover/focus CSS rule returns them to color
-3. Confirmed the `+` load-more button expands the grid, then switches to a `-` collapse control with `aria-label="Show fewer projects"` and `title="Show fewer projects"`
-4. Confirmed the `-` collapse control returns the grid to the initial visible project count
-5. Confirmed filtering resets the visible count and load-more/collapse state
-6. Confirmed the project modal title is smaller and calmer on desktop and mobile CSS breakpoints
-7. Confirmed the modal media frame stays stable across differently sized images and keeps media contained rather than cropped
-8. Confirmed the footer About Me text uses the updated ocean / striped canvas tent memory
-9. Confirmed reduced-motion CSS still disables the loading animation and thumbnail transitions
-10. Confirmed the mobile viewport starts with 6 projects and keeps project cards single-column
-11. Ran `node --check script.js`
-12. Ran `git diff --check`
-13. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-14. Verified the load-more collapse helper is defined before `updateLoadMoreButton()` and `toggleProjectCount()` use it
+1. Confirmed a video item without a thumbnail renders a neutral `video` placeholder instead of borrowing a project image
+2. Confirmed a video item with a thumbnail uses that exact thumbnail path
+3. Confirmed no video thumbnail is silently assigned from an unrelated image
+4. Confirmed gallery thumbnail clicks still change the feature media
+5. Confirmed feature image media opens in the larger/full view
+6. Confirmed Esc closes the larger image view
+7. Confirmed clicking the lightbox backdrop closes the larger image view
+8. Confirmed focus returns to the feature image control after closing the larger image view
+9. Confirmed the page loads in local preview without console errors
+10. Ran `node --check script.js`
+11. Ran `git diff --check`
+12. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
 
 ## Notes For Future Chats
 

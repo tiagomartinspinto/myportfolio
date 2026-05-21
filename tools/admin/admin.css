@@ -132,6 +132,7 @@ button:disabled,
 
 .admin-kicker,
 .field-label,
+.field-help,
 .panel-meta,
 .project-item__meta,
 .status-message,
@@ -158,6 +159,12 @@ select,
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.field-help {
+  color: var(--faint);
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .admin-header h1 {
