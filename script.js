@@ -71,6 +71,8 @@ const resetVisibleCount = () => {
   state.visibleCount = getInitialProjectCount();
 };
 
+const isFullyExpanded = (totalProjects) => state.visibleCount >= totalProjects;
+
 const isExternalUrl = (value) => /^https?:\/\//i.test(value);
 
 const absoluteUrl = (value) => {
@@ -339,8 +341,15 @@ const markImageLoaded = (image) => {
 };
 
 const updateLoadMoreButton = (totalProjects) => {
+  const initialCount = getInitialProjectCount();
+  const hasExpandableProjects = totalProjects > initialCount;
   const hasMore = state.visibleCount < totalProjects;
-  elements.loadMoreButton.hidden = !hasMore;
+  const expanded = hasExpandableProjects && isFullyExpanded(totalProjects);
+
+  elements.loadMoreButton.hidden = !hasExpandableProjects;
+  elements.loadMoreButton.textContent = expanded ? "−" : "+";
+  elements.loadMoreButton.setAttribute("aria-label", expanded ? "Show fewer projects" : "Load more projects");
+  elements.loadMoreButton.title = expanded ? "Show fewer projects" : "Load more projects";
 };
 
 const renderProjects = () => {
@@ -409,7 +418,11 @@ const updateFeatureMedia = (item, projectTitle) => {
   const media = normalizeMediaItem(item);
   const content = createMediaFigureContent(media, projectTitle);
   const caption = createMediaCaption(media);
-  elements.featureMedia.replaceChildren(...[content, caption].filter(Boolean));
+  const frame = document.createElement("div");
+  frame.className = "project-dialog__media-frame";
+  frame.dataset.mediaType = media?.type || "unknown";
+  frame.append(content);
+  elements.featureMedia.replaceChildren(...[frame, caption].filter(Boolean));
 };
 
 const renderGallery = (project) => {
@@ -575,9 +588,22 @@ const setFilter = (filter) => {
   renderProjects();
 };
 
-const loadMoreProjects = () => {
-  state.visibleCount += getProjectRevealCount();
+const toggleProjectCount = () => {
+  const visibleProjects = getVisibleProjects();
+  const shouldCollapse = isFullyExpanded(visibleProjects.length);
+
+  state.visibleCount = shouldCollapse
+    ? getInitialProjectCount()
+    : Math.min(visibleProjects.length, state.visibleCount + getProjectRevealCount());
+
   renderProjects();
+
+  if (shouldCollapse) {
+    document.querySelector("#work")?.scrollIntoView({
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+      block: "start"
+    });
+  }
 };
 
 const handleFilterJump = (event) => {
@@ -594,7 +620,7 @@ elements.jumpButtons.forEach((button) => {
   button.addEventListener("click", handleFilterJump);
 });
 
-elements.loadMoreButton.addEventListener("click", loadMoreProjects);
+elements.loadMoreButton.addEventListener("click", toggleProjectCount);
 
 elements.dialogClose.addEventListener("click", closeProject);
 

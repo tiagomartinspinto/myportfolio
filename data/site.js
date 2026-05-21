@@ -35,8 +35,10 @@ export const SITE = {
     aboutLines: [
       "Art, code, learning,",
       "and material practice.",
-      "Thinking through tools",
-      "and shared situations."
+      "One of my earliest memories",
+      "is the smell of the ocean",
+      "and the wind inside",
+      "a striped beach canvas tent."
     ],
     location: "Based in Helsinki, Finland.",
     roleLinks: [
