@@ -4,6 +4,13 @@
 
 Date: 2026-05-21
 
+- Added local editor launchers for Windows and macOS so the admin and preview servers can be started without typing commands every time
+- Added `tools/launch-editor.ps1`, which starts `npm run admin` and `npm run preview` in visible PowerShell windows and opens the admin and preview URLs
+- Added the root `Launch Portfolio Editor.bat` shortcut for Windows users
+- Added `tools/launch-editor.command`, which starts admin and preview from macOS Terminal windows and opens the admin and preview URLs
+- Documented the easy launcher workflow in `README.md` and `tools/admin/README.md`
+- Clarified that the public `::` footer link cannot start local scripts and only works when the local admin server is already running
+- Re-ran `npm run check`; validation passes with the same two expected YouTube-derived thumbnail warnings
 - Added a subtle Processing-inspired canvas background with low-opacity moving particles and thin connection lines
 - Kept the background lightweight, monochrome, pointer-events-free, fixed behind the portfolio content, and easy to tune through constants in `background.js`
 - Added reduced-motion handling so the background renders as a static frame instead of animating when motion is reduced
@@ -66,11 +73,12 @@ Date: 2026-05-21
 
 ## Files Changed In This Update
 
-- `index.html`
+- `README.md`
 - `PROJECT_STATUS.md`
-- `background.js`
-- `script.js`
-- `styles.css`
+- `Launch Portfolio Editor.bat`
+- `tools/admin/README.md`
+- `tools/launch-editor.command`
+- `tools/launch-editor.ps1`
 
 ## Current Structure
 
@@ -81,6 +89,9 @@ Date: 2026-05-21
 - `data/site.js`: editable site-wide metadata, header, footer, contact, and social preview data
 - `assets/projects/`: local project media assets
 - `tools/admin/`: local-only tabbed editor, site tab, media controls, validation helpers, image helpers, crop helper module, and localhost server
+- `tools/launch-editor.command`: macOS double-click helper for starting admin and preview together
+- `tools/launch-editor.ps1`: Windows PowerShell helper for starting admin and preview together
+- `Launch Portfolio Editor.bat`: Windows double-click shortcut for the PowerShell helper
 - `_config.yml`: excludes the local editor from GitHub Pages deployment
 - `package.json`: local helper scripts for admin, preview, and validation
 - `.gitignore`: ignores local backups and operating-system noise
@@ -106,6 +117,7 @@ Date: 2026-05-21
 - The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
 - The footer has three areas: GitHub / LinkedIn / CV / ORCID links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
+- Local launchers can start the admin and preview servers together, but the public portfolio still cannot start local scripts
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
 - Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
 - The admin warns before losing unapplied/unsaved form, project-list, or site-text changes
@@ -145,17 +157,10 @@ Date: 2026-05-21
 
 ## Manual Tests Run In This Update
 
-1. Ran `node --check script.js`
-2. Ran `node --check background.js`
-3. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-4. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
-5. Ran `git diff --check`
-6. Opened the local preview at `http://127.0.0.1:8080/index.html` in the in-app browser and confirmed the background canvas exists behind the content
-7. Confirmed the page reaches `is-ready` and the initial mobile-width project count is 6
-8. Confirmed the `+` project control reveals 3 more projects at mobile width and filters reset the visible count
-9. Confirmed project modals open and Escape closes them
-10. Confirmed the image lightbox opens above the modal/background and Escape closes it
-11. Confirmed the canvas has `pointer-events: none`, fixed positioning, and a lower z-index than the modal and lightbox
+1. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+2. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+3. Ran `zsh -n tools/launch-editor.command`
+4. Ran `git diff --check`
 
 ## Notes For Future Chats
 
