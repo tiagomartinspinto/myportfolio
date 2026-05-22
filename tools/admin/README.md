@@ -2,9 +2,31 @@
 
 This editor is local only. It is not a public CMS and it is excluded from GitHub Pages.
 
-## Quick Launch
+## Double-Click Launch
 
-From the repository root:
+For everyday editing, use the root launchers. They only call the core launcher command, `npm run launch`.
+
+macOS:
+
+```text
+Launch Portfolio Editor.command
+```
+
+Double-click the `.command` file at the repository root. If macOS blocks it, run this once from the repository root:
+
+```bash
+chmod +x "Launch Portfolio Editor.command"
+```
+
+Windows:
+
+```text
+Launch Portfolio Editor.bat
+```
+
+Double-click the `.bat` file at the repository root.
+
+Command-line fallback:
 
 ```bash
 npm run launch
@@ -19,11 +41,11 @@ http://127.0.0.1:8080/
 
 Press `Ctrl+C` in the launcher terminal to stop both local servers.
 
-The public `::` footer link cannot start local scripts. It only opens the local editor when `npm run launch` or `npm run admin` is already running. This boundary is intentional for security.
+The public `::` footer link cannot start local scripts. It only opens the local editor when the launcher or server is already running. This boundary is intentional for security.
 
-## Manual Start
+## Manual Fallback
 
-From the repository root:
+From the repository root, start the admin server:
 
 ```bash
 npm run admin
@@ -37,7 +59,7 @@ http://127.0.0.1:8787/
 
 ## Preview
 
-In another terminal:
+In another terminal, start preview:
 
 ```bash
 npm run preview
@@ -51,29 +73,9 @@ http://127.0.0.1:8080/
 
 The preview server blocks `tools/admin/`.
 
-## Optional Wrappers
+## Optional Tool Wrappers
 
-The old OS-specific launchers are still available as convenience wrappers, but the real launcher is `npm run launch`.
-
-Windows:
-
-```text
-Launch Portfolio Editor.bat
-```
-
-Double-click the `.bat` file at the repository root.
-
-macOS:
-
-```text
-tools/launch-editor.command
-```
-
-Double-click the `.command` file. If needed, make it executable once from the repository root:
-
-```bash
-chmod +x tools/launch-editor.command
-```
+`tools/launch-editor.ps1` and `tools/launch-editor.command` remain as developer conveniences, but the main user-facing launchers are at the repository root.
 
 ## Check
 

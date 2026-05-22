@@ -17,9 +17,31 @@ npm run preview
 npm run check
 ```
 
-## Easy Launcher
+## Double-Click Launch
 
-For everyday editing, use the cross-platform Node launcher:
+For everyday editing, use the root launchers. They are thin wrappers around the same core command, `npm run launch`.
+
+macOS:
+
+```text
+Launch Portfolio Editor.command
+```
+
+Double-click the `.command` file at the repository root. If macOS blocks it, run this once from the repository root:
+
+```bash
+chmod +x "Launch Portfolio Editor.command"
+```
+
+Windows:
+
+```text
+Launch Portfolio Editor.bat
+```
+
+Double-click the `.bat` file at the repository root.
+
+Command-line fallback:
 
 ```bash
 npm run launch
@@ -41,29 +63,7 @@ npm run admin
 npm run preview
 ```
 
-The public `::` footer link cannot start the local server. It only opens `http://127.0.0.1:8787/` if `npm run launch` or `npm run admin` is already running. This is intentional: the public portfolio cannot and should not start local scripts.
-
-Optional convenience wrappers are still included, but they now only call `npm run launch`.
-
-Windows:
-
-```text
-Launch Portfolio Editor.bat
-```
-
-Double-click the `.bat` file at the repository root.
-
-macOS:
-
-```text
-tools/launch-editor.command
-```
-
-Double-click the `.command` file. If macOS refuses to open it, run this once from the repository root:
-
-```bash
-chmod +x tools/launch-editor.command
-```
+The public `::` footer link cannot start the local server. It only opens `http://127.0.0.1:8787/` if the launcher or server is already running. This is intentional for security: the public portfolio cannot and should not start local scripts.
 
 ## Stack
 

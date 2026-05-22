@@ -1,5 +1,6 @@
 @echo off
-set "REPO_ROOT=%~dp0"
-cd /d "%REPO_ROOT%"
+cd /d "%~dp0"
 npm run launch
-pause
+echo.
+echo Launcher finished. Press any key to close this window.
+pause >nul
