@@ -2,13 +2,18 @@
 
 ## Latest Update
 
-Date: 2026-05-21
+Date: 2026-05-22
 
+- Added the root `Launch Portfolio Editor.command` macOS double-click launcher, which changes to the repository root and delegates to `npm run launch`
+- Simplified the root `Launch Portfolio Editor.bat` Windows double-click launcher so it changes to the repository root, delegates to `npm run launch`, and keeps the window open afterward
+- Kept `tools/launch-editor.js` as the real cross-platform launcher and kept OS-specific wrappers free of duplicated launch logic
+- Updated `README.md` and `tools/admin/README.md` to make the root `.command` and `.bat` files the main user-facing launchers, with `npm run launch`, `npm run admin`, and `npm run preview` as fallbacks
+- Re-clarified that the public `::` website link cannot start the local server and only opens the editor when the local launcher/server is already running
 - Replaced the OS-specific launcher logic with an OS-agnostic Node launcher at `tools/launch-editor.js`
 - Added `npm run launch`, which starts `npm run admin` and `npm run preview`, waits for both localhost URLs, then opens the editor and preview in the default browser
 - Implemented cross-platform browser opening through Node child processes: `cmd /c start` on Windows, `open` on macOS, and `xdg-open` on Linux
 - Added launcher cleanup so `Ctrl+C` stops both local server processes
-- Kept `Launch Portfolio Editor.bat`, `tools/launch-editor.ps1`, and `tools/launch-editor.command` as thin wrappers around `npm run launch`
+- Kept the root `Launch Portfolio Editor.command` and `Launch Portfolio Editor.bat` launchers as thin wrappers around `npm run launch`, with tool-folder wrappers de-emphasized for developer use
 - Updated `README.md` and `tools/admin/README.md` to document `npm run launch` as the primary quick-launch workflow
 - Re-ran `node --check tools/launch-editor.js` and `npm run check`; validation passes with the same two expected YouTube-derived thumbnail warnings
 - Added local editor launchers for Windows and macOS so the admin and preview servers can be started without typing commands every time
@@ -82,12 +87,9 @@ Date: 2026-05-21
 
 - `README.md`
 - `PROJECT_STATUS.md`
+- `Launch Portfolio Editor.command`
 - `Launch Portfolio Editor.bat`
-- `package.json`
 - `tools/admin/README.md`
-- `tools/launch-editor.command`
-- `tools/launch-editor.js`
-- `tools/launch-editor.ps1`
 
 ## Current Structure
 
@@ -99,9 +101,10 @@ Date: 2026-05-21
 - `assets/projects/`: local project media assets
 - `tools/admin/`: local-only tabbed editor, site tab, media controls, validation helpers, image helpers, crop helper module, and localhost server
 - `tools/launch-editor.js`: cross-platform Node launcher for starting admin and preview together
-- `tools/launch-editor.command`: macOS double-click wrapper for `npm run launch`
-- `tools/launch-editor.ps1`: Windows PowerShell wrapper for `npm run launch`
+- `Launch Portfolio Editor.command`: macOS double-click wrapper for `npm run launch`
 - `Launch Portfolio Editor.bat`: Windows double-click wrapper for `npm run launch`
+- `tools/launch-editor.command`: optional macOS developer wrapper for `npm run launch`
+- `tools/launch-editor.ps1`: optional Windows PowerShell developer wrapper for `npm run launch`
 - `_config.yml`: excludes the local editor from GitHub Pages deployment
 - `package.json`: local helper scripts for admin, preview, and validation
 - `.gitignore`: ignores local backups and operating-system noise
@@ -128,7 +131,7 @@ Date: 2026-05-21
 - The footer has three areas: GitHub / LinkedIn / CV / ORCID links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
 - `npm run launch` can start the admin and preview servers together, wait for readiness, open the local editor, and stop both servers on `Ctrl+C`
-- Optional OS-specific launchers now delegate to `npm run launch`; the public portfolio still cannot start local scripts
+- Root OS-specific launchers now delegate to `npm run launch`; the public portfolio still cannot start local scripts
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
 - Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
 - The admin warns before losing unapplied/unsaved form, project-list, or site-text changes
@@ -169,10 +172,11 @@ Date: 2026-05-21
 ## Manual Tests Run In This Update
 
 1. Ran `node --check tools/launch-editor.js`
-2. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-3. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
-4. Ran `zsh -n tools/launch-editor.command`
-5. Ran `git diff --check`
+2. Confirmed the root `Launch Portfolio Editor.command` delegates only to `npm run launch`
+3. Confirmed the root `Launch Portfolio Editor.bat` delegates only to `npm run launch`
+4. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+5. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+6. Ran `git diff --check`
 
 ## Notes For Future Chats
 
