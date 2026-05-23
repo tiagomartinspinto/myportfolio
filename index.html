@@ -82,6 +82,18 @@
         title="Open local editor (requires npm run admin)"
         aria-label="Open local portfolio editor on localhost"
       >::</a>
+      <div
+        class="footer-local-editor-toast"
+        id="footer-local-editor-toast"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        hidden
+      >
+        <p>Local editor requires the local server.</p>
+        <p>Run:<br><code>npm run admin</code></p>
+        <p>Optional preview:<br><code>npm run preview</code></p>
+      </div>
     </footer>
 
     <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title" aria-describedby="project-description" aria-modal="true">

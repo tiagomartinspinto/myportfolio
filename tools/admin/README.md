@@ -2,48 +2,7 @@
 
 This editor is local only. It is not a public CMS and it is excluded from GitHub Pages.
 
-## Double-Click Launch
-
-For everyday editing, use the root launchers. They only call the core launcher command, `npm run launch`.
-
-macOS:
-
-```text
-Launch Portfolio Editor.command
-```
-
-Double-click the `.command` file at the repository root. If macOS blocks it, run this once from the repository root:
-
-```bash
-chmod +x "Launch Portfolio Editor.command"
-```
-
-Windows:
-
-```text
-Launch Portfolio Editor.bat
-```
-
-Double-click the `.bat` file at the repository root.
-
-Command-line fallback:
-
-```bash
-npm run launch
-```
-
-This starts the local editor and preview server, waits until both localhost URLs respond, then opens the editor in the default browser:
-
-```text
-http://127.0.0.1:8787/
-http://127.0.0.1:8080/
-```
-
-Press `Ctrl+C` in the launcher terminal to stop both local servers.
-
-The public `::` footer link cannot start local scripts. It only opens the local editor when the launcher or server is already running. This boundary is intentional for security.
-
-## Manual Fallback
+## Start
 
 From the repository root, start the admin server:
 
@@ -73,9 +32,16 @@ http://127.0.0.1:8080/
 
 The preview server blocks `tools/admin/`.
 
-## Optional Tool Wrappers
+## Workflow
 
-`tools/launch-editor.ps1` and `tools/launch-editor.command` remain as developer conveniences, but the main user-facing launchers are at the repository root.
+Recommended flow:
+
+1. Edit in the local admin
+2. Save + Preview
+3. Run check
+4. Publish
+
+The public `::` footer link cannot start local scripts. It only opens `http://127.0.0.1:8787/`. If the server is not running, the browser will show a connection error. This boundary is intentional for security.
 
 ## Check
 

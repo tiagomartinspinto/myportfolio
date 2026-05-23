@@ -41,8 +41,12 @@ const shellElements = {
   footerAboutTitle: document.querySelector("#footer-about-title"),
   footerAboutText: document.querySelector("#footer-about-text"),
   footerLocation: document.querySelector("#footer-location"),
-  footerRoleLinks: document.querySelector("#footer-role-links")
+  footerRoleLinks: document.querySelector("#footer-role-links"),
+  localEditorLink: document.querySelector(".footer-local-editor"),
+  localEditorToast: document.querySelector("#footer-local-editor-toast")
 };
+
+let localEditorToastTimer = null;
 
 const publishedProjects = PROJECTS.filter((project) => project.draft !== true);
 
@@ -147,6 +151,21 @@ const renderSiteShell = () => {
   shellElements.footerLocation.textContent = SITE.footer.location;
   renderLinkList(shellElements.footerSocialLinks, SITE.footer.socialLinks);
   renderLinkList(shellElements.footerRoleLinks, SITE.footer.roleLinks);
+};
+
+const showLocalEditorToast = () => {
+  if (!shellElements.localEditorToast) {
+    return;
+  }
+
+  window.clearTimeout(localEditorToastTimer);
+  shellElements.localEditorToast.hidden = false;
+  shellElements.localEditorToast.classList.add("is-visible");
+
+  localEditorToastTimer = window.setTimeout(() => {
+    shellElements.localEditorToast.classList.remove("is-visible");
+    shellElements.localEditorToast.hidden = true;
+  }, 6500);
 };
 
 const normalizeMediaItem = (item) => {
@@ -757,6 +776,8 @@ elements.lightbox.addEventListener("close", () => {
     trigger.focus();
   }
 });
+
+shellElements.localEditorLink?.addEventListener("click", showLocalEditorToast);
 
 renderSiteShell();
 renderFilters();

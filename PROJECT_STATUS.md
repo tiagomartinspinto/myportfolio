@@ -4,31 +4,14 @@
 
 Date: 2026-05-23
 
-- Fixed `tools/launch-editor.js` so the core launcher no longer spawns nested `npm run admin` / `npm run preview` commands
-- Switched the launcher to direct Node spawning through `process.execPath` and `tools/admin/server.js admin|preview`
-- Added startup reuse checks: if `http://127.0.0.1:8787/` or `http://127.0.0.1:8080/` already responds, the launcher reuses that server instead of spawning another one
-- Kept `Ctrl+C` cleanup scoped to only the child server processes started by this launcher, so reused servers are not killed
-- Made launcher timeout failures clearer, including the URL that could not be reached and advice to close old server terminals if a port is stuck
-- Re-ran `node --check tools/launch-editor.js` and `npm run check`; validation passes with the same two expected YouTube-derived thumbnail warnings
-- Added the root `Launch Portfolio Editor.command` macOS double-click launcher, which changes to the repository root and delegates to `npm run launch`
-- Simplified the root `Launch Portfolio Editor.bat` Windows double-click launcher so it changes to the repository root, delegates to `npm run launch`, and keeps the window open afterward
-- Kept `tools/launch-editor.js` as the real cross-platform launcher and kept OS-specific wrappers free of duplicated launch logic
-- Updated `README.md` and `tools/admin/README.md` to make the root `.command` and `.bat` files the main user-facing launchers, with `npm run launch`, `npm run admin`, and `npm run preview` as fallbacks
-- Re-clarified that the public `::` website link cannot start the local server and only opens the editor when the local launcher/server is already running
-- Replaced the OS-specific launcher logic with an OS-agnostic Node launcher at `tools/launch-editor.js`
-- Added `npm run launch`, which starts `npm run admin` and `npm run preview`, waits for both localhost URLs, then opens the editor and preview in the default browser
-- Implemented cross-platform browser opening through Node child processes: `cmd /c start` on Windows, `open` on macOS, and `xdg-open` on Linux
-- Added launcher cleanup so `Ctrl+C` stops both local server processes
-- Kept the root `Launch Portfolio Editor.command` and `Launch Portfolio Editor.bat` launchers as thin wrappers around `npm run launch`, with tool-folder wrappers de-emphasized for developer use
-- Updated `README.md` and `tools/admin/README.md` to document `npm run launch` as the primary quick-launch workflow
-- Re-ran `node --check tools/launch-editor.js` and `npm run check`; validation passes with the same two expected YouTube-derived thumbnail warnings
-- Added local editor launchers for Windows and macOS so the admin and preview servers can be started without typing commands every time
-- Added `tools/launch-editor.ps1`, which starts `npm run admin` and `npm run preview` in visible PowerShell windows and opens the admin and preview URLs
-- Added the root `Launch Portfolio Editor.bat` shortcut for Windows users
-- Added `tools/launch-editor.command`, which starts admin and preview from macOS Terminal windows and opens the admin and preview URLs
-- Documented the easy launcher workflow in `README.md` and `tools/admin/README.md`
-- Clarified that the public `::` footer link cannot start local scripts and only works when the local admin server is already running
-- Re-ran `npm run check`; validation passes with the same two expected YouTube-derived thumbnail warnings
+- Removed the launcher command and all double-click / OS-specific launcher scripts
+- Kept only the manual local commands: `npm run admin`, optional `npm run preview`, and `npm run check`
+- Simplified the public footer `::` link so it only opens `http://127.0.0.1:8787/` in a new tab and never tries to start local scripts
+- Added a small accessible footer helper message with `aria-live` that explains the manual local editor commands after the `::` link is clicked
+- Updated `README.md` and `tools/admin/README.md` around the manual editor workflow and removed stale launcher documentation
+- Confirmed stale launcher references were removed from public code, admin docs, package scripts, and local admin files, except this status note documenting the cleanup
+- Confirmed in the local preview that the `::` link still opens the local editor URL and the helper message appears without blocking the page
+- Re-ran the full cleanup checks listed below; validation passes with the same two expected YouTube-derived thumbnail warnings
 - Added a subtle Processing-inspired canvas background with low-opacity moving particles and thin connection lines
 - Kept the background lightweight, monochrome, pointer-events-free, fixed behind the portfolio content, and easy to tune through constants in `background.js`
 - Added reduced-motion handling so the background renders as a static frame instead of animating when motion is reduced
@@ -93,22 +76,22 @@ Date: 2026-05-23
 
 - `README.md`
 - `PROJECT_STATUS.md`
-- `tools/launch-editor.js`
+- `index.html`
+- `package.json`
+- `script.js`
+- `styles.css`
+- `tools/admin/README.md`
+- deleted obsolete launcher scripts
 
 ## Current Structure
 
-- `index.html`: compact public shell, static SEO fallbacks, footer/modal markup, and local editor launcher
+- `index.html`: compact public shell, static SEO fallbacks, footer/modal markup, and local editor link/help message
 - `styles.css`: minimal public styling, centered responsive project grid, footer columns, and mixed-media modal styling
 - `script.js`: site shell rendering, published-project filtering, dynamic grid rendering, mixed-media gallery rendering, modal behavior, and thumbnail metadata binding
 - `data/projects.js`: project data, refined copy, mixed `media` arrays, links, categories, and thumbnail crop metadata
 - `data/site.js`: editable site-wide metadata, header, footer, contact, and social preview data
 - `assets/projects/`: local project media assets
 - `tools/admin/`: local-only tabbed editor, site tab, media controls, validation helpers, image helpers, crop helper module, and localhost server
-- `tools/launch-editor.js`: cross-platform Node launcher for starting admin and preview together
-- `Launch Portfolio Editor.command`: macOS double-click wrapper for `npm run launch`
-- `Launch Portfolio Editor.bat`: Windows double-click wrapper for `npm run launch`
-- `tools/launch-editor.command`: optional macOS developer wrapper for `npm run launch`
-- `tools/launch-editor.ps1`: optional Windows PowerShell developer wrapper for `npm run launch`
 - `_config.yml`: excludes the local editor from GitHub Pages deployment
 - `package.json`: local helper scripts for admin, preview, and validation
 - `.gitignore`: ignores local backups and operating-system noise
@@ -134,9 +117,8 @@ Date: 2026-05-23
 - The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
 - The footer has three areas: GitHub / LinkedIn / CV / ORCID links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
-- `npm run launch` starts the admin and preview servers directly through Node, waits for readiness, opens the local editor, and stops only the child servers it started on `Ctrl+C`
-- If admin or preview is already running, `npm run launch` reuses that URL and leaves it running on exit
-- Root OS-specific launchers now delegate to `npm run launch`; the public portfolio still cannot start local scripts
+- The public footer `::` link opens only the local editor URL and shows a small helper message with the manual commands
+- The manual local editor workflow is: run `npm run admin`, open `http://127.0.0.1:8787/`, optionally run `npm run preview` in another terminal
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
 - Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
 - The admin warns before losing unapplied/unsaved form, project-list, or site-text changes
@@ -176,10 +158,16 @@ Date: 2026-05-23
 
 ## Manual Tests Run In This Update
 
-1. Ran `node --check tools/launch-editor.js`
-2. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-3. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
-4. Ran `git diff --check`
+1. Ran `node --check script.js`
+2. Ran `node --check background.js`
+3. Ran `node --check tools/admin/admin.js`
+4. Ran `node --check tools/admin/server.js`
+5. Ran `node --check tools/admin/check.js`
+6. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+7. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+8. Confirmed the local preview footer `::` link targets `http://127.0.0.1:8787/`, opens in a new tab, and shows the manual-command helper message
+9. Ran the stale launcher reference scan across public code, admin docs, package scripts, status, and admin files
+10. Ran `git diff --check`
 
 ## Notes For Future Chats
 

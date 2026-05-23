@@ -476,6 +476,36 @@ ul {
   opacity: 0.55;
 }
 
+.footer-local-editor-toast {
+  position: absolute;
+  right: 0;
+  bottom: 28px;
+  width: min(260px, calc(100vw - 32px));
+  padding: 10px 0 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  text-align: right;
+  transition: opacity 180ms ease;
+}
+
+.footer-local-editor-toast.is-visible {
+  opacity: 0.82;
+}
+
+.footer-local-editor-toast p + p {
+  margin-top: 6px;
+}
+
+.footer-local-editor-toast code {
+  color: var(--text);
+  font-family: inherit;
+}
+
 .project-dialog {
   width: min(1080px, calc(100% - 24px));
   max-height: calc(100vh - 24px);
