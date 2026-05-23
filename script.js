@@ -158,14 +158,14 @@ const showLocalEditorToast = () => {
     return;
   }
 
-  window.clearTimeout(localEditorToastTimer);
   shellElements.localEditorToast.hidden = false;
   shellElements.localEditorToast.classList.add("is-visible");
 
+  window.clearTimeout(localEditorToastTimer);
   localEditorToastTimer = window.setTimeout(() => {
     shellElements.localEditorToast.classList.remove("is-visible");
     shellElements.localEditorToast.hidden = true;
-  }, 6500);
+  }, 6000);
 };
 
 const normalizeMediaItem = (item) => {
