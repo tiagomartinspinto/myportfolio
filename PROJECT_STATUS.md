@@ -8,6 +8,7 @@ Date: 2026-05-23
 - Kept only the manual local commands: `npm run admin`, optional `npm run preview`, and `npm run check`
 - Simplified the public footer `::` link so it only opens `http://127.0.0.1:8787/` in a new tab and never tries to start local scripts
 - Added a small accessible footer helper message with `aria-live` that explains the manual local editor commands after the `::` link is clicked
+- Matched the local editor helper function body exactly to the requested behavior: show the toast, clear any old timer, then hide it after 6000ms without preventing the link default
 - Updated `README.md` and `tools/admin/README.md` around the manual editor workflow and removed stale launcher documentation
 - Confirmed stale launcher references were removed from public code, admin docs, package scripts, and local admin files, except this status note documenting the cleanup
 - Confirmed in the local preview that the `::` link still opens the local editor URL and the helper message appears without blocking the page
@@ -159,12 +160,12 @@ Date: 2026-05-23
 ## Manual Tests Run In This Update
 
 1. Ran `node --check script.js`
-2. Ran `node --check background.js`
-3. Ran `node --check tools/admin/admin.js`
-4. Ran `node --check tools/admin/server.js`
-5. Ran `node --check tools/admin/check.js`
-6. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-7. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+2. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+3. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+4. Ran `node --check background.js`
+5. Ran `node --check tools/admin/admin.js`
+6. Ran `node --check tools/admin/server.js`
+7. Ran `node --check tools/admin/check.js`
 8. Confirmed the local preview footer `::` link targets `http://127.0.0.1:8787/`, opens in a new tab, and shows the manual-command helper message
 9. Ran the stale launcher reference scan across public code, admin docs, package scripts, status, and admin files
 10. Ran `git diff --check`
