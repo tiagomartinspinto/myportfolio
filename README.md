@@ -11,59 +11,36 @@ The site presents an artistic-research practice across art, technology, educatio
 ## Quick Start
 
 ```bash
-npm run launch
 npm run admin
-npm run preview
 npm run check
 ```
 
-## Double-Click Launch
-
-For everyday editing, use the root launchers. They are thin wrappers around the same core command, `npm run launch`.
-
-macOS:
-
-```text
-Launch Portfolio Editor.command
-```
-
-Double-click the `.command` file at the repository root. If macOS blocks it, run this once from the repository root:
-
-```bash
-chmod +x "Launch Portfolio Editor.command"
-```
-
-Windows:
-
-```text
-Launch Portfolio Editor.bat
-```
-
-Double-click the `.bat` file at the repository root.
-
-Command-line fallback:
-
-```bash
-npm run launch
-```
-
-This starts the local editor and preview server, waits until both localhost URLs respond, then opens the editor in the default browser:
+Then open:
 
 ```text
 http://127.0.0.1:8787/
-http://127.0.0.1:8080/
 ```
 
-Press `Ctrl+C` in the launcher terminal to stop both local servers.
-
-Manual fallback:
+Optional preview, in another terminal:
 
 ```bash
-npm run admin
 npm run preview
 ```
 
-The public `::` footer link cannot start the local server. It only opens `http://127.0.0.1:8787/` if the launcher or server is already running. This is intentional for security: the public portfolio cannot and should not start local scripts.
+Then open:
+
+```text
+http://127.0.0.1:8080/
+```
+
+Recommended workflow:
+
+1. Edit in the local admin
+2. Save + Preview
+3. Run check
+4. Publish
+
+The public `::` footer link cannot start the local server. It only opens `http://127.0.0.1:8787/`. If the server is not running, the browser will show a connection error. This is intentional for security: the public portfolio cannot and should not start local scripts.
 
 ## Stack
 
@@ -226,7 +203,7 @@ Then open:
 http://127.0.0.1:8787/
 ```
 
-The public footer includes a nearly hidden `::` launcher at the bottom-right of the footer. It points only to `http://127.0.0.1:8787/`, works only when the local admin server is running, and does not expose a public admin.
+The public footer includes a nearly hidden `::` link at the bottom-right of the footer. It points only to `http://127.0.0.1:8787/`, works only when the local admin server is running, and does not expose a public admin. When clicked, the portfolio shows a small reminder with the manual `npm run admin` and optional `npm run preview` commands.
 
 The editor is organized into tabs:
 
