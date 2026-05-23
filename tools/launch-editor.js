@@ -12,7 +12,7 @@ const WAIT_RETRY_MS = 400;
 const OPEN_PREVIEW = true;
 
 const repoRoot = path.resolve(__dirname, "..");
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const nodeCommand = process.execPath;
 const children = new Set();
 
 let shuttingDown = false;
@@ -49,10 +49,15 @@ const prefixOutput = (stream, label, writer) => {
   });
 };
 
-const startServer = (scriptName, label) => {
-  log(`Starting ${label} with npm run ${scriptName}...`);
+const startServer = async (mode, label, url) => {
+  if (await requestUrl(url)) {
+    log(`[${label}] already running, reusing it.`);
+    return null;
+  }
 
-  const child = spawn(npmCommand, ["run", scriptName], {
+  log(`Starting ${label} server...`);
+
+  const child = spawn(nodeCommand, ["tools/admin/server.js", mode], {
     cwd: repoRoot,
     detached: process.platform !== "win32",
     env: process.env,
@@ -140,7 +145,13 @@ const waitForUrl = async (url, timeoutMs = WAIT_TIMEOUT_MS) => {
     await sleep(WAIT_RETRY_MS);
   }
 
-  throw new Error(`Timed out waiting for ${url}`);
+  throw new Error(
+    [
+      `Could not reach ${url}`,
+      "Check the logs above.",
+      "If the port is already in use, close old server terminals and try again."
+    ].join("\n")
+  );
 };
 
 const openUrl = (url) => {
@@ -222,8 +233,8 @@ process.on("unhandledRejection", (error) => {
   log(`Repository: ${repoRoot}`);
   log("");
 
-  startServer("admin", "admin");
-  startServer("preview", "preview");
+  await startServer("admin", "admin", ADMIN_URL);
+  await startServer("preview", "preview", PREVIEW_URL);
 
   log("");
   log("Waiting for local servers...");

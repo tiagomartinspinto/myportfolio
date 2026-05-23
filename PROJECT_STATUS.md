@@ -2,8 +2,14 @@
 
 ## Latest Update
 
-Date: 2026-05-22
+Date: 2026-05-23
 
+- Fixed `tools/launch-editor.js` so the core launcher no longer spawns nested `npm run admin` / `npm run preview` commands
+- Switched the launcher to direct Node spawning through `process.execPath` and `tools/admin/server.js admin|preview`
+- Added startup reuse checks: if `http://127.0.0.1:8787/` or `http://127.0.0.1:8080/` already responds, the launcher reuses that server instead of spawning another one
+- Kept `Ctrl+C` cleanup scoped to only the child server processes started by this launcher, so reused servers are not killed
+- Made launcher timeout failures clearer, including the URL that could not be reached and advice to close old server terminals if a port is stuck
+- Re-ran `node --check tools/launch-editor.js` and `npm run check`; validation passes with the same two expected YouTube-derived thumbnail warnings
 - Added the root `Launch Portfolio Editor.command` macOS double-click launcher, which changes to the repository root and delegates to `npm run launch`
 - Simplified the root `Launch Portfolio Editor.bat` Windows double-click launcher so it changes to the repository root, delegates to `npm run launch`, and keeps the window open afterward
 - Kept `tools/launch-editor.js` as the real cross-platform launcher and kept OS-specific wrappers free of duplicated launch logic
@@ -87,9 +93,7 @@ Date: 2026-05-22
 
 - `README.md`
 - `PROJECT_STATUS.md`
-- `Launch Portfolio Editor.command`
-- `Launch Portfolio Editor.bat`
-- `tools/admin/README.md`
+- `tools/launch-editor.js`
 
 ## Current Structure
 
@@ -130,7 +134,8 @@ Date: 2026-05-22
 - The project grid shows a subtle loading mark before rendering and fades thumbnails in as they load
 - The footer has three areas: GitHub / LinkedIn / CV / ORCID links on the left, about text centered, and Helsinki / Aalto role links on the right
 - The local editor remains local-only, localhost-bound, and excluded from public deployment
-- `npm run launch` can start the admin and preview servers together, wait for readiness, open the local editor, and stop both servers on `Ctrl+C`
+- `npm run launch` starts the admin and preview servers directly through Node, waits for readiness, opens the local editor, and stops only the child servers it started on `Ctrl+C`
+- If admin or preview is already running, `npm run launch` reuses that URL and leaves it running on exit
 - Root OS-specific launchers now delegate to `npm run launch`; the public portfolio still cannot start local scripts
 - The admin still shows the visible local-only banner and public/read-only warning when relevant
 - Public/read-only mode still blocks save, publish, backup restore, image scanning, dimension detection, local API access, and filesystem access
@@ -172,11 +177,9 @@ Date: 2026-05-22
 ## Manual Tests Run In This Update
 
 1. Ran `node --check tools/launch-editor.js`
-2. Confirmed the root `Launch Portfolio Editor.command` delegates only to `npm run launch`
-3. Confirmed the root `Launch Portfolio Editor.bat` delegates only to `npm run launch`
-4. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
-5. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
-6. Ran `git diff --check`
+2. Ran `npm run check`; 11 projects passed validation, with 11 published and 0 drafts
+3. Confirmed `npm run check` reports only the expected YouTube-derived thumbnail warnings for `bqg` and `sagrada-familia`
+4. Ran `git diff --check`
 
 ## Notes For Future Chats
 
