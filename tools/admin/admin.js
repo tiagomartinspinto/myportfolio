@@ -1468,13 +1468,15 @@ const renderProjectList = () => {
 
     const upButton = document.createElement("button");
     upButton.type = "button";
-    upButton.textContent = "Up";
+    upButton.textContent = "↑";
+    upButton.setAttribute("aria-label", "Move project up");
     upButton.disabled = index === 0;
     upButton.addEventListener("click", () => moveProject(index, -1));
 
     const downButton = document.createElement("button");
     downButton.type = "button";
-    downButton.textContent = "Down";
+    downButton.textContent = "↓";
+    downButton.setAttribute("aria-label", "Move project down");
     downButton.disabled = index === state.projects.length - 1;
     downButton.addEventListener("click", () => moveProject(index, 1));
 

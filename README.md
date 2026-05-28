@@ -366,10 +366,7 @@ The local admin editor under `tools/admin/` is excluded from GitHub Pages publis
 
 ## Status Handoff
 
-The current state is tracked in:
+- `PROJECT_STATUS.md` = current state and next tests
+- `PROJECT_HISTORY.md` = archived implementation history
 
-```text
-PROJECT_STATUS.md
-```
-
-Update that file whenever substantial content, design, admin, or deployment work is completed.
+Update `PROJECT_STATUS.md` whenever substantial content, design, admin, or deployment work is completed. Move older detailed notes into `PROJECT_HISTORY.md` when the status file starts getting long.
