@@ -2,81 +2,78 @@
 
 ## Current State
 
-- Static GitHub Pages portfolio built with vanilla HTML, CSS, and JavaScript
-- Project data lives in `data/projects.js`
-- Site-wide metadata, header, footer, and contact text live in `data/site.js`
-- Project media lives in `assets/projects/`
-- Local-only editor lives in `tools/admin/` and is excluded from GitHub Pages deployment
-- Public footer `::` link opens `http://127.0.0.1:8787/` only; it does not start local scripts
-- Available npm scripts: `admin`, `preview`, and `check`
-- Older detailed implementation notes are archived in `PROJECT_HISTORY.md`
+- Static GitHub Pages portfolio
+- Vanilla HTML/CSS/JS
+- Local-only admin editor
+- Project data in `data/projects.js`
+- Site-wide content in `data/site.js`
+- Media in `assets/projects/`
+- npm scripts: `admin`, `preview`, `check`
 
 ## How To Work
 
-Run the local editor:
+Local admin:
 
 ```bash
 npm run admin
 ```
 
-Then open:
-
-```text
-http://127.0.0.1:8787/
-```
-
-Optional preview in another terminal:
+Optional preview:
 
 ```bash
 npm run preview
 ```
 
-Then open:
-
-```text
-http://127.0.0.1:8080/
-```
-
-Before publishing:
+Validation:
 
 ```bash
 npm run check
 ```
 
-Typical workflow:
+Recommended workflow:
 
-1. Pull `main`
-2. Edit projects or site text in the local admin
-3. Save locally
-4. Preview at `http://127.0.0.1:8080/`
-5. Run `npm run check`
-6. Commit and push to `main`
+1. Edit in local admin
+2. Save + Preview
+3. Run check
+4. Publish
 
-## Current Watchlist
+## Current Features
 
-- Keep `PROJECT_STATUS.md` short; move older detailed notes into `PROJECT_HISTORY.md`
-- Keep `README.md` focused; put detailed admin/media instructions in `tools/admin/README.md`
-- Consider removing one of the very-small mobile breakpoints (`520px` or `480px`) during a future CSS cleanup
-- Test one full project edit through the admin: draft toggle, save, undo, restore, preview, and publish
-- Test one full site-text edit through the admin Site tab
-- Check the deployed GitHub Pages site after publishing
-- Verify `/tools/admin/` is not deployed publicly
-- Fine-tune thumbnail crop metadata where needed
+- Mixed media projects
+- Draft support
+- Site text editing
+- Local image library and crop metadata
+- Video/audio explicit thumbnail and placeholder logic
+- Processing-style background
+- Project modal and image lightbox
+- Compact responsive grid
+- Footer local-editor helper toast
+- Publish runs validation first
 
 ## Known Issues
 
-- `npm run check` currently passes with two expected warnings for YouTube-derived thumbnails in `bqg` and `sagrada-familia`
-- YouTube-derived thumbnails depend on `img.youtube.com` being reachable
-- External video/audio embeds may be affected by browser privacy settings or provider behavior
-- The admin does not upload media; media files must be added manually under `assets/projects/[slug]/`
-- Save locally rewrites `data/projects.js` and `data/site.js` using the editor's normalized formatting
-- The particle background is intentionally faint; tune `background.js` constants if it needs more or less presence
+- YouTube-derived thumbnails depend on `img.youtube.com`
+- External embeds may be blocked by browser/provider settings
+- Admin does not upload media; media files are added manually
+- Backup files are local-only and ignored by git
+- Older implementation notes are archived in `PROJECT_HISTORY.md`
 
-## Last Verification
+## Next Manual Tests
 
-Date: 2026-05-24
+- Live GitHub Pages visual check
+- Local admin save/preview/publish test
+- Mobile layout check
+- Project modal/lightbox check
+- Footer local editor helper toast check
+- `npm run check`
 
-- Pulled from `origin/main`; repo was already up to date
-- Ran a live local visual pass for footer toast, particle background, modal/lightbox, mobile grid, and local editor link
-- Ran `npm run check`; validation passed with the two expected YouTube-derived thumbnail warnings
-- Confirmed no files changed during the visual pass
+## Latest Cleanup
+
+- Older status notes archived to `PROJECT_HISTORY.md`
+- `PROJECT_STATUS.md` simplified
+- Footer local-editor toast copy tightened
+- Admin project order controls made quieter
+- Processing background opacity reduced
+- Requested syntax, validation, and diff checks passed
+
+For older detailed implementation history, see `PROJECT_HISTORY.md`.

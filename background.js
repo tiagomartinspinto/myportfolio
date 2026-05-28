@@ -2,8 +2,8 @@ const PARTICLE_COUNT_DESKTOP = 42;
 const PARTICLE_COUNT_MOBILE = 28;
 const MAX_CONNECTION_DISTANCE = 150;
 const PARTICLE_SPEED = 0.12;
-const PARTICLE_OPACITY = 0.34;
-const LINE_OPACITY = 0.1;
+const PARTICLE_OPACITY = 0.22;
+const LINE_OPACITY = 0.055;
 
 const canvas = document.querySelector("#processing-background");
 const context = canvas?.getContext("2d");
