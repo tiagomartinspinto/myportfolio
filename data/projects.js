@@ -47,6 +47,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/programming-for-visual-artists/site-preview.png",
+        thumbnail: "assets/projects/programming-for-visual-artists/site-preview-thumb.jpg",
         alt: "Programming for Visual Artists course website landing page",
         width: 1200,
         height: 630,
@@ -102,6 +103,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/kuperkeikka/kuperkeikka-logo.png",
+        thumbnail: "assets/projects/kuperkeikka/kuperkeikka-logo-thumb.jpg",
         alt: "Kuperkeikka podcast artwork with silhouetted figures and title",
         width: 1600,
         height: 1600,
@@ -140,6 +142,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-01.png",
+        thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-01-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition view with dark sculptural display",
         width: 645,
         height: 644
@@ -199,6 +202,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sattuma-com/sattuma-01.png",
+        thumbnail: "assets/projects/sattuma-com/sattuma-01-thumb.jpg",
         alt: "Sattuma project cover with handwritten yellow logo on dark background",
         width: 675,
         height: 452
@@ -257,6 +261,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02.png",
+        thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02-thumb.jpg",
         alt: "Carried by Invisible Bodies documentation still with performers and sculptural materials",
         width: 1538,
         height: 921
@@ -316,6 +321,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01.jpg",
+        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01-thumb.jpg",
         alt: "Työhuonella / SWAP documentation still with visitors in a gallery space",
         width: 1600,
         height: 1067
@@ -352,6 +358,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-01.png",
+        thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-01-thumb.jpg",
         alt: "From the Dead Air Orgy visual still from live-streamed performance",
         width: 1441,
         height: 1012
@@ -406,6 +413,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/eating-together/eating-together-01.jpeg",
+        thumbnail: "assets/projects/eating-together/eating-together-01-thumb.jpg",
         alt: "Eating Together workshop table with participants gathered around collective activity",
         width: 1532,
         height: 1147
@@ -444,6 +452,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/flying-duets/flying-duets-01.jpeg",
+        thumbnail: "assets/projects/flying-duets/flying-duets-01-thumb.jpg",
         alt: "Flying Duets outdoor structure in a wooded landscape",
         width: 789,
         height: 368
@@ -482,6 +491,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/bqg/bqg-01.jpeg",
+        thumbnail: "assets/projects/bqg/bqg-01-thumb.jpg",
         alt: "BQG portrait photograph from the youth photography project",
         width: 1600,
         height: 1142
@@ -525,6 +535,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-01.jpeg",
+        thumbnail: "assets/projects/sagrada-familia/sagrada-familia-01-thumb.jpg",
         alt: "Sagrada Família family portrait photograph in an interior",
         width: 1600,
         height: 1143
