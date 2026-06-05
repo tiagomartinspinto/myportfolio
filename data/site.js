@@ -5,7 +5,7 @@ export const SITE = {
   ogDescription: "Artist, teacher, researcher, and creative technologist.",
   socialImage: "assets/projects/eating-together/eating-together-01.jpeg",
   socialImageAlt: "Eating Together workshop table with participants gathered around collective activity",
-  canonicalUrl: "https://tiagomartinspinto.github.io/myportfolio/",
+  canonicalUrl: "https://www.tiagomartinspinto.com/",
   header: {
     name: "TIAGO MARTINS PINTO",
     mark: ":-]",

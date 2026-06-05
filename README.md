@@ -3,7 +3,7 @@
 Compact GitHub Pages portfolio for:
 
 ```text
-https://tiagomartinspinto.github.io/myportfolio/
+https://www.tiagomartinspinto.com/
 ```
 
 The site presents an artistic-research practice across art, technology, education, creative coding, exhibitions, participatory work, and media systems. Project content lives in local data files and project media lives in the repository.
@@ -354,13 +354,13 @@ This repository deploys directly from the `main` branch of:
 https://github.com/tiagomartinspinto/myportfolio.git
 ```
 
-GitHub Pages publishes the site at:
+GitHub Pages serves the site at the custom domain set in `CNAME`:
 
 ```text
-https://tiagomartinspinto.github.io/myportfolio/
+https://www.tiagomartinspinto.com/
 ```
 
-No build pipeline is required. Pushing committed static files to `main` is enough.
+The default `https://tiagomartinspinto.github.io/myportfolio/` address redirects to the custom domain. No build pipeline is required. Pushing committed static files to `main` is enough.
 
 The local admin editor under `tools/admin/` is excluded from GitHub Pages publishing via `_config.yml`.
 
