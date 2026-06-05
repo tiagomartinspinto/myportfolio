@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="Video documentation coming soon">
+  <rect width="1600" height="1000" fill="#111111"/>
+  <circle cx="800" cy="430" r="80" fill="none" stroke="#4a4a4a" stroke-width="3"/>
+  <path d="M778 392 L840 430 L778 468 Z" fill="#7a7a7a"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">
+    <text x="800" y="606" font-size="34" letter-spacing="8" fill="#8d8d8d">VIDEO DOCUMENTATION</text>
+    <text x="800" y="654" font-size="26" letter-spacing="10" fill="#707070">COMING SOON</text>
+  </g>
+</svg>
