@@ -69,11 +69,13 @@ Recommended workflow:
 
 ## Latest Cleanup
 
-- Older status notes archived to `PROJECT_HISTORY.md`
-- `PROJECT_STATUS.md` simplified
-- Footer local-editor toast copy tightened
-- Admin project order controls made quieter
-- Processing background opacity reduced
-- Requested syntax, validation, and diff checks passed
+- Canonical, Open Graph, and social-image URLs moved to the live custom domain `https://www.tiagomartinspinto.com/`
+- `README.md` public address updated to the custom domain
+- Final review pass: syntax, validation, and diff checks passed
+- No site, admin, or design changes were needed beyond the domain update
+
+## Open Recommendation
+
+- `bqg` and `sagrada-familia` both link to the same YouTube video (`vhMKGt1EqvY`). One is likely a copy-paste error. Confirm the correct video for each, or remove the video item from whichever project does not have its own.
 
 For older detailed implementation history, see `PROJECT_HISTORY.md`.
