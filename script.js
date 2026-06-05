@@ -3,7 +3,6 @@ import { SITE } from "./data/site.js";
 
 const state = {
   activeFilter: "all",
-  activeProject: null,
   lastTrigger: null,
   lightboxTrigger: null,
   visibleCount: 0
@@ -14,7 +13,6 @@ const elements = {
   loading: document.querySelector("#project-loading"),
   projectGrid: document.querySelector("#project-grid"),
   loadMoreButton: document.querySelector("#load-more-projects"),
-  jumpButtons: Array.from(document.querySelectorAll("[data-filter-jump]")),
   dialog: document.querySelector("#project-dialog"),
   dialogClose: document.querySelector("#project-dialog-close"),
   featureMedia: document.querySelector("#project-feature-media"),
@@ -581,7 +579,6 @@ const renderGallery = (project) => {
 };
 
 const renderProjectDetail = (project) => {
-  state.activeProject = project.slug;
   updateFeatureMedia(getProjectMedia(project)[0], project.title);
   renderGallery(project);
 
@@ -707,20 +704,6 @@ const toggleProjectCount = () => {
     });
   }
 };
-
-const handleFilterJump = (event) => {
-  const filter = event.currentTarget.dataset.filterJump;
-  if (!filter) {
-    return;
-  }
-
-  setFilter(filter);
-  document.querySelector("#work")?.scrollIntoView({ behavior: reducedMotionQuery.matches ? "auto" : "smooth", block: "start" });
-};
-
-elements.jumpButtons.forEach((button) => {
-  button.addEventListener("click", handleFilterJump);
-});
 
 elements.loadMoreButton.addEventListener("click", toggleProjectCount);
 
