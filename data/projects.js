@@ -481,12 +481,7 @@ export const PROJECTS = [
       "BQG a Preto e Branco brought together four months of photography sessions with young people from Bairro Quinta Grande in Lisbon.",
       "Participants observed their neighborhood, tested its boundaries, and photographed places that mattered to them. The resulting work was later shown at Casa dos Mundos."
     ],
-    links: [
-      {
-        label: "Project video",
-        url: "https://youtu.be/vhMKGt1EqvY?si=f3UkkBLKGSVdAuUY"
-      }
-    ],
+    links: [],
     media: [
       {
         type: "image",
@@ -497,10 +492,12 @@ export const PROJECTS = [
         height: 1142
       },
       {
-        type: "video",
-        provider: "youtube",
-        source: "https://youtu.be/vhMKGt1EqvY?si=f3UkkBLKGSVdAuUY",
-        caption: "Project video documentation."
+        type: "image",
+        src: "assets/projects/bqg/video-placeholder.svg",
+        alt: "Placeholder for forthcoming BQG video documentation",
+        width: 1600,
+        height: 1000,
+        caption: "Video documentation coming soon."
       }
     ]
   },
@@ -525,12 +522,7 @@ export const PROJECTS = [
       "Sagrada Família is rooted in the idea of home: what it means to feel at home, and who gets invited into personal space.",
       "The project began from distance and suspicion, then slowly moved toward trust. Over time, residents invited the artist into their homes for family portraits, which were framed and returned to the families."
     ],
-    links: [
-      {
-        label: "Project video",
-        url: "https://youtu.be/vhMKGt1EqvY?si=1nF1nbrBvy6TECxa"
-      }
-    ],
+    links: [],
     media: [
       {
         type: "image",
@@ -562,10 +554,12 @@ export const PROJECTS = [
         height: 536
       },
       {
-        type: "video",
-        provider: "youtube",
-        source: "https://youtu.be/vhMKGt1EqvY?si=1nF1nbrBvy6TECxa",
-        caption: "Project video documentation."
+        type: "image",
+        src: "assets/projects/sagrada-familia/video-placeholder.svg",
+        alt: "Placeholder for forthcoming Sagrada Família video documentation",
+        width: 1600,
+        height: 1000,
+        caption: "Video documentation coming soon."
       }
     ]
   }
