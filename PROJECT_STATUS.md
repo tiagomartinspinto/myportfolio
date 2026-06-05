@@ -71,8 +71,10 @@ Recommended workflow:
 
 - Canonical, Open Graph, and social-image URLs moved to the live custom domain `https://www.tiagomartinspinto.com/`
 - `README.md` public address updated to the custom domain
-- Final review pass: syntax, validation, and diff checks passed
-- No site, admin, or design changes were needed beyond the domain update
+- `--faint` text raised to `#7a7a7a` for WCAG AA contrast on the dark background
+- Removed dead jump-filter code and unused state from `script.js`
+- Grid thumbnails now load downscaled 640px JPEG derivatives (`*-thumb.jpg`); full images stay in the modal and lightbox. Above-the-fold image payload dropped from ~4.5 MB to ~0.75 MB
+- Derivatives were generated with the built-in `sips` tool; no dependencies added
 
 ## Open Recommendation
 

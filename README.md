@@ -108,12 +108,15 @@ The public gallery and local editor support mixed project media:
 {
   type: "image",
   src: "assets/projects/project-name/image.jpg",
+  thumbnail: "assets/projects/project-name/image-thumb.jpg",
   alt: "Description of image",
   width: 1600,
   height: 1000,
   caption: "Optional caption"
 }
 ```
+
+For an image, `thumbnail` is optional and points at a smaller, same-aspect-ratio version used only for the grid and gallery thumbnails. The full `src` is still used in the project modal and the lightbox. `width` and `height` describe the full `src`. The first media item of each project carries a downscaled `*-thumb.jpg` (max 640px on the long edge) so the grid stays light; these were generated with the built-in `sips` tool and add no dependencies.
 
 ```js
 {
