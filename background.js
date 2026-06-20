@@ -1,9 +1,11 @@
 const PARTICLE_COUNT_DESKTOP = 42;
 const PARTICLE_COUNT_MOBILE = 28;
 const MAX_CONNECTION_DISTANCE = 150;
+const MAX_CONNECTION_DISTANCE_SQUARED = MAX_CONNECTION_DISTANCE * MAX_CONNECTION_DISTANCE;
 const PARTICLE_SPEED = 0.12;
 const PARTICLE_OPACITY = 0.22;
 const LINE_OPACITY = 0.055;
+const RESIZE_DEBOUNCE_MS = 150;
 
 const canvas = document.querySelector("#processing-background");
 const context = canvas?.getContext("2d");
@@ -75,10 +77,13 @@ const draw = ({ move = true } = {}) => {
 
     for (let nextIndex = index + 1; nextIndex < particles.length; nextIndex += 1) {
       const next = particles[nextIndex];
-      const distance = Math.hypot(particle.x - next.x, particle.y - next.y);
+      const deltaX = particle.x - next.x;
+      const deltaY = particle.y - next.y;
+      const distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
-      if (distance < MAX_CONNECTION_DISTANCE) {
-        const proximity = 1 - distance / MAX_CONNECTION_DISTANCE;
+      // Skip the expensive sqrt for the many pairs that are out of range.
+      if (distanceSquared < MAX_CONNECTION_DISTANCE_SQUARED) {
+        const proximity = 1 - Math.sqrt(distanceSquared) / MAX_CONNECTION_DISTANCE;
         context.strokeStyle = `rgba(190, 190, 190, ${LINE_OPACITY * proximity})`;
         context.beginPath();
         context.moveTo(particle.x, particle.y);
@@ -123,10 +128,16 @@ const rebuild = () => {
   startAnimation();
 };
 
+let resizeTimer = null;
+const debouncedRebuild = () => {
+  window.clearTimeout(resizeTimer);
+  resizeTimer = window.setTimeout(rebuild, RESIZE_DEBOUNCE_MS);
+};
+
 if (canvas && context) {
   rebuild();
 
-  window.addEventListener("resize", rebuild, { passive: true });
+  window.addEventListener("resize", debouncedRebuild, { passive: true });
   document.addEventListener("visibilitychange", startAnimation);
   reducedMotionQuery.addEventListener("change", startAnimation);
 }
