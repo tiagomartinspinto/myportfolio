@@ -179,7 +179,7 @@ const validateProjectMedia = (project, projectIndex) => {
         const bytes = fileSizeBytes(resolveLocalProjectAsset(source));
         if (bytes !== null) {
           if (bytes > LARGE_IMAGE_BYTES) {
-            addWarning(`${context}.src is ${formatKb(bytes)}; compress it or convert to WebP/AVIF to cut load time.`);
+            addWarning(`${context}.src is ${formatKb(bytes)}; re-export it smaller (and/or serve WebP/AVIF) to cut load time.`);
           }
           if (mediaIndex === 0 && !thumbnail && bytes > HEAVY_CARD_SOURCE_BYTES) {
             addWarning(`${context}.src is the grid card image (${formatKb(bytes)}) with no thumbnail; the project grid will download the full-size file. Add a smaller thumbnail.`);

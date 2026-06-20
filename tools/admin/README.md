@@ -53,7 +53,7 @@ npm run check
 
 The check validates project data, site data, approved filters, media paths, local asset existence, links, and draft handling. Publish runs this automatically before committing.
 
-The check also raises non-blocking performance warnings for heavy image assets: any image larger than 1 MB (compress it or convert to WebP/AVIF), and a grid card image with no thumbnail whose source is larger than 200 KB (add a smaller thumbnail so the grid does not download the full-size file). These warnings never fail the check or block publishing.
+The check also raises non-blocking performance warnings for heavy image assets: any image larger than 1 MB (re-export it smaller and/or serve WebP/AVIF), and a grid card image with no thumbnail whose source is larger than 200 KB (add a smaller thumbnail so the grid does not download the full-size file). These warnings never fail the check or block publishing.
 
 ## Public / Read-Only Mode
 
