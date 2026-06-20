@@ -479,7 +479,13 @@ const renderProjects = () => {
       if (media?.height) {
         image.height = media.height;
       }
-      image.loading = "lazy";
+      // Prioritise the first card (the likely LCP element) and lazy-load the rest.
+      if (index === 0) {
+        image.loading = "eager";
+        image.fetchPriority = "high";
+      } else {
+        image.loading = "lazy";
+      }
       image.decoding = "async";
       image.sizes = "(max-width: 520px) 100vw, (max-width: 860px) 50vw, (max-width: 1100px) 33vw, 25vw";
       markImageLoaded(image);

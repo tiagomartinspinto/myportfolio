@@ -12,6 +12,24 @@ const VIDEO_PROVIDERS = new Set(["youtube", "vimeo", "file", "url"]);
 const AUDIO_PROVIDERS = new Set(["file", "soundcloud", "url"]);
 const MEDIA_TYPES = new Set(["image", "video", "audio"]);
 
+// Performance budgets for image assets. These only raise warnings (never fail
+// the check) so the editor is nudged to optimise heavy media through the admin tool.
+const LARGE_IMAGE_BYTES = 1024 * 1024; // 1 MB: compress or convert to WebP/AVIF.
+const HEAVY_CARD_SOURCE_BYTES = 200 * 1024; // grid card without a small thumbnail.
+
+const formatKb = (bytes) => `${Math.round(bytes / 1024)} KB`;
+
+const fileSizeBytes = (resolved) => {
+  if (!resolved || !fs.existsSync(resolved.absolute)) {
+    return null;
+  }
+  try {
+    return fs.statSync(resolved.absolute).size;
+  } catch {
+    return null;
+  }
+};
+
 let errors = [];
 let warnings = [];
 
@@ -155,6 +173,18 @@ const validateProjectMedia = (project, projectIndex) => {
       }
       if (!draft && (!Number.isFinite(Number(item.height)) || Number(item.height) <= 0)) {
         addError(`${context}.height must be a positive number.`);
+      }
+
+      if (!draft) {
+        const bytes = fileSizeBytes(resolveLocalProjectAsset(source));
+        if (bytes !== null) {
+          if (bytes > LARGE_IMAGE_BYTES) {
+            addWarning(`${context}.src is ${formatKb(bytes)}; compress it or convert to WebP/AVIF to cut load time.`);
+          }
+          if (mediaIndex === 0 && !thumbnail && bytes > HEAVY_CARD_SOURCE_BYTES) {
+            addWarning(`${context}.src is the grid card image (${formatKb(bytes)}) with no thumbnail; the project grid will download the full-size file. Add a smaller thumbnail.`);
+          }
+        }
       }
       return;
     }
