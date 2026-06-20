@@ -124,6 +124,7 @@ const elements = {
   siteSocialImage: document.querySelector("#site-social-image"),
   siteSocialImageAlt: document.querySelector("#site-social-image-alt"),
   siteCanonicalUrl: document.querySelector("#site-canonical-url"),
+  siteIntro: document.querySelector("#site-intro"),
   siteHeaderName: document.querySelector("#site-header-name"),
   siteHeaderMark: document.querySelector("#site-header-mark"),
   siteContactLabel: document.querySelector("#site-contact-label"),
@@ -164,6 +165,7 @@ const createBlankSite = () => ({
   socialImage: "",
   socialImageAlt: "",
   canonicalUrl: "",
+  intro: "",
   header: {
     name: "",
     mark: "",
@@ -531,6 +533,7 @@ const siteForForm = (site = createBlankSite()) => ({
   socialImage: site.socialImage || "",
   socialImageAlt: site.socialImageAlt || "",
   canonicalUrl: site.canonicalUrl || "",
+  intro: site.intro || "",
   header: {
     name: site.header?.name || "",
     mark: site.header?.mark || "",
@@ -563,6 +566,7 @@ const buildSiteFromForm = () => ({
   socialImage: elements.siteSocialImage.value.trim(),
   socialImageAlt: elements.siteSocialImageAlt.value.trim(),
   canonicalUrl: elements.siteCanonicalUrl.value.trim(),
+  intro: elements.siteIntro.value.trim(),
   header: {
     name: elements.siteHeaderName.value.trim(),
     mark: elements.siteHeaderMark.value.trim(),
@@ -587,6 +591,7 @@ const populateSiteForm = (site) => {
   elements.siteSocialImage.value = safe.socialImage;
   elements.siteSocialImageAlt.value = safe.socialImageAlt;
   elements.siteCanonicalUrl.value = safe.canonicalUrl;
+  elements.siteIntro.value = safe.intro;
   elements.siteHeaderName.value = safe.header.name;
   elements.siteHeaderMark.value = safe.header.mark;
   elements.siteContactLabel.value = safe.header.contactLabel;

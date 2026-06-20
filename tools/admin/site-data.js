@@ -6,6 +6,7 @@ const SITE_KEYS = new Set([
   "socialImage",
   "socialImageAlt",
   "canonicalUrl",
+  "intro",
   "header",
   "footer"
 ]);
@@ -114,6 +115,7 @@ const validateSite = (site) => {
   const socialImage = trimString(site.socialImage);
   const socialImageAlt = trimString(site.socialImageAlt);
   const canonicalUrl = trimString(site.canonicalUrl);
+  const intro = trimString(site.intro);
   const name = trimString(header.name);
   const mark = trimString(header.mark);
   const contactLabel = trimString(header.contactLabel);
@@ -180,6 +182,7 @@ const validateSite = (site) => {
     socialImage,
     socialImageAlt,
     canonicalUrl,
+    ...(intro ? { intro } : {}),
     header: {
       name,
       mark,
