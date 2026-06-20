@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/jetbrains-mono-latin-400.woff2") format("woff2");
+}
+
 :root {
   color-scheme: dark;
   --background: #0a0a0a;
@@ -8,10 +16,11 @@
   --text: #d7d7d7;
   --muted: #8d8d8d;
   --faint: #7a7a7a;
+  --accent: #86d9a3;
   --max-width: 1080px;
   --shell-text-size: 14px;
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 *,
@@ -170,7 +179,7 @@ ul {
 
 .site-mark {
   justify-self: center;
-  color: var(--muted);
+  color: var(--accent);
 }
 
 .site-contact,
@@ -228,7 +237,9 @@ ul {
 }
 
 .filters button.is-active {
+  color: var(--accent);
   text-decoration: underline;
+  text-decoration-color: var(--accent);
   text-underline-offset: 0.18em;
 }
 
