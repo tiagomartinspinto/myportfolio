@@ -296,6 +296,7 @@ ul {
   background: var(--surface);
   aspect-ratio: 0.96;
   border: 1px solid var(--border);
+  border-radius: 4px;
 }
 
 .project-card__image img {
