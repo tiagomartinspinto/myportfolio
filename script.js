@@ -654,21 +654,35 @@ const trapDialogFocus = (event) => {
   }
 };
 
-const getSlugFromHash = () => {
-  if (!location.hash) {
-    return "";
+// Project deep-linking uses a namespaced fragment, "#project=<slug>", so it
+// never collides with ordinary in-page anchors such as the header's "#top"
+// link. Anything outside this namespace is never read, decoded, rewritten,
+// or removed by this code.
+const PROJECT_HASH_KEY = "project=";
+const PROJECT_HASH_PREFIX = `#${PROJECT_HASH_KEY}`;
+
+// Distinguishes three cases explicitly rather than collapsing them into one
+// empty-string result: a hash outside our namespace ("none"), a hash inside
+// our namespace that decoded to a slug ("valid" — which may or may not match
+// a real project), and a hash inside our namespace that failed to decode
+// ("malformed", e.g. bad percent-encoding like "#project=%E").
+const parseProjectHash = () => {
+  if (!location.hash.startsWith(PROJECT_HASH_PREFIX)) {
+    return { kind: "none" };
   }
+
+  const encoded = location.hash.slice(PROJECT_HASH_PREFIX.length);
   try {
-    return decodeURIComponent(location.hash.slice(1));
+    return { kind: "valid", slug: decodeURIComponent(encoded) };
   } catch {
-    return "";
+    return { kind: "malformed" };
   }
 };
 
 const findProjectBySlug = (slug) =>
   publishedProjects.find((project) => project.slug === slug) || null;
 
-const clearHashSilently = () => {
+const clearProjectHashSilently = () => {
   history.replaceState(null, "", location.pathname + location.search);
 };
 
@@ -687,26 +701,27 @@ const presentProject = (project, trigger) => {
 };
 
 // Path A (explicit user action: close button, Escape, backdrop click) owns
-// history mutation. Path B (URL/history synchronization reconciling the
-// dialog to a hash that no longer represents an open project — Back
-// navigation, invalid-hash normalization) must be able to close the dialog
-// without re-triggering another history entry. `updateHistory` makes that
-// distinction explicit at every call site instead of inferring it from
-// whatever `location.hash` currently happens to be.
+// history mutation. Path B (URL/location synchronization reconciling the
+// dialog to whatever the address bar currently shows — Back/Forward,
+// invalid-hash normalization, or a hash outside our namespace) must be able
+// to close the dialog without ever touching history itself. `updateHistory`
+// makes that distinction explicit at every call site instead of inferring it
+// from whatever the hash currently happens to be.
 const dismissProject = ({ updateHistory }) => {
   closeImageLightbox({ restoreFocus: false });
   if (elements.dialog.open) {
     elements.dialog.close();
   }
-  if (updateHistory && location.hash) {
-    clearHashSilently();
+  if (updateHistory && location.hash.startsWith(PROJECT_HASH_PREFIX)) {
+    clearProjectHashSilently();
   }
 };
 
 const openProject = (project, trigger) => {
   presentProject(project, trigger);
-  if (location.hash !== `#${project.slug}`) {
-    location.hash = project.slug;
+  const targetHash = PROJECT_HASH_KEY + project.slug;
+  if (location.hash !== `#${targetHash}`) {
+    location.hash = targetHash;
   }
 };
 
@@ -714,21 +729,32 @@ const closeProject = () => {
   dismissProject({ updateHistory: true });
 };
 
-const syncDialogWithHash = () => {
-  const slug = getSlugFromHash();
-  const project = slug ? findProjectBySlug(slug) : null;
+// The single reconciliation function driving both hashchange and popstate.
+// It only ever reads the current location and never pushes/replaces history
+// itself, except to clean up our own invalid namespaced hashes (case 2).
+const syncDialogWithLocation = () => {
+  const parsed = parseProjectHash();
 
-  if (!project) {
+  if (parsed.kind === "none") {
+    // Case 3: outside our namespace (e.g. "#top", or no hash at all). Any
+    // open project UI is stale and should close, but the hash itself — and
+    // native browser anchor behavior — must be left completely untouched.
     dismissProject({ updateHistory: false });
-    // Compare the raw hash, not the decoded slug: a malformed fragment
-    // (bad percent-encoding) decodes to "" too, but still needs normalizing.
-    if (location.hash) {
-      clearHashSilently();
-    }
     return;
   }
 
-  if (elements.dialog.open && state.openProjectSlug === slug) {
+  const project = parsed.kind === "valid" ? findProjectBySlug(parsed.slug) : null;
+
+  if (!project) {
+    // Case 2: inside our namespace but invalid — unknown slug, draft slug,
+    // or malformed percent-encoding. This is ours to normalize away.
+    dismissProject({ updateHistory: false });
+    clearProjectHashSilently();
+    return;
+  }
+
+  // Case 1: a valid, published project.
+  if (elements.dialog.open && state.openProjectSlug === parsed.slug) {
     return;
   }
 
@@ -836,8 +862,9 @@ renderFilters();
 resetVisibleCount();
 setFilter("all");
 
-window.addEventListener("hashchange", syncDialogWithHash);
-syncDialogWithHash();
+window.addEventListener("hashchange", syncDialogWithLocation);
+window.addEventListener("popstate", syncDialogWithLocation);
+syncDialogWithLocation();
 
 const markPageReady = () => {
   document.body.classList.remove("is-building");
