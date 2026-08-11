@@ -35,6 +35,7 @@ const shellElements = {
   brand: document.querySelector("#site-brand"),
   mark: document.querySelector("#site-mark"),
   contact: document.querySelector("#site-contact"),
+  intro: document.querySelector("#site-intro"),
   footerSocialLinks: document.querySelector("#footer-social-links"),
   footerAboutTitle: document.querySelector("#footer-about-title"),
   footerAboutText: document.querySelector("#footer-about-text"),
@@ -69,6 +70,9 @@ const matchesFilter = (project, filter) =>
 
 const getVisibleProjects = () =>
   publishedProjects.filter((project) => matchesFilter(project, state.activeFilter));
+
+const countForFilter = (filter) =>
+  publishedProjects.filter((project) => matchesFilter(project, filter)).length;
 
 const getInitialProjectCount = () => (compactGridQuery.matches ? 6 : 8);
 
@@ -136,6 +140,11 @@ const renderSiteShell = () => {
   shellElements.mark.textContent = SITE.header.mark;
   shellElements.contact.textContent = SITE.header.contactLabel;
   shellElements.contact.href = `mailto:${SITE.header.contactEmail}`;
+  if (shellElements.intro) {
+    const intro = (SITE.intro || "").trim();
+    shellElements.intro.textContent = intro;
+    shellElements.intro.hidden = intro === "";
+  }
   shellElements.footerAboutTitle.textContent = SITE.footer.aboutTitle;
   shellElements.footerAboutText.replaceChildren(
     ...SITE.footer.aboutLines.flatMap((line, index) => {
@@ -356,7 +365,16 @@ const createFilterButton = (filter) => {
   button.type = "button";
   button.className = "filter-pill";
   button.dataset.filter = filter;
-  button.textContent = labelForFilter(filter);
+
+  const label = document.createElement("span");
+  label.className = "filter-pill__label";
+  label.textContent = labelForFilter(filter);
+  const count = document.createElement("span");
+  count.className = "filter-pill__count";
+  count.textContent = String(countForFilter(filter));
+  count.setAttribute("aria-hidden", "true");
+  button.append(label, count);
+
   button.setAttribute("aria-pressed", String(filter === state.activeFilter));
 
   button.addEventListener("click", () => {
@@ -367,7 +385,10 @@ const createFilterButton = (filter) => {
 };
 
 const renderFilters = () => {
-  elements.filterBar.replaceChildren(...PROJECT_DISPLAY_FILTERS.map(createFilterButton));
+  const filtersToRender = PROJECT_DISPLAY_FILTERS.filter(
+    (filter) => filter === "all" || countForFilter(filter) > 0
+  );
+  elements.filterBar.replaceChildren(...filtersToRender.map(createFilterButton));
 };
 
 const markImageLoaded = (image) => {
@@ -497,12 +518,18 @@ const renderProjects = () => {
 
     const body = document.createElement("div");
     body.className = "project-card__body";
+    const meta = document.createElement("p");
+    meta.className = "project-card__meta";
+    const primaryCategory = project.categories?.[0];
+    meta.textContent = primaryCategory
+      ? `${project.year} · ${labelForFilter(primaryCategory)}`
+      : project.year;
     const title = document.createElement("h3");
     title.textContent = project.title;
     const line = document.createElement("p");
     line.className = "project-card__line";
     line.textContent = project.shortDescription;
-    body.append(title, line);
+    body.append(meta, title, line);
 
     button.append(imageWrap, body);
     card.append(button);

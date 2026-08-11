@@ -6,6 +6,7 @@ export const SITE = {
   socialImage: "assets/projects/eating-together/eating-together-01.jpeg",
   socialImageAlt: "Eating Together workshop table with participants gathered around collective activity",
   canonicalUrl: "https://www.tiagomartinspinto.com/",
+  intro: "Artist, teacher, researcher, and creative technologist working between art, technology, and education.",
   header: {
     name: "TIAGO MARTINS PINTO",
     mark: ":-]",
