@@ -32,6 +32,9 @@
     <link rel="icon" href="assets/favicon.ico" sizes="any">
     <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css">
+    <noscript>
+      <style>#work { display: none; }</style>
+    </noscript>
     <script type="module" src="background.js"></script>
     <script type="module" src="script.js"></script>
   </head>
@@ -48,6 +51,16 @@
     </header>
 
     <main class="site-main" id="top">
+      <noscript>
+        <div class="section">
+          <p>Artist, teacher, researcher, and creative technologist.</p>
+          <ul class="footer-links" aria-label="Links">
+            <li><a href="https://github.com/tiagomartinspinto">GitHub</a></li>
+            <li><a href="https://drive.proton.me/urls/3MQYZFN0Y8#cqHsgAhAzkhM">CV</a></li>
+            <li><a href="https://orcid.org/0000-0002-0731-8420">ORCID</a></li>
+          </ul>
+        </div>
+      </noscript>
       <p class="site-intro section" id="site-intro" hidden></p>
       <section class="section section--work" id="work">
         <div class="filters" id="project-filters" role="group" aria-label="Project filters"></div>
