@@ -5,7 +5,8 @@ const state = {
   activeFilter: "all",
   lastTrigger: null,
   lightboxTrigger: null,
-  visibleCount: 0
+  visibleCount: 0,
+  openProjectSlug: null
 };
 
 const elements = {
@@ -653,19 +654,85 @@ const trapDialogFocus = (event) => {
   }
 };
 
-const openProject = (project, trigger) => {
-  state.lastTrigger = trigger || document.activeElement;
-  renderProjectDetail(project);
-  elements.dialog.showModal();
-  elements.dialog.scrollTop = 0;
-  elements.dialogClose.focus();
+const getSlugFromHash = () => {
+  if (!location.hash) {
+    return "";
+  }
+  try {
+    return decodeURIComponent(location.hash.slice(1));
+  } catch {
+    return "";
+  }
 };
 
-const closeProject = () => {
+const findProjectBySlug = (slug) =>
+  publishedProjects.find((project) => project.slug === slug) || null;
+
+const clearHashSilently = () => {
+  history.replaceState(null, "", location.pathname + location.search);
+};
+
+const presentProject = (project, trigger) => {
+  const alreadyOpen = elements.dialog.open;
+  if (trigger || !alreadyOpen) {
+    state.lastTrigger = trigger || document.activeElement;
+  }
+  state.openProjectSlug = project.slug;
+  renderProjectDetail(project);
+  if (!alreadyOpen) {
+    elements.dialog.showModal();
+    elements.dialog.scrollTop = 0;
+    elements.dialogClose.focus();
+  }
+};
+
+// Path A (explicit user action: close button, Escape, backdrop click) owns
+// history mutation. Path B (URL/history synchronization reconciling the
+// dialog to a hash that no longer represents an open project — Back
+// navigation, invalid-hash normalization) must be able to close the dialog
+// without re-triggering another history entry. `updateHistory` makes that
+// distinction explicit at every call site instead of inferring it from
+// whatever `location.hash` currently happens to be.
+const dismissProject = ({ updateHistory }) => {
   closeImageLightbox({ restoreFocus: false });
   if (elements.dialog.open) {
     elements.dialog.close();
   }
+  if (updateHistory && location.hash) {
+    clearHashSilently();
+  }
+};
+
+const openProject = (project, trigger) => {
+  presentProject(project, trigger);
+  if (location.hash !== `#${project.slug}`) {
+    location.hash = project.slug;
+  }
+};
+
+const closeProject = () => {
+  dismissProject({ updateHistory: true });
+};
+
+const syncDialogWithHash = () => {
+  const slug = getSlugFromHash();
+  const project = slug ? findProjectBySlug(slug) : null;
+
+  if (!project) {
+    dismissProject({ updateHistory: false });
+    // Compare the raw hash, not the decoded slug: a malformed fragment
+    // (bad percent-encoding) decodes to "" too, but still needs normalizing.
+    if (location.hash) {
+      clearHashSilently();
+    }
+    return;
+  }
+
+  if (elements.dialog.open && state.openProjectSlug === slug) {
+    return;
+  }
+
+  presentProject(project);
 };
 
 const handleDialogKeydown = (event) => {
@@ -726,6 +793,7 @@ elements.dialog.addEventListener("cancel", (event) => {
 });
 
 elements.dialog.addEventListener("close", () => {
+  state.openProjectSlug = null;
   const trigger = state.lastTrigger;
   state.lastTrigger = null;
   if (trigger instanceof HTMLElement) {
@@ -767,6 +835,9 @@ renderSiteShell();
 renderFilters();
 resetVisibleCount();
 setFilter("all");
+
+window.addEventListener("hashchange", syncDialogWithHash);
+syncDialogWithHash();
 
 const markPageReady = () => {
   document.body.classList.remove("is-building");
