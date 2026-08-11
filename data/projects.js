@@ -445,10 +445,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/off-the-lab/off-the-lab-02.jpeg",
         thumbnail: "assets/projects/off-the-lab/off-the-lab-02-thumb.jpg",
-        alt: "Unlearning MJ installation at Off the Lab, EMMA, 2019, with Tiago Martins Pinto visible at right performing with a tuning fork",
+        alt: "Unlearning MJ installation at Off the Lab, EMMA, 2019, with Tiago Martins Pinto performing with a tuning fork",
         width: 960,
         height: 540,
-        caption: "Unlearning MJ with a tuning-fork performance at right."
+        caption: "Unlearning MJ with a tuning-fork performance."
       },
       {
         type: "image",
