@@ -8,46 +8,11 @@ https://www.tiagomartinspinto.com/
 
 The site presents an artistic-research practice across art, technology, education, creative coding, exhibitions, participatory work, and media systems. Project content lives in local data files and project media lives in the repository.
 
-## Quick Start
-
-```bash
-npm run admin
-npm run check
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8787/
-```
-
-Optional preview, in another terminal:
-
-```bash
-npm run preview
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8080/
-```
-
-Recommended workflow:
-
-1. Edit in the local admin
-2. Save + Preview
-3. Run check
-4. Publish
-
-The public `::` footer link cannot start the local server. It only opens `http://127.0.0.1:8787/`. If the server is not running, the browser will show a connection error. This is intentional for security: the public portfolio cannot and should not start local scripts.
-
 ## Stack
 
 - HTML
 - CSS
 - vanilla JavaScript
-- local Node server for the editor
 - no backend
 - no build step
 - no analytics or tracking
@@ -58,15 +23,18 @@ The public `::` footer link cannot start the local server. It only opens `http:/
 index.html
 styles.css
 script.js
+background.js
 data/projects.js
 data/site.js
 assets/favicon.ico
 assets/projects/[project-slug]/
-package.json
 _config.yml
 PROJECT_STATUS.md
-tools/admin/
 ```
+
+## Working On The Site
+
+Edit `data/projects.js` and `data/site.js` directly in a text editor, add any new media under `assets/projects/[slug]/`, then commit and push to `main`. There is no local server or build step required.
 
 ## Project Data
 
@@ -102,7 +70,7 @@ Allowed `categories` values:
 
 ### Mixed Media
 
-The public gallery and local editor support mixed project media:
+The public gallery supports mixed project media:
 
 ```js
 {
@@ -116,7 +84,7 @@ The public gallery and local editor support mixed project media:
 }
 ```
 
-For an image, `thumbnail` is optional and points at a smaller, same-aspect-ratio version used only for the grid and gallery thumbnails. The full `src` is still used in the project modal and the lightbox. `width` and `height` describe the full `src`. The first media item of each project carries a downscaled `*-thumb.jpg` (max 640px on the long edge) so the grid stays light; these were generated with the built-in `sips` tool and add no dependencies.
+For an image, `thumbnail` is optional and points at a smaller, same-aspect-ratio version used only for the grid and gallery thumbnails. The full `src` is still used in the project modal and the lightbox. `width` and `height` describe the full `src`. The first media item of each project carries a downscaled `*-thumb.jpg` (max 640px on the long edge) so the grid stays light; these can be generated with the built-in `sips` tool and add no dependencies.
 
 ```js
 {
@@ -172,9 +140,18 @@ Video and audio thumbnails are never borrowed from another project image or near
 
 Gallery thumbnails may crop for compact browsing. In the project modal, selected image media is shown inside a stable contained frame, and clicking the feature image or its small expand control opens a minimal full-image view. The full view is uncropped and closes with Esc, the close button, or a backdrop click.
 
-Older `images` arrays are still accepted by the local editor as a compatibility fallback, but new project data should use `media`.
+Draft projects can stay in `data/projects.js` with `draft: true`. They remain in the file but the public portfolio hides them and public filters ignore them.
 
-Draft projects can stay in `data/projects.js` with `draft: true`. They remain visible in the local editor, but the public portfolio hides them and public filters ignore them.
+### Thumbnail Crop Metadata
+
+The public project grid reads:
+
+```js
+thumbnailPosition
+thumbnailZoom
+```
+
+on a project's first image media item. These settings control how that image is framed as a square grid thumbnail. They are metadata only; the original image file is untouched.
 
 ## Site Data
 
@@ -185,169 +162,6 @@ data/site.js
 ```
 
 This file stores document metadata, social preview metadata, header text, contact email, footer links, about text, location text, and Aalto role links. Layout structure, CSS, modal behavior, and project-grid behavior remain code-only.
-
-## Local Admin Editor
-
-The local-only editor lives in:
-
-```text
-tools/admin/
-```
-
-Run it with:
-
-```bash
-npm run admin
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8787/
-```
-
-The public footer includes a nearly hidden `::` link at the bottom-right of the footer. It points only to `http://127.0.0.1:8787/`, works only when the local admin server is running, and does not expose a public admin. When clicked, the portfolio shows a small reminder with the manual `npm run admin` and optional `npm run preview` commands.
-
-The editor is organized into tabs:
-
-- Projects
-- Site
-- Content
-- Images
-- Preview
-- Publish / Safety
-
-The sticky action bar keeps Save locally, Save + Preview, Preview site, Publish, Reload, Undo save, and the theme toggle available without showing every tool at once. Save + Preview applies the current form state, saves local data, then opens or refreshes `http://127.0.0.1:8080/`.
-
-The editor can:
-
-- load and edit `data/projects.js`
-- load and edit `data/site.js`
-- create, duplicate, delete, and reorder projects
-- move the selected project up, down, or to the top
-- mark projects as drafts
-- add image, video, and audio media entries
-- reorder media and set a media item first
-- preview mixed media metadata in the editor with small image / YouTube / Vimeo / local video / SoundCloud / audio / URL badges
-- browse local images under `assets/projects/`
-- detect local image dimensions, including SVG viewBox dimensions
-- edit non-destructive thumbnail crop metadata
-- run diagnostics for image paths and metadata
-- run `npm run check` from the Publish / Safety tab without committing or pushing
-- download a generated cropped-thumbnail PNG without saving it into the repo
-- switch between dark and light editor themes
-- save locally and publish through local git
-
-The editor warns before switching projects, reloading, closing the browser tab, or publishing when the current form, project list, or site text has unapplied or unsaved changes.
-
-The Site tab edits only text and links. It does not allow scripts or arbitrary HTML.
-
-The editor theme preference is stored only in `localStorage`. Project data is never stored in `localStorage`.
-
-## Thumbnail Crop Metadata
-
-The public project grid reads:
-
-```js
-thumbnailPosition
-thumbnailZoom
-```
-
-These settings control how the first image media item is framed as a square thumbnail. They are metadata only; the original image file is not overwritten.
-
-The Images tab includes:
-
-- large preview
-- square thumbnail preview
-- pan X / pan Y controls
-- zoom control
-- center, top, bottom, left, right, and subject-center presets
-- canvas export preview
-- Download cropped thumbnail
-
-The download tool is export-only. It creates a new PNG download and does not write into `assets/projects/[slug]/`, overwrite existing files, delete files, upload files, or auto-save generated thumbnails.
-
-## Save, Backup, And Publish
-
-`Save locally` rewrites:
-
-```text
-data/projects.js
-data/site.js
-```
-
-Before writing, it refreshes:
-
-```text
-data/projects.backup.js
-data/site.backup.js
-```
-
-Backup files are ignored by git.
-
-`Undo last save` and `Restore backup` restore available backup files over the live project and site data.
-
-`Publish` runs local git commands:
-
-```bash
-npm run check
-git add data/projects.js data/site.js PROJECT_STATUS.md assets/projects/ README.md tools/admin/README.md
-git commit -m "Update portfolio"
-git push
-```
-
-Before publishing, the editor shows a summary of added, modified, and deleted projects. It runs `npm run check` before staging. If the check fails, nothing is committed or pushed. Empty portfolio saves and publishes require explicit typed confirmations.
-
-Cloning this repo does not give anyone permission to publish. Publish only works on computers where Git is authenticated with write access to this repository.
-
-## Public / Read-Only Hardening
-
-The editor shows a visible local-only banner:
-
-```text
-LOCAL EDITOR ONLY
-Changes require local git access and repository write permissions.
-```
-
-If the editor is opened from a public/static site, it enters public read-only mode:
-
-- in-memory editing is allowed
-- previewing and copying/downloading generated project data is allowed
-- Save locally is blocked
-- Publish is blocked
-- backup restore is blocked
-- image scanning is blocked
-- dimension detection is blocked
-- filesystem access is blocked
-- the UI shows `Publishing disabled on public site`
-
-Write actions are enabled only on localhost, or with explicit developer mode via `?admin-dev=1` for controlled local testing. Publish still requires a compatible local API, git authentication, and repository write access.
-
-## Local Preview
-
-Run:
-
-```bash
-npm run preview
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8080/
-```
-
-The preview server blocks `tools/admin/`, so it stays close to the public GitHub Pages output.
-
-## Validation
-
-Run:
-
-```bash
-npm run check
-```
-
-The check validates project structure, approved filters, draft handling, media paths, local asset existence, link formats, site metadata, social preview image, contact email, and footer links. It exits with code `1` on failure and code `0` on success.
 
 ## GitHub Pages Deployment
 
@@ -365,11 +179,6 @@ https://www.tiagomartinspinto.com/
 
 The default `https://tiagomartinspinto.github.io/myportfolio/` address redirects to the custom domain. No build pipeline is required. Pushing committed static files to `main` is enough.
 
-The local admin editor under `tools/admin/` is excluded from GitHub Pages publishing via `_config.yml`.
-
 ## Status Handoff
 
-- `PROJECT_STATUS.md` = current state and next tests
-- `PROJECT_HISTORY.md` = archived implementation history
-
-Update `PROJECT_STATUS.md` whenever substantial content, design, admin, or deployment work is completed. Move older detailed notes into `PROJECT_HISTORY.md` when the status file starts getting long.
+`PROJECT_STATUS.md` tracks current state and next tests. Update it whenever substantial content, design, or deployment work is completed.
