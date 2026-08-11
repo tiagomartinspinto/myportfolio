@@ -401,6 +401,77 @@ export const PROJECTS = [
     ]
   },
   {
+    slug: "off-the-lab",
+    title: "Off the Lab",
+    year: "2019",
+    projectType: "Collaborative performance and installation",
+    role: "Co-creation, performance, and prop making",
+    categories: [
+      "community",
+      "exhibitions"
+    ],
+    tags: [
+      "performance",
+      "installation",
+      "sound",
+      "collaboration"
+    ],
+    shortDescription: "Collaborative performance and installation at EMMA responding to Michael Jackson: On the Wall.",
+    fullDescription: [
+      "Off the Lab brought together seven artists selected through an open call by G.A.P. and EMMA – Espoo Museum of Modern Art to respond to Michael Jackson: On the Wall. On Espoo Day 2019, the group presented two connected works: the performance In Recognition of Their Desperation and the installation Unlearning MJ.",
+      "I co-created and performed in both works, and made props for the project. One of them was a hand-cranked record player with a Michael Jackson vinyl, used as a noise-making instrument. The performance ended with a procession through the gallery."
+    ],
+    links: [
+      {
+        label: "EMMA project page",
+        url: "https://emmamuseum.fi/en/off-the-lab-brought-together-a-diverse-group-of-artists-the-outcome-is-performed-on-espoo-day/"
+      },
+      {
+        label: "Michael Jackson: On the Wall",
+        url: "https://emmamuseum.fi/en/exhibitions/michael-jackson-on-the-wall/"
+      }
+    ],
+    media: [
+      {
+        type: "image",
+        src: "assets/projects/off-the-lab/off-the-lab-01.jpeg",
+        thumbnail: "assets/projects/off-the-lab/off-the-lab-01-thumb.jpg",
+        alt: "Tiago Martins Pinto performing with the hand-cranked record-player box he built, Off the Lab, EMMA, 2019",
+        width: 1600,
+        height: 1200,
+        caption: "Performing with the hand-cranked record-player box I built."
+      },
+      {
+        type: "image",
+        src: "assets/projects/off-the-lab/off-the-lab-02.jpeg",
+        thumbnail: "assets/projects/off-the-lab/off-the-lab-02-thumb.jpg",
+        alt: "Unlearning MJ installation at Off the Lab, EMMA, 2019, with Tiago Martins Pinto visible at right performing with a tuning fork",
+        width: 960,
+        height: 540,
+        caption: "Unlearning MJ with a tuning-fork performance at right."
+      },
+      {
+        type: "image",
+        src: "assets/projects/off-the-lab/off-the-lab-03.jpeg",
+        thumbnail: "assets/projects/off-the-lab/off-the-lab-03-thumb.jpg",
+        alt: "One of the white wheeled figures Tiago Martins Pinto made as props for Off the Lab, EMMA, 2019",
+        width: 760,
+        height: 1024,
+        caption: "One of the wheeled figures I made for the performance."
+      },
+      {
+        type: "image",
+        src: "assets/projects/off-the-lab/off-the-lab-04.jpeg",
+        thumbnail: "assets/projects/off-the-lab/off-the-lab-04-thumb.jpg",
+        alt: "The performance group processing past a Michael Jackson portrait during Off the Lab, EMMA, 2019",
+        width: 1024,
+        height: 768,
+        caption: "Procession through the gallery during Off the Lab."
+      }
+    ],
+    thumbnailPosition: "80% 60%"
+  },
+  {
     slug: "eating-together",
     title: "Eating Together",
     year: "2019",
