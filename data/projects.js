@@ -56,6 +56,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/programming-for-visual-artists/course-materials-2025-2026.png",
+        thumbnail: "assets/projects/programming-for-visual-artists/course-materials-2025-2026-thumb.jpg",
         alt: "Programming for Visual Artists 2025-2026 course materials page",
         width: 1200,
         height: 630,
@@ -64,6 +65,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/programming-for-visual-artists/particles-follow-sketch.png",
+        thumbnail: "assets/projects/programming-for-visual-artists/particles-follow-sketch-thumb.jpg",
         alt: "Programming for Visual Artists particles follow sketch page",
         width: 1200,
         height: 630,
@@ -150,6 +152,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-02.png",
+        thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-02-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition wall with material samples and labels",
         width: 1600,
         height: 1068
@@ -157,6 +160,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-03.png",
+        thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-03-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition interior with visitors and displays",
         width: 1600,
         height: 1067
@@ -164,6 +168,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-04.png",
+        thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-04-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition poster layout in portrait format",
         width: 1126,
         height: 1432
@@ -210,6 +215,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sattuma-com/sattuma-02.png",
+        thumbnail: "assets/projects/sattuma-com/sattuma-02-thumb.jpg",
         alt: "Sattuma interface showing illustrated cards and game layout",
         width: 809,
         height: 707
@@ -217,6 +223,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sattuma-com/sattuma-03.png",
+        thumbnail: "assets/projects/sattuma-com/sattuma-03-thumb.jpg",
         alt: "Sattuma browser experience with interface panels and card content",
         width: 1500,
         height: 974
@@ -224,6 +231,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sattuma-com/sattuma-04.png",
+        thumbnail: "assets/projects/sattuma-com/sattuma-04-thumb.jpg",
         alt: "Sattuma vertical screen showing card detail and interface controls",
         width: 750,
         height: 1107
@@ -269,6 +277,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01.png",
+        thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01-thumb.jpg",
         alt: "Carried by Invisible Bodies title image with pale typography on white field",
         width: 1053,
         height: 705
@@ -276,6 +285,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-03.png",
+        thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-03-thumb.jpg",
         alt: "Carried by Invisible Bodies detail still from performance documentation",
         width: 1538,
         height: 921
@@ -283,6 +293,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-04.png",
+        thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-04-thumb.jpg",
         alt: "Carried by Invisible Bodies performance teaser frame",
         width: 1538,
         height: 921
@@ -366,6 +377,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-02.png",
+        thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-02-thumb.jpg",
         alt: "From the Dead Air Orgy stage frame with performers and projection",
         width: 1538,
         height: 1052
@@ -373,6 +385,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-03.png",
+        thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-03-thumb.jpg",
         alt: "From the Dead Air Orgy remote performance feed still",
         width: 1052,
         height: 554
@@ -380,6 +393,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-04.png",
+        thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-04-thumb.jpg",
         alt: "From the Dead Air Orgy documentation image from live broadcast production",
         width: 1538,
         height: 1052
@@ -535,6 +549,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-02.jpg",
+        thumbnail: "assets/projects/sagrada-familia/sagrada-familia-02-thumb.jpg",
         alt: "Sagrada Família documentary photograph of a family in their home",
         width: 750,
         height: 536
@@ -542,6 +557,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-03.jpg",
+        thumbnail: "assets/projects/sagrada-familia/sagrada-familia-03-thumb.jpg",
         alt: "Sagrada Família portrait photograph from the home-based series",
         width: 750,
         height: 536
@@ -549,6 +565,7 @@ export const PROJECTS = [
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-04.jpg",
+        thumbnail: "assets/projects/sagrada-familia/sagrada-familia-04-thumb.jpg",
         alt: "Sagrada Família interior portrait scene",
         width: 750,
         height: 536
