@@ -48,7 +48,7 @@ export const SITE = {
         url: "https://research.aalto.fi/en/persons/tiago-martins-pinto"
       },
       {
-        label: "Lecturer @ AALTO",
+        label: "Course Instructor @ AALTO",
         url: "https://tiagomartinspinto.github.io/aalto-programming-visual-artists/"
       },
       {

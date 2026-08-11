@@ -118,7 +118,7 @@ export const PROJECTS = [
     title: "Cooler Planet 2024",
     year: "2024",
     projectType: "Exhibition installation",
-    role: "Exhibition design, project coordination, and visual communication",
+    role: "Exhibition and spatial design, prop design and fabrication, project coordination, and visual communication",
     categories: [
       "exhibitions",
       "research"
@@ -131,8 +131,8 @@ export const PROJECTS = [
     ],
     shortDescription: "Exhibition design translating bio-based materials research into public space.",
     fullDescription: [
-      "Aalto University and VTT presented Bioeconomy 2.0 during Helsinki Design Week 2024 as part of the Makers of the Impossible exhibitions at Designs for a Cooler Planet.",
-      "The work moved between spatial coordination, exhibition design, and visual communication, translating research on bio-based materials into an installation that could be encountered by a wider public."
+      "Aalto University and VTT presented Bioeconomy 2.0 during Helsinki Design Week 2024 as part of Designs for a Cooler Planet.",
+      "I designed the FinnCERES exhibition area, including the wall, spatial layout, props, and display elements, and fabricated part of the installation. The design translated FinnCERES and VTT research on bio-based materials into a physical exhibition environment."
     ],
     links: [
       {
