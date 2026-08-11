@@ -25,7 +25,7 @@ export const SITE = {
       },
       {
         label: "CV",
-        url: "https://drive.proton.me/urls/ATSGMYVFFW#g2r7VYHQwF9b"
+        url: "https://drive.proton.me/urls/3MQYZFN0Y8#cqHsgAhAzkhM"
       },
       {
         label: "ORCID",

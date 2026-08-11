@@ -292,7 +292,7 @@ export const PROJECTS = [
   },
   {
     slug: "tyohuoneella-swap",
-    title: "Työhuonella / SWAP",
+    title: "Työhuoneella / SWAP",
     year: "2022",
     projectType: "Exhibition documentation",
     role: "Video production, editing, and visual documentation",
@@ -308,7 +308,7 @@ export const PROJECTS = [
     ],
     shortDescription: "Video documentation across exhibition, studio, and shared process.",
     fullDescription: [
-      "Produced and edited a video for the Työhuonella exhibition at Seinäjoen Taidehalli, documenting four artists working across performance, poetry, costume, and visual art.",
+      "Produced and edited a video for the Työhuoneella exhibition at Seinäjoen Taidehalli, documenting four artists working across performance, poetry, costume, and visual art.",
       "The project also connected with documentation from the SWAP exhibition at Gallery Oksasenkatu 11 in Helsinki, making process and exhibition space visible as part of the same conversation."
     ],
     links: [
@@ -322,7 +322,7 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01.jpg",
         thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01-thumb.jpg",
-        alt: "Työhuonella / SWAP documentation still with visitors in a gallery space",
+        alt: "Työhuoneella / SWAP documentation still with visitors in a gallery space",
         width: 1600,
         height: 1067
       }

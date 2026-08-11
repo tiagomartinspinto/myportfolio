@@ -10,6 +10,7 @@ const state = {
 
 const elements = {
   filterBar: document.querySelector("#project-filters"),
+  projectStatus: document.querySelector("#project-status"),
   loading: document.querySelector("#project-loading"),
   projectGrid: document.querySelector("#project-grid"),
   loadMoreButton: document.querySelector("#load-more-projects"),
@@ -66,9 +67,6 @@ const matchesFilter = (project, filter) =>
 
 const getVisibleProjects = () =>
   publishedProjects.filter((project) => matchesFilter(project, state.activeFilter));
-
-const countForFilter = (filter) =>
-  publishedProjects.filter((project) => matchesFilter(project, filter)).length;
 
 const getInitialProjectCount = () => (compactGridQuery.matches ? 6 : 8);
 
@@ -346,16 +344,7 @@ const createFilterButton = (filter) => {
   button.type = "button";
   button.className = "filter-pill";
   button.dataset.filter = filter;
-
-  const label = document.createElement("span");
-  label.className = "filter-pill__label";
-  label.textContent = labelForFilter(filter);
-  const count = document.createElement("span");
-  count.className = "filter-pill__count";
-  count.textContent = String(countForFilter(filter));
-  count.setAttribute("aria-hidden", "true");
-  button.append(label, count);
-
+  button.textContent = labelForFilter(filter);
   button.setAttribute("aria-pressed", String(filter === state.activeFilter));
 
   button.addEventListener("click", () => {
@@ -366,10 +355,7 @@ const createFilterButton = (filter) => {
 };
 
 const renderFilters = () => {
-  const filtersToRender = PROJECT_DISPLAY_FILTERS.filter(
-    (filter) => filter === "all" || countForFilter(filter) > 0
-  );
-  elements.filterBar.replaceChildren(...filtersToRender.map(createFilterButton));
+  elements.filterBar.replaceChildren(...PROJECT_DISPLAY_FILTERS.map(createFilterButton));
 };
 
 const markImageLoaded = (image) => {
@@ -396,6 +382,14 @@ const updateLoadMoreButton = (totalProjects) => {
   elements.loadMoreButton.textContent = expanded ? "−" : "+";
   elements.loadMoreButton.setAttribute("aria-label", expanded ? "Show fewer projects" : "Load more projects");
   elements.loadMoreButton.title = expanded ? "Show fewer projects" : "Load more projects";
+};
+
+const announceProjectCount = (shown, total) => {
+  const scope = state.activeFilter === "all" ? "" : ` in ${labelForFilter(state.activeFilter)}`;
+  const noun = total === 1 ? "project" : "projects";
+
+  elements.projectStatus.textContent =
+    shown < total ? `Showing ${shown} of ${total} ${noun}${scope}.` : `${total} ${noun}${scope}.`;
 };
 
 const closeImageLightbox = ({ restoreFocus = true } = {}) => {
@@ -499,18 +493,12 @@ const renderProjects = () => {
 
     const body = document.createElement("div");
     body.className = "project-card__body";
-    const meta = document.createElement("p");
-    meta.className = "project-card__meta";
-    const primaryCategory = project.categories?.[0];
-    meta.textContent = primaryCategory
-      ? `${project.year} · ${labelForFilter(primaryCategory)}`
-      : project.year;
     const title = document.createElement("h3");
     title.textContent = project.title;
     const line = document.createElement("p");
     line.className = "project-card__line";
     line.textContent = project.shortDescription;
-    body.append(meta, title, line);
+    body.append(title, line);
 
     button.append(imageWrap, body);
     card.append(button);
@@ -520,6 +508,7 @@ const renderProjects = () => {
   elements.projectGrid.replaceChildren(fragment);
   elements.loading.hidden = true;
   updateLoadMoreButton(visibleProjects.length);
+  announceProjectCount(projectsToRender.length, visibleProjects.length);
 };
 
 const updateFeatureMedia = (item, projectTitle) => {
