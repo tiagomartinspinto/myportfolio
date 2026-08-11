@@ -93,7 +93,7 @@ export const PROJECTS = [
     shortDescription: "Podcast with immigrant-background teenagers on school, belonging, and being heard.",
     fullDescription: [
       "Kuperkeikka is a podcast series made with immigrant and immigrant-background teenagers, asking how schools and communities can listen and respond with more care.",
-      "The project brings together public pedagogy, youth work, and participatory media. Conversation becomes a place where lived experience can meet the systems that shape education."
+      "The project brings together public pedagogy, youth work, and participatory media. The podcast is built around the teenagers' own perspectives on school and belonging."
     ],
     links: [
       {
