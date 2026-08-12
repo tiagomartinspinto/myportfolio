@@ -303,8 +303,8 @@ export const PROJECTS = [
   },
   {
     slug: "tyohuoneella-swap",
-    title: "Työhuoneella / SWAP",
-    year: "2022",
+    title: "SWAP / Työhuoneella",
+    year: "2020–2022",
     projectType: "Exhibition documentation",
     role: "Video production, editing, and visual documentation",
     categories: [
@@ -319,13 +319,17 @@ export const PROJECTS = [
     ],
     shortDescription: "Video documentation across exhibition, studio, and shared process.",
     fullDescription: [
-      "Produced and edited a video for the Työhuoneella exhibition at Seinäjoen Taidehalli, documenting four artists working across performance, poetry, costume, and visual art.",
-      "The project also connected with documentation from the SWAP exhibition at Gallery Oksasenkatu 11 in Helsinki, making process and exhibition space visible as part of the same conversation."
+      "SWAP at Gallery Oksasenkatu 11 in Helsinki in 2020 brought together four artists working across performance, poetry, costume, and visual art.",
+      "That process continued into Työhuoneella at Seinäjoen Taidehalli, where I produced and edited a video that was screened in 2022. The documentation follows the work across exhibition, performance, and shared process."
     ],
     links: [
       {
         label: "Research portal",
         url: "https://research.aalto.fi/en/publications/ty%C3%B6huoneella-videon%C3%A4yt%C3%B6s/"
+      },
+      {
+        label: "SWAP exhibition",
+        url: "https://oksasenkatu11.fi/rea-liina-brunou-pauliina-haasjoki-anne-naukkarinen-piia-rinne-swap-eng"
       }
     ],
     media: [
@@ -336,6 +340,51 @@ export const PROJECTS = [
         alt: "Työhuoneella / SWAP documentation still with visitors in a gallery space",
         width: 1600,
         height: 1067
+      },
+      {
+        type: "image",
+        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-02.jpg",
+        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-02-thumb.jpg",
+        alt: "Exterior signage for the SWAP exhibition at Galleria Oksasenkatu 11, Helsinki",
+        width: 1600,
+        height: 1068,
+        caption: "The SWAP exhibition space in Helsinki, 2020."
+      },
+      {
+        type: "image",
+        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-03.jpg",
+        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-03-thumb.jpg",
+        alt: "An artist installing small sculptural works during the SWAP exhibition",
+        width: 1600,
+        height: 1068,
+        caption: "Installing work ahead of the opening."
+      },
+      {
+        type: "image",
+        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-04.jpg",
+        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-04-thumb.jpg",
+        alt: "Performers during a participatory action at the SWAP exhibition",
+        width: 1600,
+        height: 1068,
+        caption: "A performance moment during SWAP."
+      },
+      {
+        type: "image",
+        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-05.jpg",
+        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-05-thumb.jpg",
+        alt: "A video installation in a second exhibition space during SWAP",
+        width: 1600,
+        height: 1068,
+        caption: "Another part of the exhibition space."
+      },
+      {
+        type: "video",
+        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-06.mp4",
+        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-06-poster.jpg",
+        alt: "Video documentation of the SWAP exhibition, Helsinki, 2020",
+        width: 1920,
+        height: 1080,
+        caption: "Video documentation of the SWAP exhibition, Helsinki, 2020."
       }
     ]
   },
