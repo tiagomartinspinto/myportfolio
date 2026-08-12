@@ -443,6 +443,15 @@ export const PROJECTS = [
       },
       {
         type: "image",
+        src: "assets/projects/off-the-lab/off-the-lab-05.jpeg",
+        thumbnail: "assets/projects/off-the-lab/off-the-lab-05-thumb.jpg",
+        alt: "The hand-cranked record-player box Tiago Martins Pinto built for Off the Lab, EMMA, 2019, shown with its crank mechanism",
+        width: 901,
+        height: 1600,
+        caption: "The record-player box I built, showing the crank mechanism."
+      },
+      {
+        type: "image",
         src: "assets/projects/off-the-lab/off-the-lab-02.jpeg",
         thumbnail: "assets/projects/off-the-lab/off-the-lab-02-thumb.jpg",
         alt: "Unlearning MJ installation at Off the Lab, EMMA, 2019, with Tiago Martins Pinto performing with a tuning fork",
