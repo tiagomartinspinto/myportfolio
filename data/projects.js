@@ -676,9 +676,9 @@ export const PROJECTS = [
   {
     slug: "bqg",
     title: "BQG",
-    year: "2015",
+    year: "2014–2015",
     projectType: "Participatory photography project",
-    role: "Photography facilitation, community collaboration, and exhibition development",
+    role: "Art mediation, photography facilitation, and project coordination",
     categories: [
       "learning",
       "community"
@@ -691,26 +691,64 @@ export const PROJECTS = [
     ],
     shortDescription: "Participatory photography with young people in Lisbon.",
     fullDescription: [
-      "BQG a Preto e Branco brought together four months of photography sessions with young people from Bairro Quinta Grande in Lisbon.",
-      "Participants observed their neighborhood, tested its boundaries, and photographed places that mattered to them. The resulting work was later shown at Casa dos Mundos."
+      "BQG was a participatory photography project with young people from Bairro Quinta Grande in Lisbon, developed within Projeto Claquete E5G as part of Programa Escolhas. I worked as a mediator, facilitating the photography process while the participants photographed their own neighbourhood.",
+      "The young people selected and curated their photographs for the exhibition Quinta Grande a Preto e Branco, presented at Casa dos Mundos in Lisbon in November 2015."
     ],
     links: [],
     media: [
       {
         type: "image",
-        src: "assets/projects/bqg/bqg-01.jpeg",
+        src: "assets/projects/bqg/bqg-01.jpg",
         thumbnail: "assets/projects/bqg/bqg-01-thumb.jpg",
-        alt: "BQG portrait photograph from the youth photography project",
+        alt: "Black-and-white photograph by a BQG participant showing a boy on a low wall in Bairro Quinta Grande",
         width: 1600,
-        height: 1142
+        height: 1142,
+        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
       },
       {
         type: "image",
-        src: "assets/projects/bqg/video-placeholder.svg",
-        alt: "Placeholder for forthcoming BQG video documentation",
+        src: "assets/projects/bqg/bqg-02.jpg",
+        thumbnail: "assets/projects/bqg/bqg-02-thumb.jpg",
+        alt: "Black-and-white photograph by a BQG participant showing a person seated beside a graffitied wall in Bairro Quinta Grande",
         width: 1600,
-        height: 1000,
-        caption: "Video documentation coming soon."
+        height: 1142,
+        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+      },
+      {
+        type: "image",
+        src: "assets/projects/bqg/bqg-03.jpg",
+        thumbnail: "assets/projects/bqg/bqg-03-thumb.jpg",
+        alt: "Black-and-white photograph by a BQG participant showing a mother holding a child in front of an apartment block",
+        width: 1600,
+        height: 1143,
+        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+      },
+      {
+        type: "image",
+        src: "assets/projects/bqg/bqg-04.jpg",
+        thumbnail: "assets/projects/bqg/bqg-04-thumb.jpg",
+        alt: "Black-and-white photograph by a BQG participant showing two boys playing marbles on the ground",
+        width: 1600,
+        height: 1142,
+        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+      },
+      {
+        type: "image",
+        src: "assets/projects/bqg/bqg-05.jpg",
+        thumbnail: "assets/projects/bqg/bqg-05-thumb.jpg",
+        alt: "Documentation of a group gathering around a shared meal in Bairro Quinta Grande",
+        width: 960,
+        height: 640,
+        caption: "Project documentation from Bairro Quinta Grande."
+      },
+      {
+        type: "image",
+        src: "assets/projects/bqg/bqg-06.jpg",
+        thumbnail: "assets/projects/bqg/bqg-06-thumb.jpg",
+        alt: "Documentation of young people arriving at the Quinta Grande a Preto e Branco exhibition at Casa dos Mundos",
+        width: 960,
+        height: 640,
+        caption: "Quinta Grande a Preto e Branco at Casa dos Mundos, Lisbon, November 2015."
       }
     ]
   },
