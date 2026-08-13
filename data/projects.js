@@ -450,6 +450,76 @@ export const PROJECTS = [
     ]
   },
   {
+    slug: "chladni-plate-assembly",
+    title: "Particle Assembly on a Chladni Plate",
+    year: "2020–2021",
+    projectType: "Scientific illustration and video editing",
+    role: "3D scientific illustration, figure preparation, and video editing",
+    categories: [
+      "research",
+      "moving image"
+    ],
+    tags: [
+      "scientific illustration",
+      "3D rendering",
+      "video editing",
+      "Aalto"
+    ],
+    shortDescription: "Scientific illustration and video editing for a Science Advances paper on programmable particle assembly.",
+    fullDescription: [
+      "Programmable Assembly of Particles on a Chladni Plate is research by Artur Kopitca, Kourosh Latifi, and Quan Zhou at Aalto University, published in Science Advances in 2021. The system uses controlled vibrations to move small particles across a plate and assemble them into predetermined shapes.",
+      "I created the 3D schematic illustration and prepared figures for the publication, and edited experimental footage into videos showing the particle-assembly procedure, including particles forming different shapes and spelling \"AALTO.\" My contribution was the visual communication and video editing, not the scientific research itself."
+    ],
+    links: [
+      {
+        label: "Science Advances paper",
+        url: "https://www.science.org/doi/10.1126/sciadv.abi7716"
+      },
+      {
+        label: "Aalto research page",
+        url: "https://research.aalto.fi/en/publications/programmable-assembly-of-particles-on-a-chladni-plate/"
+      }
+    ],
+    media: [
+      {
+        type: "image",
+        src: "assets/projects/chladni-plate-assembly/chladni-01.jpg",
+        thumbnail: "assets/projects/chladni-plate-assembly/chladni-01-thumb.jpg",
+        alt: "3D scientific illustration of a Chladni plate with particles, motion paths, and an overhead camera",
+        width: 1599,
+        height: 1600,
+        caption: "3D illustration explaining the particle-assembly system."
+      },
+      {
+        type: "video",
+        src: "assets/projects/chladni-plate-assembly/chladni-02.mp4",
+        thumbnail: "assets/projects/chladni-plate-assembly/chladni-02-poster.jpg",
+        alt: "Experimental footage of particles reorganising into a triangle on a vibrating plate",
+        width: 1280,
+        height: 720,
+        caption: "Edited experimental footage showing particles forming a new configuration."
+      },
+      {
+        type: "video",
+        src: "assets/projects/chladni-plate-assembly/chladni-03.mp4",
+        thumbnail: "assets/projects/chladni-plate-assembly/chladni-03-poster.jpg",
+        alt: "Experimental footage of particles forming the letters AALTO on a vibrating plate",
+        width: 1280,
+        height: 720,
+        caption: "Edited experimental footage showing particles forming the letters AALTO."
+      },
+      {
+        type: "image",
+        src: "assets/projects/chladni-plate-assembly/chladni-04.jpg",
+        thumbnail: "assets/projects/chladni-plate-assembly/chladni-04-thumb.jpg",
+        alt: "Final particle arrangement forming a shape after controlled vibration on the plate",
+        width: 1600,
+        height: 900,
+        caption: "Final particle arrangement after controlled vibration."
+      }
+    ]
+  },
+  {
     slug: "off-the-lab",
     title: "Off the Lab",
     year: "2019",
