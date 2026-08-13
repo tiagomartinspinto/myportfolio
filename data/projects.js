@@ -749,7 +749,7 @@ export const PROJECTS = [
     title: "Sagrada Família",
     year: "2015",
     projectType: "Community portrait project",
-    role: "Community-based art research, portrait photography, and exhibition development",
+    role: "Concept and portrait photography",
     categories: [
       "community",
       "research"
@@ -762,8 +762,8 @@ export const PROJECTS = [
     ],
     shortDescription: "Portrait project about home, trust, and invitation.",
     fullDescription: [
-      "Sagrada Família is rooted in the idea of home: what it means to feel at home, and who gets invited into personal space.",
-      "The project began from distance and suspicion, then slowly moved toward trust. Over time, residents invited the artist into their homes for family portraits, which were framed and returned to the families."
+      "Sagrada Família grew from questions of home, privacy, and who gets invited across the threshold into family space. Developed in Bairro da Quinta Grande, Lisbon, the project involved portraits made inside residents' homes.",
+      "Diogo P. and Filipa F. helped me build the trust that made these visits possible. The portraits were returned to the families afterward, and the visits were audio-recorded as part of the process."
     ],
     links: [],
     media: [
@@ -771,37 +771,37 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-01.jpeg",
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-01-thumb.jpg",
-        alt: "Sagrada Família family portrait photograph in an interior",
+        alt: "Eight family members sitting together in their home in Bairro da Quinta Grande, with a vivid pink wall and pale neutral interior",
         width: 1600,
         height: 1143,
-        caption: "A family portrait in a Sagrada Família home, eight family members together."
+        caption: "Eight family members together in their home in Bairro da Quinta Grande, Lisbon."
       },
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-02.jpg",
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-02-thumb.jpg",
-        alt: "Sagrada Família documentary photograph of a family in their home",
+        alt: "Three family members sitting together with the television on, in their home in Bairro da Quinta Grande",
         width: 750,
         height: 536,
-        caption: "A family portrait in a Sagrada Família home, seated in front of the television."
+        caption: "Three family members seated together with the television on in their home in Bairro da Quinta Grande."
       },
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-03.jpg",
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-03-thumb.jpg",
-        alt: "Sagrada Família portrait photograph from the home-based series",
+        alt: "Four family members and their cat sitting together at home in Bairro da Quinta Grande, with a green wall behind them",
         width: 750,
         height: 536,
-        caption: "A family portrait in a Sagrada Família home, with two boys and a family cat."
+        caption: "A family of four with their cat at home in Bairro da Quinta Grande."
       },
       {
         type: "image",
         src: "assets/projects/sagrada-familia/sagrada-familia-04.jpg",
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-04-thumb.jpg",
-        alt: "Sagrada Família interior portrait scene",
+        alt: "Three family members sitting together in their living room in Bairro da Quinta Grande",
         width: 750,
         height: 536,
-        caption: "A family portrait in a Sagrada Família home, in the family's living room."
+        caption: "Three family members together in their living room in Bairro da Quinta Grande."
       }
     ]
   }
