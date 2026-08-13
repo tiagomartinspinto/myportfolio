@@ -157,25 +157,25 @@ export const PROJECTS = [
         alt: "Cooler Planet 2024 exhibition wall with material samples and labels",
         width: 1600,
         height: 1068,
-        caption: "Material samples on the exhibition wall."
+        caption: "View of the FinnCERES wall within the Bioeconomy 2.0 exhibition."
       },
       {
         type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-03.png",
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-03-thumb.jpg",
-        alt: "Cooler Planet 2024 exhibition interior with visitors and displays",
+        alt: "The Shimmering Wood dress on display at Cooler Planet 2024, dark textured fabric with reflective panels",
         width: 1600,
         height: 1067,
-        caption: "Visitors in the exhibition space."
+        caption: "The Shimmering Wood dress, featuring wood-based structural colour made from nanocellulose."
       },
       {
         type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-04.png",
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-04-thumb.jpg",
-        alt: "Cooler Planet 2024 exhibition poster layout in portrait format",
+        alt: "The SolarSafe display at Cooler Planet 2024, with sculptural virus-like props and a masked mannequin head",
         width: 1126,
         height: 1432,
-        caption: "Poster layout for the Bioeconomy 2.0 exhibition."
+        caption: "The SolarSafe project display, with props illustrating light-activated, self-sterilizing cellulosic materials."
       }
     ],
     thumbnailPosition: "58% center"
@@ -214,7 +214,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/sattuma-com/sattuma-01-thumb.jpg",
         alt: "Sattuma project cover with handwritten yellow logo on dark background",
         width: 675,
-        height: 452
+        height: 452,
+        caption: "Sattuma project cover artwork."
       },
       {
         type: "image",
@@ -222,23 +223,26 @@ export const PROJECTS = [
         thumbnail: "assets/projects/sattuma-com/sattuma-02-thumb.jpg",
         alt: "Sattuma interface showing illustrated cards and game layout",
         width: 809,
-        height: 707
+        height: 707,
+        caption: "Sattuma web interface mid-session, with two cards revealed."
       },
       {
         type: "image",
         src: "assets/projects/sattuma-com/sattuma-03.png",
         thumbnail: "assets/projects/sattuma-com/sattuma-03-thumb.jpg",
-        alt: "Sattuma browser experience with interface panels and card content",
+        alt: "The printed Sattuma card deck fanned out beside its box",
         width: 1500,
-        height: 974
+        height: 974,
+        caption: "The printed Sattuma card deck beside its box."
       },
       {
         type: "image",
         src: "assets/projects/sattuma-com/sattuma-04.png",
         thumbnail: "assets/projects/sattuma-com/sattuma-04-thumb.jpg",
-        alt: "Sattuma vertical screen showing card detail and interface controls",
+        alt: "The illustrated card-back design for the printed Sattuma deck",
         width: 750,
-        height: 1107
+        height: 1107,
+        caption: "The card-back design for the printed Sattuma deck."
       }
     ]
   },
@@ -274,10 +278,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02.png",
         thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02-thumb.jpg",
-        alt: "Carried by Invisible Bodies documentation still with performers and sculptural materials",
+        alt: "Detail from the Carried by Invisible Bodies teaser video, showing a performer's hands in motion",
         width: 1538,
         height: 921,
-        caption: "A performer's hands during the piece."
+        caption: "Detail from the Carried by Invisible Bodies teaser video, showing hands in motion."
       },
       {
         type: "video",
@@ -345,10 +349,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01.jpg",
         thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01-thumb.jpg",
-        alt: "Työhuoneella / SWAP documentation still with visitors in a gallery space",
+        alt: "Performers writing and painting text on the walls during SWAP at Gallery Oksasenkatu 11",
         width: 1600,
         height: 1067,
-        caption: "Visitors in the exhibition space."
+        caption: "Performers during SWAP at Gallery Oksasenkatu 11."
       },
       {
         type: "image",
@@ -358,24 +362,6 @@ export const PROJECTS = [
         width: 1600,
         height: 1068,
         caption: "The SWAP exhibition space in Helsinki, 2020."
-      },
-      {
-        type: "image",
-        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-03.jpg",
-        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-03-thumb.jpg",
-        alt: "An artist installing small sculptural works during the SWAP exhibition",
-        width: 1600,
-        height: 1068,
-        caption: "Installing work ahead of the opening."
-      },
-      {
-        type: "image",
-        src: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-04.jpg",
-        thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-04-thumb.jpg",
-        alt: "Performers during a participatory action at the SWAP exhibition",
-        width: 1600,
-        height: 1068,
-        caption: "A performance moment during SWAP."
       },
       {
         type: "image",
@@ -428,33 +414,37 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-01.png",
         thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-01-thumb.jpg",
-        alt: "From the Dead Air Orgy visual still from live-streamed performance",
+        alt: "Overhead view of The Lost Survivalist asleep in the reception, surrounded by the broadcast's circle of chairs",
         width: 1441,
-        height: 1012
+        height: 1012,
+        caption: "The Lost Survivalist asleep in the reception, surrounded by the broadcast's circle of chairs."
       },
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-02.png",
         thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-02-thumb.jpg",
-        alt: "From the Dead Air Orgy stage frame with performers and projection",
+        alt: "Sybil in the Sauna reciting into a microphone before an orange slash curtain",
         width: 1538,
-        height: 1052
+        height: 1052,
+        caption: "Sybil in the Sauna, reciting into a microphone before the orange slash curtain."
       },
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-03.png",
         thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-03-thumb.jpg",
-        alt: "From the Dead Air Orgy remote performance feed still",
+        alt: "Overhead view of The Pole Dancer/The Core performing beneath the fixed camera",
         width: 1052,
-        height: 554
+        height: 554,
+        caption: "The Pole Dancer/The Core performing beneath the fixed overhead camera."
       },
       {
         type: "image",
         src: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-04.png",
         thumbnail: "assets/projects/from-the-dead-air-orgy/from-the-dead-air-orgy-04-thumb.jpg",
-        alt: "From the Dead Air Orgy documentation image from live broadcast production",
+        alt: "A night-time aerial drone shot of the broadcast venue's exterior",
         width: 1538,
-        height: 1052
+        height: 1052,
+        caption: "A night-time drone shot used between sections of the live broadcast."
       }
     ]
   },
@@ -595,15 +585,6 @@ export const PROJECTS = [
         width: 760,
         height: 1024,
         caption: "One of the wheeled figures I made for the performance."
-      },
-      {
-        type: "image",
-        src: "assets/projects/off-the-lab/off-the-lab-04.jpeg",
-        thumbnail: "assets/projects/off-the-lab/off-the-lab-04-thumb.jpg",
-        alt: "The performance group processing past a Michael Jackson portrait during Off the Lab, EMMA, 2019",
-        width: 1024,
-        height: 768,
-        caption: "Procession through the gallery during Off the Lab."
       }
     ],
     thumbnailPosition: "80% 60%"
@@ -636,9 +617,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/eating-together/eating-together-01.jpeg",
         thumbnail: "assets/projects/eating-together/eating-together-01-thumb.jpg",
-        alt: "Eating Together workshop table with participants gathered around collective activity",
+        alt: "Participants linked by red string around the table during Eating Together at MAKING | INSEA 2019",
         width: 1532,
-        height: 1147
+        height: 1147,
+        caption: "Participants linked by red string around the table during Eating Together at MAKING | INSEA 2019."
       }
     ]
   },
@@ -675,9 +657,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/flying-duets/flying-duets-01.jpeg",
         thumbnail: "assets/projects/flying-duets/flying-duets-01-thumb.jpg",
-        alt: "Flying Duets outdoor structure in a wooded landscape",
+        alt: "Two people on a large wooden A-frame structure at Schloss Brollin, Germany",
         width: 789,
-        height: 368
+        height: 368,
+        caption: "Flying Duets on the wooden A-frame at Schloss Brollin, Germany."
       }
     ],
     thumbnailPosition: "56% center"
@@ -713,24 +696,6 @@ export const PROJECTS = [
         width: 1600,
         height: 1142,
         caption: "A participant's photograph of a boy on a low wall, Bairro Quinta Grande."
-      },
-      {
-        type: "image",
-        src: "assets/projects/bqg/bqg-02.jpg",
-        thumbnail: "assets/projects/bqg/bqg-02-thumb.jpg",
-        alt: "Black-and-white photograph by a BQG participant showing a person seated beside a graffitied wall in Bairro Quinta Grande",
-        width: 1600,
-        height: 1142,
-        caption: "A participant's photograph of a street corner, Bairro Quinta Grande."
-      },
-      {
-        type: "image",
-        src: "assets/projects/bqg/bqg-03.jpg",
-        thumbnail: "assets/projects/bqg/bqg-03-thumb.jpg",
-        alt: "Black-and-white photograph by a BQG participant showing a mother holding a child in front of an apartment block",
-        width: 1600,
-        height: 1143,
-        caption: "A participant's photograph of a mother and child, Bairro Quinta Grande."
       },
       {
         type: "image",
@@ -790,7 +755,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-01-thumb.jpg",
         alt: "Sagrada Família family portrait photograph in an interior",
         width: 1600,
-        height: 1143
+        height: 1143,
+        caption: "A family portrait in a Sagrada Família home, eight family members together."
       },
       {
         type: "image",
@@ -798,7 +764,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-02-thumb.jpg",
         alt: "Sagrada Família documentary photograph of a family in their home",
         width: 750,
-        height: 536
+        height: 536,
+        caption: "A family portrait in a Sagrada Família home, seated in front of the television."
       },
       {
         type: "image",
@@ -806,7 +773,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-03-thumb.jpg",
         alt: "Sagrada Família portrait photograph from the home-based series",
         width: 750,
-        height: 536
+        height: 536,
+        caption: "A family portrait in a Sagrada Família home, with two boys and a family cat."
       },
       {
         type: "image",
@@ -814,15 +782,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/sagrada-familia/sagrada-familia-04-thumb.jpg",
         alt: "Sagrada Família interior portrait scene",
         width: 750,
-        height: 536
-      },
-      {
-        type: "image",
-        src: "assets/projects/sagrada-familia/video-placeholder.svg",
-        alt: "Placeholder for forthcoming Sagrada Família video documentation",
-        width: 1600,
-        height: 1000,
-        caption: "Video documentation coming soon."
+        height: 536,
+        caption: "A family portrait in a Sagrada Família home, in the family's living room."
       }
     ]
   }
