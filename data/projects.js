@@ -147,7 +147,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-01-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition view with dark sculptural display",
         width: 645,
-        height: 644
+        height: 644,
+        caption: "The FinnCERES exhibition area, designed for Bioeconomy 2.0."
       },
       {
         type: "image",
@@ -155,7 +156,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-02-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition wall with material samples and labels",
         width: 1600,
-        height: 1068
+        height: 1068,
+        caption: "Material samples on the exhibition wall."
       },
       {
         type: "image",
@@ -163,7 +165,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-03-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition interior with visitors and displays",
         width: 1600,
-        height: 1067
+        height: 1067,
+        caption: "Visitors in the exhibition space."
       },
       {
         type: "image",
@@ -171,7 +174,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-04-thumb.jpg",
         alt: "Cooler Planet 2024 exhibition poster layout in portrait format",
         width: 1126,
-        height: 1432
+        height: 1432,
+        caption: "Poster layout for the Bioeconomy 2.0 exhibition."
       }
     ],
     thumbnailPosition: "58% center"
@@ -272,7 +276,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-02-thumb.jpg",
         alt: "Carried by Invisible Bodies documentation still with performers and sculptural materials",
         width: 1538,
-        height: 921
+        height: 921,
+        caption: "A performer's hands during the piece."
       },
       {
         type: "video",
@@ -289,7 +294,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01-thumb.jpg",
         alt: "Carried by Invisible Bodies title image with pale typography on white field",
         width: 1053,
-        height: 705
+        height: 705,
+        caption: "Title card from the teaser."
       },
       {
         type: "image",
@@ -297,7 +303,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-04-thumb.jpg",
         alt: "Carried by Invisible Bodies performance teaser frame",
         width: 1538,
-        height: 921
+        height: 921,
+        caption: "A sculptural detail from the performance."
       }
     ],
     thumbnailPosition: "50% 100%"
@@ -340,7 +347,8 @@ export const PROJECTS = [
         thumbnail: "assets/projects/tyohuoneella-swap/tyohuoneella-swap-01-thumb.jpg",
         alt: "Työhuoneella / SWAP documentation still with visitors in a gallery space",
         width: 1600,
-        height: 1067
+        height: 1067,
+        caption: "Visitors in the exhibition space."
       },
       {
         type: "image",
@@ -376,7 +384,7 @@ export const PROJECTS = [
         alt: "A video installation in a second exhibition space during SWAP",
         width: 1600,
         height: 1068,
-        caption: "Another part of the exhibition space."
+        caption: "A video installation in the exhibition's second space."
       },
       {
         type: "video",
@@ -704,7 +712,7 @@ export const PROJECTS = [
         alt: "Black-and-white photograph by a BQG participant showing a boy on a low wall in Bairro Quinta Grande",
         width: 1600,
         height: 1142,
-        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+        caption: "A participant's photograph of a boy on a low wall, Bairro Quinta Grande."
       },
       {
         type: "image",
@@ -713,7 +721,7 @@ export const PROJECTS = [
         alt: "Black-and-white photograph by a BQG participant showing a person seated beside a graffitied wall in Bairro Quinta Grande",
         width: 1600,
         height: 1142,
-        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+        caption: "A participant's photograph of a street corner, Bairro Quinta Grande."
       },
       {
         type: "image",
@@ -722,7 +730,7 @@ export const PROJECTS = [
         alt: "Black-and-white photograph by a BQG participant showing a mother holding a child in front of an apartment block",
         width: 1600,
         height: 1143,
-        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+        caption: "A participant's photograph of a mother and child, Bairro Quinta Grande."
       },
       {
         type: "image",
@@ -731,7 +739,7 @@ export const PROJECTS = [
         alt: "Black-and-white photograph by a BQG participant showing two boys playing marbles on the ground",
         width: 1600,
         height: 1142,
-        caption: "One of the participants' photographs from Quinta Grande a Preto e Branco."
+        caption: "A participant's photograph of two boys playing, Bairro Quinta Grande."
       },
       {
         type: "image",
