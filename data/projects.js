@@ -451,7 +451,7 @@ export const PROJECTS = [
   },
   {
     slug: "chladni-plate-assembly",
-    title: "Particle Assembly on a Chladni Plate",
+    title: "Chladni Particle Assembly",
     year: "2020–2021",
     projectType: "Scientific illustration and video editing",
     role: "3D scientific illustration, figure preparation, and video editing",
