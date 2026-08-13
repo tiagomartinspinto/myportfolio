@@ -243,7 +243,7 @@ export const PROJECTS = [
     title: "Carried by Invisible Bodies",
     year: "2022",
     projectType: "Performance documentation",
-    role: "Visual design, editing, teasers, and video documentation",
+    role: "Video and sound design, editing, teasers, and video documentation",
     categories: [
       "moving image"
     ],
@@ -256,8 +256,8 @@ export const PROJECTS = [
     ],
     shortDescription: "Visual identity and documentation for a performance of memory, body, and sound.",
     fullDescription: [
-      "Carried by Invisible Bodies explores memory, movement, and materiality through dance, sculpture, poetry, and live harp music.",
-      "As visual designer and editor, the documentation stayed close to the performance's shifting relation between body, material, space, and sound."
+      "Carried by Invisible Bodies, created by Anne Naukkarinen, explores memory, movement, and materiality through dance, sculpture, poetry, and live harp music by Natalia Castrillón.",
+      "My video and sound design, editing, teasers, and documentation stayed close to the performance's shifting relation between body, material, space, and sound."
     ],
     links: [
       {
@@ -275,20 +275,21 @@ export const PROJECTS = [
         height: 921
       },
       {
+        type: "video",
+        src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-05.mp4",
+        thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-05-poster.jpg",
+        alt: "Teaser video for Carried by Invisible Bodies, showing black-and-white movement, body, typography, and sculptural detail",
+        width: 1920,
+        height: 1080,
+        caption: "Teaser for Carried by Invisible Bodies, with harp music by Natalia Castrillón."
+      },
+      {
         type: "image",
         src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01.png",
         thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-01-thumb.jpg",
         alt: "Carried by Invisible Bodies title image with pale typography on white field",
         width: 1053,
         height: 705
-      },
-      {
-        type: "image",
-        src: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-03.png",
-        thumbnail: "assets/projects/carried-by-invisible-bodies/carried-by-invisible-bodies-03-thumb.jpg",
-        alt: "Carried by Invisible Bodies detail still from performance documentation",
-        width: 1538,
-        height: 921
       },
       {
         type: "image",
