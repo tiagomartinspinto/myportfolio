@@ -628,8 +628,8 @@ export const PROJECTS = [
     slug: "flying-duets",
     title: "Flying Duets",
     year: "2017",
-    projectType: "Cross-border youth media project",
-    role: "Video concept and production",
+    projectType: "Performance and video art project",
+    role: "Videography and video editing",
     categories: [
       "community",
       "learning",
@@ -641,10 +641,10 @@ export const PROJECTS = [
       "borders",
       "young people"
     ],
-    shortDescription: "Youth media project on borders, exchange, and shared authorship.",
+    shortDescription: "Performance and video project exploring contact through paired movement.",
     fullDescription: [
-      "Produced conceptual videos for the START - Create Cultural Change program under the artistic direction of Vassia Valkanioti and with support from the Robert Bosch Stiftung.",
-      "The project explored encounters between German and Polish teenagers, using moving image to think through borders, cultural exchange, and the careful work of making together."
+      "Flying Duets was a performance and video art project conceived and directed by Vassia Valkanioti at Schloss Bröllin, Germany, in 2017. The project brought participants from different backgrounds into two-person movement duets, exploring contact and connection through shared movement.",
+      "I worked as videographer and video editor, filming and editing a series of short videos from the project. Judith Ferreras is credited as a collaborator."
     ],
     links: [
       {
@@ -660,7 +660,25 @@ export const PROJECTS = [
         alt: "Two people on a large wooden A-frame structure at Schloss Brollin, Germany",
         width: 789,
         height: 368,
-        caption: "Flying Duets on the wooden A-frame at Schloss Brollin, Germany."
+        caption: "Flying Duets on the wooden A-frame at Schloss Bröllin, Germany."
+      },
+      {
+        type: "video",
+        src: "assets/projects/flying-duets/flying-duets-02.mp4",
+        thumbnail: "assets/projects/flying-duets/flying-duets-02-poster.jpg",
+        alt: "Two participants moving on a wooden A-frame structure in the grounds of Schloss Bröllin, Germany",
+        width: 1280,
+        height: 720,
+        caption: "Movement on the wooden A-frame and around Schloss Bröllin in one of the Flying Duets videos."
+      },
+      {
+        type: "video",
+        src: "assets/projects/flying-duets/flying-duets-03.mp4",
+        thumbnail: "assets/projects/flying-duets/flying-duets-03-poster.jpg",
+        alt: "Two participants in a field, engaging in a close physical movement and contact exercise",
+        width: 1280,
+        height: 720,
+        caption: "Two participants exploring contact and exchange through movement in Flying Duets."
       }
     ],
     thumbnailPosition: "56% center"
