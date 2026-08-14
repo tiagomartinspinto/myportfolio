@@ -594,7 +594,7 @@ export const PROJECTS = [
     title: "Eating Together",
     year: "2019",
     projectType: "Research performance",
-    role: "Community-based art research, facilitation, and performance",
+    role: "Authorship and performance",
     categories: [
       "learning",
       "community",
@@ -608,8 +608,8 @@ export const PROJECTS = [
     ],
     shortDescription: "Community research through cooking, performance, and shared ritual.",
     fullDescription: [
-      "Eating Together explored communal experience through cooking as both artistic practice and research method.",
-      "At the MAKING | INSEA 2019 conference at the University of British Columbia, the work became a collective reflection on togetherness through the simple, material act of cooking a soup."
+      "Eating Together explored togetherness through cooking as both artistic practice and research method.",
+      "Presented at MAKING | INSEA 2019 at the University of British Columbia, it was my individual research-performance contribution within a collaborative paper on artistic inquiry and a Nordic doctoral course."
     ],
     links: [],
     media: [
@@ -617,10 +617,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/eating-together/eating-together-01.jpeg",
         thumbnail: "assets/projects/eating-together/eating-together-01-thumb.jpg",
-        alt: "Participants linked by red string around the table during Eating Together at MAKING | INSEA 2019",
+        alt: "Conference participants around a table, each holding red string connecting across the room, with a small pot of soup and cooking materials on the table",
         width: 1532,
         height: 1147,
-        caption: "Participants linked by red string around the table during Eating Together at MAKING | INSEA 2019."
+        caption: "Participants connected by a shared red string around the table, with the soup prepared for Eating Together, MAKING | INSEA 2019."
       }
     ]
   },
