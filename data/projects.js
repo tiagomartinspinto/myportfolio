@@ -157,7 +157,7 @@ export const PROJECTS = [
         alt: "Cooler Planet 2024 exhibition wall with material samples and labels",
         width: 1600,
         height: 1068,
-        caption: "View of the FinnCERES wall within the Bioeconomy 2.0 exhibition."
+        caption: "View of the FinnCERES wall within the Cooler Planet 2024 exhibition."
       },
       {
         type: "image",
@@ -731,7 +731,7 @@ export const PROJECTS = [
         alt: "Documentation of a group gathering around a shared meal in Bairro Quinta Grande",
         width: 960,
         height: 640,
-        caption: "Project documentation from Bairro Quinta Grande."
+        caption: "Exhibition vernissage group photo."
       },
       {
         type: "image",
