@@ -388,7 +388,7 @@ export const PROJECTS = [
     title: "From the Dead Air Orgy",
     year: "2021",
     projectType: "Distributed live performance broadcast",
-    role: "Live video production, technical design, coordination, and editing",
+    role: "Live video production, technical design, coordination, and live switching",
     categories: [
       "moving image"
     ],
@@ -400,8 +400,8 @@ export const PROJECTS = [
     ],
     shortDescription: "Live video production for distributed performance and remote stages.",
     fullDescription: [
-      "From the Dead Air Orgy brought together live-streamed episodes, multicam feeds, pre-recorded material, and remote performance spaces.",
-      "The production work included building a recording system with cellphone cameras and WiFi across a full building, coordinating multiple stages, and shaping the broadcast as a temporary media system."
+      "From the Dead Air Orgy was a five-night distributed live broadcast performance conceived and directed by Simon Vincenzi for BAD HOUSE Festival, combining multicam live feeds, pre-recorded material, and remote performance spaces.",
+      "For the technical production, I built a recording system using cellphone cameras and WiFi across a full building, coordinated multiple stages, and live-mixed the broadcast in OBS."
     ],
     links: [
       {
@@ -444,7 +444,7 @@ export const PROJECTS = [
         alt: "A night-time aerial drone shot of the broadcast venue's exterior",
         width: 1538,
         height: 1052,
-        caption: "A night-time drone shot used between sections of the live broadcast."
+        caption: "A night-time drone shot by Aukusti Heinonen, used between sections of the live broadcast."
       }
     ]
   },
