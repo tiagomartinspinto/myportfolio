@@ -449,6 +449,50 @@ export const PROJECTS = [
     ]
   },
   {
+    slug: "tulevaisuus-milta-se-nayttaa",
+    title: "Tulevaisuus miltä se näyttää",
+    year: "2021",
+    projectType: "Music video",
+    role: "Music video production",
+    categories: [
+      "community",
+      "learning",
+      "moving image"
+    ],
+    tags: [
+      "music video",
+      "climate",
+      "youth",
+      "Lasten ja nuorten säätiö"
+    ],
+    shortDescription: "Music video for a climate-themed song written and performed by school students.",
+    fullDescription: [
+      "\"Tulevaisuus miltä se näyttää\" is a climate-themed song written and performed by 8th-grade students at Puistopolun peruskoulu in Helsinki as part of Lasten ja nuorten säätiö's Sanoita parempi maailma programme.",
+      "I made the music video for the project. The songwriting process was led by artist mentor Rauhatäti (Hanna Yli-Tepsa), with the finished track produced and released through Lasten ja nuorten säätiö."
+    ],
+    links: [
+      {
+        label: "Music video",
+        url: "https://www.youtube.com/watch?v=Lmf--_xlXz0"
+      },
+      {
+        label: "Listen on Spotify",
+        url: "https://open.spotify.com/album/6ZJxScY8vP21warmXmEmIl"
+      }
+    ],
+    media: [
+      {
+        type: "video",
+        src: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-01.mp4",
+        thumbnail: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-01-poster.jpg",
+        alt: "A group of students performing together in the Tulevaisuus miltä se näyttää music video",
+        width: 1920,
+        height: 1080,
+        caption: "The finished music video for \"Tulevaisuus miltä se näyttää,\" a song written and performed by Puistopolun peruskoulu's 8th-grade students."
+      }
+    ]
+  },
+  {
     slug: "chladni-plate-assembly",
     title: "Chladni Particle Assembly",
     year: "2020–2021",
