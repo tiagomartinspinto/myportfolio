@@ -4,7 +4,7 @@
 
 - Static GitHub Pages portfolio
 - Vanilla HTML/CSS/JS, no build step, no dependencies
-- Project data in `data/projects.js`
+- Project data in `data/projects.js` — derive the current project count from `PROJECTS.length`, do not hard-code it
 - Site-wide content in `data/site.js`
 - Media in `assets/projects/`
 
@@ -23,15 +23,12 @@ Edit `data/projects.js` and `data/site.js` directly, add media under `assets/pro
 
 ## Known Issues
 
-- YouTube-derived thumbnails depend on `img.youtube.com`
-- External embeds may be blocked by browser/provider settings
+- None currently tracked. All project media and thumbnails are local files under
+  `assets/projects/`. `script.js` still supports YouTube/Vimeo/SoundCloud embeds if a
+  future project needs one.
 
 ## Next Manual Tests
 
 - Live GitHub Pages visual check
 - Mobile layout check
 - Project modal/lightbox check
-
-## Open Recommendation
-
-- `bqg` and `sagrada-familia` both link to the same YouTube video (`vhMKGt1EqvY`). One is likely a copy-paste error. Confirm the correct video for each, or remove the video item from whichever project does not have its own.

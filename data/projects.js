@@ -199,7 +199,7 @@ export const PROJECTS = [
     shortDescription: "Hybrid card game and web tool for collaborative play, chance, and pedagogy.",
     fullDescription: [
       "Sattuma is a hybrid card game developed as part of the Taiteet ja Digi project, a collaboration between Aalto University and the Academy of Fine Arts in Helsinki.",
-      "The role combined web development, visual design, and game mechanics. The project moved between artistic process, interface design, and accessible online play as a shared space for making."
+      "I worked across web development, visual design, and game mechanics. The project moved between artistic process, interface design, and accessible online play as a shared space for making."
     ],
     links: [
       {
@@ -569,7 +569,8 @@ export const PROJECTS = [
     projectType: "Theatre performance",
     role: "Set design with Virpi Velin; prop making",
     categories: [
-      "community"
+      "community",
+      "exhibitions"
     ],
     tags: [
       "theatre",

@@ -297,6 +297,8 @@ const createMediaFigureContent = (item, projectTitle) => {
     const video = document.createElement("video");
     video.controls = true;
     video.preload = "metadata";
+    // Allow inline playback on iOS Safari instead of forcing fullscreen.
+    video.playsInline = true;
     video.src = source;
     if (media.thumbnail) {
       video.poster = media.thumbnail;
