@@ -900,5 +900,38 @@ export const PROJECTS = [
         caption: "Three family members together in their living room in Bairro da Quinta Grande."
       }
     ]
+  },
+  {
+    slug: "viagem-de-volta",
+    title: "Viagem de Volta",
+    year: "2012",
+    projectType: "Installation",
+    role: "Concept, installation, and electronics",
+    categories: [
+      "exhibitions"
+    ],
+    tags: [
+      "installation",
+      "arduino",
+      "migration",
+      "Aveiro"
+    ],
+    shortDescription: "Installation about return migration after Portuguese decolonization, built around a suitcase and fog.",
+    fullDescription: [
+      "Viagem de Volta reflects on the return of Portuguese emigrants from former African colonies after decolonization, using a real suitcase connected to a family's return from Guinea during that period.",
+      "I designed the installation and an Arduino-controlled timer that cycled a fog machine, gradually filling the space with mist around the suitcase. The work was shown at Museu de Aveiro in 2012 as part of the University of Aveiro's Mestrado em Criação Artística Contemporânea."
+    ],
+    links: [],
+    media: [
+      {
+        type: "image",
+        src: "assets/projects/viagem-de-volta/viagem-de-volta-01.jpg",
+        thumbnail: "assets/projects/viagem-de-volta/viagem-de-volta-01-thumb.jpg",
+        alt: "A suitcase standing alone in a fog-filled room, lit warmly and casting a long shadow across the floor",
+        width: 1600,
+        height: 1066,
+        caption: "The suitcase at the centre of Viagem de Volta, surrounded by fog in the installation at Museu de Aveiro."
+      }
+    ]
   }
 ];
