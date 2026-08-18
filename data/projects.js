@@ -563,6 +563,58 @@ export const PROJECTS = [
     ]
   },
   {
+    slug: "body-interrupted",
+    title: "Body Interrupted",
+    year: "2019",
+    projectType: "Theatre performance",
+    role: "Set design with Virpi Velin; prop making",
+    categories: [
+      "community"
+    ],
+    tags: [
+      "theatre",
+      "scenography",
+      "prop making",
+      "Caisa",
+      "Helsinki"
+    ],
+    shortDescription: "Shared set design with Virpi Velin and prop making for a theatre performance at Caisa in Helsinki.",
+    fullDescription: [
+      "Body Interrupted is a feminist theatre performance by UtoUto, created by Anna Olkinuora and Katia Skylar, exploring expectations around the female body and body image through video, live sound, text, spoken word, and butoh-inspired movement.",
+      "For the 2019 production at Kulttuurikeskus Caisa in Helsinki, I shared the set design with Virpi Velin and worked on prop making."
+    ],
+    links: [
+      {
+        label: "Performance video",
+        url: "https://www.youtube.com/watch?v=WABGmp_dLTU"
+      },
+      {
+        label: "UtoUto",
+        url: "https://www.tinfo.fi/fi/Teatterihaku/1132/UtoUto"
+      }
+    ],
+    media: [
+      {
+        type: "image",
+        src: "assets/projects/body-interrupted/body-interrupted-01.jpeg",
+        thumbnail: "assets/projects/body-interrupted/body-interrupted-01-thumb.jpg",
+        alt: "Empty theatre stage lit in blue, with two open frame structures, suspended pale body-shaped forms, and a chair at centre stage",
+        width: 1600,
+        height: 1200,
+        caption: "The Body Interrupted stage set at Caisa, with two open frame structures and suspended body-shaped forms."
+      },
+      {
+        type: "image",
+        src: "assets/projects/body-interrupted/body-interrupted-02.jpeg",
+        thumbnail: "assets/projects/body-interrupted/body-interrupted-02-thumb.jpg",
+        alt: "Two performers standing inside open frame structures on opposite sides of a dark stage, with a cellist at centre beneath suspended body-shaped forms",
+        width: 1598,
+        height: 1200,
+        caption: "A performer stands inside each frame structure, with a live cellist between them beneath the suspended forms."
+      }
+    ]
+  },
+  {
     slug: "off-the-lab",
     title: "Off the Lab",
     year: "2019",
