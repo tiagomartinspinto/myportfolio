@@ -54,3 +54,10 @@ respect it.
 - Keep `PROJECT_STATUS.md` concise and current — a short status/handoff note, not a full
   changelog or history. Update it after substantial content, design, or deployment work;
   don't let it grow into a log.
+
+## Reporting
+
+- Return audits, plans, reviews, test results, and other normal task output directly in
+  the Claude Code conversation.
+- Do not publish results as Claude Artifacts or artifact URLs.
+- Do not create report files in the repository unless explicitly requested.
