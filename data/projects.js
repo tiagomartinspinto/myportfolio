@@ -55,21 +55,21 @@ export const PROJECTS = [
       },
       {
         type: "image",
-        src: "assets/projects/programming-for-visual-artists/course-materials-2025-2026.png",
-        thumbnail: "assets/projects/programming-for-visual-artists/course-materials-2025-2026-thumb.jpg",
-        alt: "Programming for Visual Artists 2025-2026 course materials page",
-        width: 1200,
-        height: 630,
-        caption: "Course materials view with sessions, Lab, slides, and project prompts."
+        src: "assets/projects/programming-for-visual-artists/particles-noise-sketch.png",
+        thumbnail: "assets/projects/programming-for-visual-artists/particles-noise-sketch-thumb.jpg",
+        alt: "Generative sketch of pale particle trails drifting across a black canvas",
+        width: 780,
+        height: 780,
+        caption: "Particles with Noise, a generative sketch from the course."
       },
       {
         type: "image",
-        src: "assets/projects/programming-for-visual-artists/particles-follow-sketch.png",
-        thumbnail: "assets/projects/programming-for-visual-artists/particles-follow-sketch-thumb.jpg",
-        alt: "Programming for Visual Artists particles follow sketch page",
-        width: 1200,
-        height: 630,
-        caption: "Example p5.js sketch page from the 2025-2026 course archive."
+        src: "assets/projects/programming-for-visual-artists/spiral-spins-sketch.png",
+        thumbnail: "assets/projects/programming-for-visual-artists/spiral-spins-sketch-thumb.jpg",
+        alt: "A red spiral traced on a black canvas using polar coordinates",
+        width: 780,
+        height: 780,
+        caption: "Spiral Spins, exploring polar coordinates."
       }
     ],
     thumbnailPosition: "50% 50%"
@@ -157,30 +157,30 @@ export const PROJECTS = [
       },
       {
         type: "image",
-        src: "assets/projects/cooler-planet-2024/cooler-planet-02.png",
-        thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-02-thumb.jpg",
-        alt: "Cooler Planet 2024 exhibition wall with material samples and labels",
-        width: 1600,
-        height: 1068,
-        caption: "View of the FinnCERES wall within the Cooler Planet 2024 exhibition."
-      },
-      {
-        type: "image",
-        src: "assets/projects/cooler-planet-2024/cooler-planet-03.png",
-        thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-03-thumb.jpg",
-        alt: "The Shimmering Wood dress on display at Cooler Planet 2024, dark textured fabric with reflective panels",
-        width: 1600,
-        height: 1067,
-        caption: "The Shimmering Wood dress, featuring wood-based structural colour made from nanocellulose."
-      },
-      {
-        type: "image",
         src: "assets/projects/cooler-planet-2024/cooler-planet-04.png",
         thumbnail: "assets/projects/cooler-planet-2024/cooler-planet-04-thumb.jpg",
         alt: "The SolarSafe display at Cooler Planet 2024, with sculptural virus-like props and a masked mannequin head",
         width: 1126,
         height: 1432,
         caption: "The SolarSafe project display, with props illustrating light-activated, self-sterilizing cellulosic materials."
+      },
+      {
+        type: "image",
+        src: "assets/projects/cooler-planet-2024/finnceres-2026-01.jpg",
+        thumbnail: "assets/projects/cooler-planet-2024/finnceres-2026-01-thumb.jpg",
+        alt: "A wall of bio-based material samples and screens at the 2026 FinnCERES presentation, including wood blocks and jars of pulp",
+        width: 1600,
+        height: 1200,
+        caption: "Material samples on display in the FinnCERES presentation at Marsio in 2026."
+      },
+      {
+        type: "image",
+        src: "assets/projects/cooler-planet-2024/finnceres-2026-02.jpg",
+        thumbnail: "assets/projects/cooler-planet-2024/finnceres-2026-02-thumb.jpg",
+        alt: "The SolarSafe masked head and pathogen sculptures mounted on a wall at the 2026 FinnCERES presentation",
+        width: 1600,
+        height: 1200,
+        caption: "SolarSafe props remounted in the FinnCERES presentation at Marsio in 2026."
       }
     ],
     thumbnailPosition: "58% center"
@@ -497,13 +497,22 @@ export const PROJECTS = [
     ],
     media: [
       {
-        type: "video",
-        src: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-01.mp4",
-        thumbnail: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-01-poster.jpg",
-        alt: "A group of students performing together in the Tulevaisuus miltä se näyttää music video",
-        width: 1920,
-        height: 1080,
-        caption: "The finished music video for \"Tulevaisuus miltä se näyttää,\" a song written and performed by Puistopolun peruskoulu's 8th-grade students."
+        type: "image",
+        src: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-group.jpg",
+        thumbnail: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-group-thumb.jpg",
+        alt: "The group of 8th-grade performers seated together in the music video, in black and white",
+        width: 1600,
+        height: 900,
+        caption: "Video still with the group of performers."
+      },
+      {
+        type: "image",
+        src: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-solo.jpg",
+        thumbnail: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-solo-thumb.jpg",
+        alt: "A solo performer against a magenta background in the music video",
+        width: 1600,
+        height: 900,
+        caption: "Video still from the colour-block sequence."
       }
     ]
   },
@@ -565,15 +574,6 @@ export const PROJECTS = [
         width: 1280,
         height: 720,
         caption: "Particles spelling the letters AALTO."
-      },
-      {
-        type: "image",
-        src: "assets/projects/chladni-plate-assembly/chladni-04.jpg",
-        thumbnail: "assets/projects/chladni-plate-assembly/chladni-04-thumb.jpg",
-        alt: "Final particle arrangement forming a shape after controlled vibration on the plate",
-        width: 1600,
-        height: 900,
-        caption: "Final particle arrangement after controlled vibration."
       }
     ]
   },
@@ -627,6 +627,24 @@ export const PROJECTS = [
         width: 1598,
         height: 1200,
         caption: "A performer stands inside each frame, with a live cellist between them."
+      },
+      {
+        type: "image",
+        src: "assets/projects/body-interrupted/body-interrupted-03.jpeg",
+        thumbnail: "assets/projects/body-interrupted/body-interrupted-03-thumb.jpg",
+        alt: "Two performers on the floor together, with the cellist playing in the background",
+        width: 1200,
+        height: 1600,
+        caption: "A closer, more physical moment between the performers, with the cellist playing on."
+      },
+      {
+        type: "image",
+        src: "assets/projects/body-interrupted/body-interrupted-04.jpeg",
+        thumbnail: "assets/projects/body-interrupted/body-interrupted-04-thumb.jpg",
+        alt: "Wide view of the stage, with three performers and both frame structures",
+        width: 1600,
+        height: 1200,
+        caption: "The performers and the set together, in a wider view of the stage."
       }
     ]
   },
@@ -851,10 +869,10 @@ export const PROJECTS = [
         type: "image",
         src: "assets/projects/bqg/bqg-06.jpg",
         thumbnail: "assets/projects/bqg/bqg-06-thumb.jpg",
-        alt: "Documentation of young people arriving at the Quinta Grande a Preto e Branco exhibition at Casa dos Mundos",
+        alt: "Young people gathered at the entrance to the Quinta Grande a Preto e Branco exhibition, with a poster of one of the participants' photographs on the wall",
         width: 960,
         height: 640,
-        caption: "Quinta Grande a Preto e Branco at Casa dos Mundos, Lisbon, November 2015."
+        caption: "Arriving at the Quinta Grande a Preto e Branco exhibition."
       }
     ]
   },
@@ -949,6 +967,24 @@ export const PROJECTS = [
         width: 1600,
         height: 1066,
         caption: "The suitcase at the centre of Viagem de Volta, part of the installation at Museu de Aveiro."
+      },
+      {
+        type: "image",
+        src: "assets/projects/viagem-de-volta/viagem-de-volta-02.jpg",
+        thumbnail: "assets/projects/viagem-de-volta/viagem-de-volta-02-thumb.jpg",
+        alt: "The Viagem de Volta installation room without fog, showing the suitcase alone on the floor",
+        width: 1600,
+        height: 1066,
+        caption: "Viagem de Volta before the fog cycle."
+      },
+      {
+        type: "image",
+        src: "assets/projects/viagem-de-volta/viagem-de-volta-03.jpg",
+        thumbnail: "assets/projects/viagem-de-volta/viagem-de-volta-03-thumb.jpg",
+        alt: "Hand-drawn circuit diagram for an Arduino-controlled relay and fog-machine timer",
+        width: 640,
+        height: 336,
+        caption: "Hand-drawn circuit for the timed fog-machine control."
       }
     ]
   }
