@@ -11,7 +11,7 @@ export const PROJECT_DISPLAY_FILTERS = [
 export const PROJECTS = [
   {
     slug: "programming-for-visual-artists",
-    title: "Programming for Visual Artists",
+    title: "PVA",
     year: "2026",
     projectType: "Teaching / Creative Coding / Education",
     role: "Course author, lecturer, material development, and creative coding facilitation",
@@ -115,8 +115,8 @@ export const PROJECTS = [
   },
   {
     slug: "cooler-planet-2024",
-    title: "Cooler Planet 2024",
-    year: "2024",
+    title: "FinnCERES",
+    year: "2024-2026",
     projectType: "Exhibition installation",
     role: "Exhibition and spatial design, prop design and fabrication, project coordination, and visual communication",
     categories: [
@@ -129,15 +129,20 @@ export const PROJECTS = [
       "materials research",
       "installation"
     ],
-    shortDescription: "Exhibition design translating bio-based materials research into public space.",
+    shortDescription: "Exhibition design and fabricated props for FinnCERES bio-based materials research, first shown in 2024 and reused in a 2026 presentation.",
     fullDescription: [
       "Aalto University and VTT presented Bioeconomy 2.0 during Helsinki Design Week 2024 as part of Designs for a Cooler Planet.",
-      "I designed the FinnCERES exhibition area, including the wall, spatial layout, props, and display elements, and fabricated part of the installation. The design translated FinnCERES and VTT research on bio-based materials into a physical exhibition environment."
+      "I designed the FinnCERES exhibition area, including the wall, spatial layout, props, and display elements, and fabricated part of the installation. The design translated FinnCERES and VTT research on bio-based materials into a physical exhibition environment.",
+      "In May 2026, several of the fabricated props, including the SolarSafe mask and pathogen sculptures, were remounted in a new FinnCERES presentation at Marsio, shown alongside the documentary premiere Innovation in Every Fiber."
     ],
     links: [
       {
         label: "Event information",
         url: "https://www.aalto.fi/en/events/bioeconomy-20"
+      },
+      {
+        label: "Innovation in Every Fiber premiere",
+        url: "https://www.finnceres.fi/post/premiere-of-innovation-in-every-fiber"
       }
     ],
     media: [
@@ -182,7 +187,7 @@ export const PROJECTS = [
   },
   {
     slug: "sattuma-com",
-    title: "Sattuma.com",
+    title: "Sattuma",
     year: "2024",
     projectType: "Hybrid card game and web tool",
     role: "Full-stack web development, visual design, and interaction design",
@@ -198,13 +203,21 @@ export const PROJECTS = [
     ],
     shortDescription: "Hybrid card game and web tool for collaborative play, chance, and pedagogy.",
     fullDescription: [
-      "Sattuma is a hybrid card game developed as part of the Taiteet ja Digi project, a collaboration between Aalto University and the Academy of Fine Arts in Helsinki.",
-      "I worked across web development, visual design, and game mechanics. The project moved between artistic process, interface design, and accessible online play as a shared space for making."
+      "Sattuma is a hybrid card game and web tool developed in Taiteet ja digi (2021-2023). The project was coordinated by Uniarts Helsinki with Aalto University and funded by the Finnish Ministry of Education and Culture.",
+      "I worked on the project's web development, visual design, and game mechanics, alongside Tomi Slotte Dufva, Mikael Brygger, and Tomi Humalisto. The project moved between artistic process, interface design, and accessible online play as a shared space for making."
     ],
     links: [
       {
+        label: "Sattuma",
+        url: "https://sattuma.com/"
+      },
+      {
         label: "GitHub repository",
         url: "https://github.com/tiagomartinspinto/sattumacards"
+      },
+      {
+        label: "Taiteet ja digi",
+        url: "https://www.uniarts.fi/projektit/taiteet-ja-digi/"
       }
     ],
     media: [
@@ -265,7 +278,9 @@ export const PROJECTS = [
     shortDescription: "Visual identity and documentation for a performance of memory, body, and sound.",
     fullDescription: [
       "Carried by Invisible Bodies, created by Anne Naukkarinen, explores memory, movement, and materiality through dance, sculpture, poetry, and live harp music by Natalia Castrillón.",
-      "My video and sound design, editing, teasers, and documentation stayed close to the performance's shifting relation between body, material, space, and sound."
+      "The work developed through residencies at Arts Centre BUDA in Kortrijk and Ehkä-production's Contemporary Art Space Kutomo in Turku. It premiered at Titanik, Turku, on 28 and 29 May 2022, and was later shown at MAA-tila, Helsinki, in September 2022.",
+      "My video and sound design, editing, teasers, and documentation stayed close to the performance's shifting relation between body, material, space, and sound.",
+      "I was also a conversation partner during the work's development, alongside Laura Cemin, Sara Grotenfelt, and Venla Helenius."
     ],
     links: [
       {
@@ -281,7 +296,7 @@ export const PROJECTS = [
         alt: "Detail from the Carried by Invisible Bodies teaser video, showing a performer's hands in motion",
         width: 1538,
         height: 921,
-        caption: "Detail from the Carried by Invisible Bodies teaser video, showing hands in motion."
+        caption: "Hands in motion, from the teaser video."
       },
       {
         type: "video",
@@ -417,7 +432,7 @@ export const PROJECTS = [
         alt: "Overhead view of The Lost Survivalist asleep in the reception, surrounded by the broadcast's circle of chairs",
         width: 1441,
         height: 1012,
-        caption: "The Lost Survivalist asleep in the reception, surrounded by the broadcast's circle of chairs."
+        caption: "The Lost Survivalist asleep in the reception, surrounded by a circle of chairs."
       },
       {
         type: "image",
@@ -426,7 +441,7 @@ export const PROJECTS = [
         alt: "Sybil in the Sauna reciting into a microphone before an orange slash curtain",
         width: 1538,
         height: 1052,
-        caption: "Sybil in the Sauna, reciting into a microphone before the orange slash curtain."
+        caption: "Sybil in the Sauna, reciting into a microphone."
       },
       {
         type: "image",
@@ -435,7 +450,7 @@ export const PROJECTS = [
         alt: "Overhead view of The Pole Dancer/The Core performing beneath the fixed camera",
         width: 1052,
         height: 554,
-        caption: "The Pole Dancer/The Core performing beneath the fixed overhead camera."
+        caption: "The Pole Dancer performing an aerial routine."
       },
       {
         type: "image",
@@ -540,7 +555,7 @@ export const PROJECTS = [
         alt: "Experimental footage of particles reorganising into a triangle on a vibrating plate",
         width: 1280,
         height: 720,
-        caption: "Edited experimental footage showing particles forming a new configuration."
+        caption: "Particles reorganising into a triangle on the plate."
       },
       {
         type: "video",
@@ -549,7 +564,7 @@ export const PROJECTS = [
         alt: "Experimental footage of particles forming the letters AALTO on a vibrating plate",
         width: 1280,
         height: 720,
-        caption: "Edited experimental footage showing particles forming the letters AALTO."
+        caption: "Particles spelling the letters AALTO."
       },
       {
         type: "image",
@@ -602,7 +617,7 @@ export const PROJECTS = [
         alt: "Empty theatre stage lit in blue, with two open frame structures, suspended pale body-shaped forms, and a chair at centre stage",
         width: 1600,
         height: 1200,
-        caption: "The Body Interrupted stage set at Caisa, with two open frame structures and suspended body-shaped forms."
+        caption: "The Body Interrupted stage set at Caisa."
       },
       {
         type: "image",
@@ -611,7 +626,7 @@ export const PROJECTS = [
         alt: "Two performers standing inside open frame structures on opposite sides of a dark stage, with a cellist at centre beneath suspended body-shaped forms",
         width: 1598,
         height: 1200,
-        caption: "A performer stands inside each frame structure, with a live cellist between them beneath the suspended forms."
+        caption: "A performer stands inside each frame, with a live cellist between them."
       }
     ]
   },
@@ -634,6 +649,7 @@ export const PROJECTS = [
     shortDescription: "Collaborative performance and installation at EMMA responding to Michael Jackson: On the Wall.",
     fullDescription: [
       "Off the Lab brought together seven artists selected through an open call by G.A.P. and EMMA – Espoo Museum of Modern Art to respond to Michael Jackson: On the Wall. On Espoo Day 2019, the group presented two connected works: the performance In Recognition of Their Desperation and the installation Unlearning MJ.",
+      "The group was Natalia Castrillón, Majella Clarke, Tiago Martins Pinto, Anna Olkinuora, Sade Risku, Camila Rosa, and Laura Sariola.",
       "I co-created and performed in both works, and made props for the project. One of them was a hand-cranked record player with a Michael Jackson vinyl, used as a noise-making instrument. The performance ended with a procession through the gallery."
     ],
     links: [
@@ -663,7 +679,7 @@ export const PROJECTS = [
         alt: "The hand-cranked record-player box Tiago Martins Pinto built for Off the Lab, EMMA, 2019, shown with its crank mechanism",
         width: 901,
         height: 1600,
-        caption: "The record-player box I built, showing the crank mechanism."
+        caption: "The record-player box I built."
       },
       {
         type: "image",
@@ -706,7 +722,8 @@ export const PROJECTS = [
     shortDescription: "Community research through cooking, performance, and shared ritual.",
     fullDescription: [
       "Eating Together explored togetherness through cooking as both artistic practice and research method.",
-      "Presented at MAKING | INSEA 2019 at the University of British Columbia, it was my individual research-performance contribution within a collaborative paper on artistic inquiry and a Nordic doctoral course."
+      "Eating Together grew out of \"Visual arts in context,\" a Nordic doctoral course held at the University of Agder in November 2018 and taught by Helene Illeris, Mira Kallio-Tavin (Aalto University), and Anette Göthlund (Konstfack).",
+      "Eating Together was my individual contribution, presented the following year at MAKING | INSEA 2019 in Vancouver as part of a six-author collaborative paper."
     ],
     links: [],
     media: [
@@ -717,7 +734,7 @@ export const PROJECTS = [
         alt: "Conference participants around a table, each holding red string connecting across the room, with a small pot of soup and cooking materials on the table",
         width: 1532,
         height: 1147,
-        caption: "Participants connected by a shared red string around the table, with the soup prepared for Eating Together, MAKING | INSEA 2019."
+        caption: "Participants connected by a shared red string, with the soup prepared for Eating Together."
       }
     ]
   },
@@ -740,8 +757,8 @@ export const PROJECTS = [
     ],
     shortDescription: "Performance and video project exploring contact through paired movement.",
     fullDescription: [
-      "Flying Duets was a performance and video art project conceived and directed by Vassia Valkanioti at Schloss Bröllin, Germany, in 2017. The project brought participants from different backgrounds into two-person movement duets, exploring contact and connection through shared movement.",
-      "I worked as videographer and video editor, filming and editing a series of short videos from the project. Judith Ferreras is credited as a collaborator."
+      "Flying Duets was a performance and video art project conceived and directed by Vassia Valkanioti at Schloss Bröllin, Germany, in 2017, supported through START, Create Cultural Change (Robert Bosch Stiftung). The project brought participants from different backgrounds into two-person movement duets, exploring contact and connection through shared movement.",
+      "I worked as videographer and video editor, filming and editing a series of short videos from the project, alongside fellow videographer Judith Ferreira."
     ],
     links: [
       {
@@ -757,7 +774,7 @@ export const PROJECTS = [
         alt: "Two people on a large wooden A-frame structure at Schloss Brollin, Germany",
         width: 789,
         height: 368,
-        caption: "Flying Duets on the wooden A-frame at Schloss Bröllin, Germany."
+        caption: "Two performers in a movement duet at Schloss Bröllin, Germany."
       },
       {
         type: "video",
@@ -766,7 +783,7 @@ export const PROJECTS = [
         alt: "Two participants moving on a wooden A-frame structure in the grounds of Schloss Bröllin, Germany",
         width: 1280,
         height: 720,
-        caption: "Movement on the wooden A-frame and around Schloss Bröllin in one of the Flying Duets videos."
+        caption: "Movement and contact between two performers, from one of the Flying Duets videos."
       },
       {
         type: "video",
@@ -880,7 +897,7 @@ export const PROJECTS = [
         alt: "Three family members sitting together with the television on, in their home in Bairro da Quinta Grande",
         width: 750,
         height: 536,
-        caption: "Three family members seated together with the television on in their home in Bairro da Quinta Grande."
+        caption: "Three family members, the television still on, at home in Bairro da Quinta Grande."
       },
       {
         type: "image",
@@ -898,7 +915,7 @@ export const PROJECTS = [
         alt: "Three family members sitting together in their living room in Bairro da Quinta Grande",
         width: 750,
         height: 536,
-        caption: "Three family members together in their living room in Bairro da Quinta Grande."
+        caption: "Three family members in their living room, Bairro da Quinta Grande."
       }
     ]
   },
@@ -931,7 +948,7 @@ export const PROJECTS = [
         alt: "A suitcase standing alone in a fog-filled room, lit warmly and casting a long shadow across the floor",
         width: 1600,
         height: 1066,
-        caption: "The suitcase at the centre of Viagem de Volta, surrounded by fog in the installation at Museu de Aveiro."
+        caption: "The suitcase at the centre of Viagem de Volta, part of the installation at Museu de Aveiro."
       }
     ]
   }

@@ -52,12 +52,12 @@ const compactGridQuery = window.matchMedia("(max-width: 1100px)");
 
 const FILTER_LABELS = {
   all: "All",
-  learning: "Learning",
-  community: "Community",
+  learning: "Education",
+  community: "Participatory",
   research: "Research",
   exhibitions: "Exhibitions",
-  web: "Web",
-  "moving image": "Moving image"
+  web: "Interactive",
+  "moving image": "Moving Image"
 };
 
 const labelForFilter = (filter) =>
