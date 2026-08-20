@@ -32,11 +32,17 @@ Edit `data/projects.js` and `data/site.js` directly, add media under `assets/pro
 - Batch 1 (metadata/copy) committed locally: `9bc7cde Revise portfolio project metadata
   and copy`. Not yet pushed.
 - Batch 2 (media revision across 7 projects: PVA, FinnCERES, Chladni Particle Assembly,
-  Tulevaisuus miltä se näyttää, Body Interrupted, BQG, Viagem de Volta) is implemented,
-  validated, and browser-QA'd, but still uncommitted.
+  Tulevaisuus miltä se näyttää, Body Interrupted, BQG, Viagem de Volta) committed locally:
+  `3caa15a Revise portfolio project media`. Not yet pushed.
 - 16 projects total, every project's media count is 4 or fewer.
-- Remaining: commit Batch 2, CV update, Prossigo addition, then push and verify in
-  production.
+- CV updated from the Mar 2025 editable master to Aug 2026. The validated 4-page PDF is now
+  hosted in the repo at `assets/cv/tiago-martins-pinto-cv.pdf`, and the footer CV link points
+  there instead of the old Proton Drive URL. The validated Aug 2026 editable DOCX lives at
+  `~/Downloads/tiagomartinspinto_academicCV_082026.docx`.
+- The Google Drive editable master still holds the Mar 2025 version. A manual version upload
+  was attempted but did not take effect, so replacing it is still pending.
+- Remaining: persist the Aug 2026 editable master in Google Drive, Sattuma dead-link
+  correction, Prossigo addition, then push and verify in production.
 
 ## Next Manual Tests
 

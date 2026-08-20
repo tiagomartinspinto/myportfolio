@@ -25,7 +25,7 @@ export const SITE = {
       },
       {
         label: "CV",
-        url: "https://drive.proton.me/urls/3MQYZFN0Y8#cqHsgAhAzkhM"
+        url: "assets/cv/tiago-martins-pinto-cv.pdf"
       },
       {
         label: "ORCID",
