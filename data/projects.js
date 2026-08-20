@@ -991,5 +991,65 @@ export const PROJECTS = [
         caption: "Hand-drawn circuit for the timed fog-machine control."
       }
     ]
+  },
+  {
+    slug: "prossigo",
+    title: "Prossigo",
+    year: "2012",
+    projectType: "Sound and video installation",
+    role: "Creative coding, videography, prop making, and sound design",
+    categories: [
+      "exhibitions"
+    ],
+    tags: [
+      "installation",
+      "sound",
+      "video",
+      "São Pedro do Sul"
+    ],
+    shortDescription: "A diverted stream, recorded and rebuilt into a four-channel sound and video installation.",
+    fullDescription: [
+      "Created during the Festival Som e Arquitectura Rural in São Pedro do Sul, Prossigo began by diverting the course of a stream with flat stones and recording the resulting movement and sound. The material was later reconstructed as a four-channel sound and video installation.",
+      "Created with Emídio Medeiros, Rodrigo Malvar, and Rogério Guimarães."
+    ],
+    links: [
+      {
+        label: "Aalto research page",
+        url: "https://research.aalto.fi/en/publications/prossigo"
+      },
+      {
+        label: "PÚBLICO article",
+        url: "https://www.publico.pt/2012/04/04/culturaipsilon/noticia/um-festival-para-redescobrir-a-ruralidade-303011"
+      }
+    ],
+    media: [
+      {
+        type: "image",
+        src: "assets/projects/prossigo/prossigo-01.jpg",
+        thumbnail: "assets/projects/prossigo/prossigo-01-thumb.jpg",
+        alt: "Flat stones redirect water through a stream during the Prossigo field intervention",
+        width: 1600,
+        height: 1066,
+        caption: "Flat stones redirecting the stream during the field intervention."
+      },
+      {
+        type: "image",
+        src: "assets/projects/prossigo/prossigo-02.jpg",
+        thumbnail: "assets/projects/prossigo/prossigo-02-thumb.jpg",
+        alt: "Water flowing around a large stone at the Prossigo field site",
+        width: 1600,
+        height: 1066,
+        caption: "Water moving around a stone in the altered stream."
+      },
+      {
+        type: "image",
+        src: "assets/projects/prossigo/prossigo-03.jpg",
+        thumbnail: "assets/projects/prossigo/prossigo-03-thumb.jpg",
+        alt: "Projected stream footage across stone structures in the Prossigo installation",
+        width: 1600,
+        height: 898,
+        caption: "Field recordings projected across the reconstructed installation."
+      }
+    ]
   }
 ];
