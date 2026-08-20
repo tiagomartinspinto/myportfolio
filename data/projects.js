@@ -903,9 +903,9 @@ export const PROJECTS = [
       "migration",
       "Aveiro"
     ],
-    shortDescription: "Installation about return migration after Portuguese decolonization, built around a suitcase and fog.",
+    shortDescription: "Installation shaped by memories of the Portuguese Colonial War and decolonization, built around a suitcase and fog.",
     fullDescription: [
-      "Viagem de Volta reflects on the return of Portuguese emigrants from former African colonies after decolonization, using a real suitcase connected to a family's return from Guinea during that period.",
+      "Viagem de Volta grew from different traces of Portugal's colonial history. Friends had families who returned to Portugal from former Portuguese colonies in Africa during decolonization. My uncle served in the Portuguese military during the Portuguese Colonial War and later showed me photographs from that period, including images of the conflict's violence. The installation also used a real suitcase connected to a child's return from Guinea during the same period.",
       "I designed the installation and an Arduino-controlled timer that cycled a fog machine, gradually filling the space with mist around the suitcase. The work was shown at Museu de Aveiro in 2012 as part of the University of Aveiro's Mestrado em Criação Artística Contemporânea."
     ],
     links: [],
