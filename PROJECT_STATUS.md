@@ -36,8 +36,8 @@ Edit `data/projects.js` and `data/site.js` directly, add media under `assets/pro
   `3caa15a Revise portfolio project media`.
 - 17 projects total, every project's media count is 4 or fewer.
 - CV updated from the Mar 2025 editable master to Aug 2026. The validated 4-page PDF is now
-  hosted in the repo at `assets/cv/tiago-martins-pinto-cv.pdf`, and the footer CV link points
-  there instead of the old Proton Drive URL. The validated Aug 2026 editable DOCX lives at
+  hosted in the repo at `assets/cv/tiago-martins-pinto-cv.pdf`, while the portfolio CV link now
+  points to the editable Google Docs master. The validated Aug 2026 editable DOCX lives at
   `~/Downloads/tiagomartinspinto_academicCV_082026.docx`.
 - The Google Drive editable master still holds the Mar 2025 version. A manual version upload
   was attempted but did not take effect, so replacing it is still pending.
