@@ -468,59 +468,6 @@ export const PROJECTS = [
     ]
   },
   {
-    slug: "tulevaisuus-milta-se-nayttaa",
-    title: "Tulevaisuus miltä se näyttää",
-    year: "2021",
-    projectType: "Music video",
-    role: "Music video production",
-    categories: [
-      "community",
-      "learning",
-      "moving image"
-    ],
-    tags: [
-      "music video",
-      "climate",
-      "youth",
-      "Lasten ja nuorten säätiö"
-    ],
-    shortDescription: "Music video for a climate-themed song written and performed by school students.",
-    fullDescription: [
-      "\"Tulevaisuus miltä se näyttää\" is a climate-themed song written and performed by 8th-grade students at Puistopolun peruskoulu in Helsinki as part of Lasten ja nuorten säätiö's Sanoita parempi maailma programme.",
-      "I made the music video for the project. The songwriting process was led by artist mentor Rauhatäti (Hanna Yli-Tepsa), with the finished track produced and released through Lasten ja nuorten säätiö."
-    ],
-    links: [
-      {
-        label: "Music video",
-        url: "https://www.youtube.com/watch?v=Lmf--_xlXz0"
-      },
-      {
-        label: "Listen on Spotify",
-        url: "https://open.spotify.com/album/6ZJxScY8vP21warmXmEmIl"
-      }
-    ],
-    media: [
-      {
-        type: "image",
-        src: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-group.jpg",
-        thumbnail: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-group-thumb.jpg",
-        alt: "The group of 8th-grade performers seated together in the music video, in black and white",
-        width: 1600,
-        height: 900,
-        caption: "Video still with the group of performers."
-      },
-      {
-        type: "image",
-        src: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-solo.jpg",
-        thumbnail: "assets/projects/tulevaisuus-milta-se-nayttaa/tulevaisuus-milta-se-nayttaa-still-solo-thumb.jpg",
-        alt: "A solo performer against a magenta background in the music video",
-        width: 1600,
-        height: 900,
-        caption: "Video still from the colour-block sequence."
-      }
-    ]
-  },
-  {
     slug: "chladni-plate-assembly",
     title: "Chladni Particle Assembly",
     year: "2020–2021",
