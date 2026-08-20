@@ -41,8 +41,10 @@ Edit `data/projects.js` and `data/site.js` directly, add media under `assets/pro
   `~/Downloads/tiagomartinspinto_academicCV_082026.docx`.
 - The Google Drive editable master still holds the Mar 2025 version. A manual version upload
   was attempted but did not take effect, so replacing it is still pending.
-- Remaining: persist the Aug 2026 editable master in Google Drive, Sattuma dead-link
-  correction, Prossigo addition, then push and verify in production.
+- Sattuma dead-link correction completed with the repository-declared Render app, GitHub
+  repository, Aalto research record, and existing Taiteet ja digi context page.
+- Remaining: persist the Aug 2026 editable master in Google Drive, add Prossigo, then push and
+  verify in production.
 
 ## Next Manual Tests
 

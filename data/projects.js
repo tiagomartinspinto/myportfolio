@@ -208,12 +208,16 @@ export const PROJECTS = [
     ],
     links: [
       {
-        label: "Sattuma",
-        url: "https://sattuma.com/"
+        label: "Project site",
+        url: "https://sattuma.onrender.com/"
       },
       {
         label: "GitHub repository",
         url: "https://github.com/tiagomartinspinto/sattumacards"
+      },
+      {
+        label: "Aalto research page",
+        url: "https://research.aalto.fi/en/publications/sattuma/"
       },
       {
         label: "Taiteet ja digi",
