@@ -43,8 +43,8 @@ Edit `data/projects.js` and `data/site.js` directly, add media under `assets/pro
   was attempted but did not take effect, so replacing it is still pending.
 - Sattuma dead-link correction completed with the repository-declared Render app, GitHub
   repository, Aalto research record, and existing Taiteet ja digi context page.
-- Prossigo added as the final and oldest project, with three local images and an Aalto research
-  record link.
+- Prossigo's archival text was checked, and Emídio Medeiros's working drawing was added as its
+  fourth local image; the Aalto research record link remains included.
 - Remaining: persist the Aug 2026 editable master in Google Drive, push accumulated local
   commits, and verify in production.
 

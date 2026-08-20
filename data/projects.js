@@ -1034,6 +1034,15 @@ export const PROJECTS = [
       },
       {
         type: "image",
+        src: "assets/projects/prossigo/prossigo-drawing.jpg",
+        thumbnail: "assets/projects/prossigo/prossigo-drawing-thumb.jpg",
+        alt: "Drawing by Emídio Medeiros showing the stream route, rural stone structures, and sound-recording positions for Prossigo",
+        width: 1416,
+        height: 1600,
+        caption: "Working drawing for Prossigo by Emídio Medeiros."
+      },
+      {
+        type: "image",
         src: "assets/projects/prossigo/prossigo-02.jpg",
         thumbnail: "assets/projects/prossigo/prossigo-02-thumb.jpg",
         alt: "Water flowing around a large stone at the Prossigo field site",
